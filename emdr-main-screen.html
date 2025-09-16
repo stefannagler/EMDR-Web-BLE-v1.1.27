@@ -381,10 +381,56 @@
         }
 
         .timer-display {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: bold;
             color: #4ecdc4;
+            margin: 8px 0;
+            text-align: center;
+        }
+
+        .timer-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 8px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .timer-options {
+            margin-top: 8px;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+        }
+
+        .option-btn {
+            width: 24px;
+            height: 24px;
+            border: none;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .option-btn.active {
+            background: #4ecdc4;
+            color: white;
         }
 
         .timer-controls {
@@ -843,16 +889,16 @@
 
         .color-picker-container {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             gap: 8px;
         }
 
         .color-picker-container input[type="color"] {
-            width: 60px;
-            height: 60px;
+            width: 32px;
+            height: 32px;
             border: none;
-            border-radius: 50%;
+            border-radius: 6px;
             cursor: pointer;
             background: none;
             padding: 0;
@@ -863,22 +909,15 @@
 
         .color-picker-container input[type="color"]::-webkit-color-swatch-wrapper {
             padding: 0;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .color-picker-container input[type="color"]::-webkit-color-swatch {
             border: none;
-            border-radius: 50%;
+            border-radius: 6px;
         }
 
-        .color-preview {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
 
         /* Random Controls */
         .random-section {
@@ -1172,6 +1211,152 @@
             background: rgba(255, 255, 255, 0.25);
             transform: translateY(-1px);
         }
+
+        .settings-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .settings-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .settings-section h4 {
+            color: #4ecdc4;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .settings-item label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .scheme-selector {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            color: white;
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .scheme-selector:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #4ecdc4;
+        }
+
+        .scheme-selector:focus {
+            outline: none;
+            border-color: #4ecdc4;
+            box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.3);
+        }
+
+        .scheme-selector option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        /* Geometric Pattern Background */
+        .geometric-background {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .geometric-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: -2;
+        }
+
+        .geometric-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                /* Primary diamond layer */
+                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                /* Secondary floating shapes */
+                radial-gradient(ellipse at 30% 40%, rgba(78, 205, 196, 0.15) 0%, transparent 40%),
+                radial-gradient(ellipse at 70% 60%, rgba(255, 107, 107, 0.12) 0%, transparent 40%),
+                radial-gradient(ellipse at 10% 70%, rgba(255, 193, 7, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at 90% 30%, rgba(40, 167, 69, 0.12) 0%, transparent 40%),
+                /* Diamond shapes */
+                conic-gradient(from 45deg at 25% 25%, transparent 0deg, rgba(255, 255, 255, 0.1) 90deg, transparent 180deg),
+                conic-gradient(from 45deg at 75% 25%, transparent 0deg, rgba(78, 205, 196, 0.08) 90deg, transparent 180deg),
+                conic-gradient(from 45deg at 25% 75%, transparent 0deg, rgba(255, 107, 107, 0.08) 90deg, transparent 180deg),
+                conic-gradient(from 45deg at 75% 75%, transparent 0deg, rgba(255, 193, 7, 0.08) 90deg, transparent 180deg);
+            background-size: 
+                200px 200px,
+                180px 180px,
+                220px 220px,
+                190px 190px,
+                250px 250px,
+                150px 100px,
+                120px 80px,
+                100px 120px,
+                140px 90px,
+                60px 60px,
+                50px 50px,
+                55px 55px,
+                45px 45px;
+            background-position: 
+                0% 0%,
+                50% 0%,
+                0% 50%,
+                50% 50%,
+                25% 25%,
+                20% 30%,
+                80% 70%,
+                10% 80%,
+                90% 20%,
+                15% 15%,
+                85% 15%,
+                15% 85%,
+                85% 85%;
+            animation: geometricFloat 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes geometricFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-10px) rotate(1deg);
+            }
+            50% {
+                transform: translateY(-5px) rotate(-1deg);
+            }
+            75% {
+                transform: translateY(-15px) rotate(0.5deg);
+            }
+        }
         
         .settings-info {
             background: rgba(255, 255, 255, 0.1);
@@ -1337,18 +1522,36 @@
             <div class="timer-section">
                 <div class="timer-card">
                     <h3>Timer</h3>
-                    <div class="timer-display" id="timer-display">00:30</div>
-                    <div class="timer-controls">
-                        <button class="timer-btn" onclick="toggleTimer()" id="timer-btn">Timer</button>
-                        <button class="timer-btn" onclick="resetTimer()">Reset</button>
+                    <div class="timer-toggle">
+                        <label class="toggle-label">Timer</label>
+                        <div class="toggle" id="timer-toggle" onclick="toggleTimer()"></div>
+                    </div>
+                    <div class="timer-display" id="timer-display">30s</div>
+                    <div class="timer-options" id="timer-options" style="display: none;">
+                        <div class="option-buttons">
+                            <button class="option-btn" data-value="20" onclick="setTimerSeconds(20)">20</button>
+                            <button class="option-btn active" data-value="30" onclick="setTimerSeconds(30)">30</button>
+                            <button class="option-btn" data-value="40" onclick="setTimerSeconds(40)">40</button>
+                            <button class="option-btn" data-value="50" onclick="setTimerSeconds(50)">50</button>
+                            <button class="option-btn" data-value="60" onclick="setTimerSeconds(60)">60</button>
+                        </div>
                     </div>
                 </div>
                 <div class="timer-card">
                     <h3>Countdown</h3>
-                    <div class="timer-display" id="countdown-display">30</div>
-                    <div class="timer-controls">
-                        <button class="timer-btn" onclick="toggleCountdown()" id="countdown-btn">Countdown</button>
-                        <button class="timer-btn" onclick="resetCountdown()">Reset</button>
+                    <div class="timer-toggle">
+                        <label class="toggle-label">Countdown</label>
+                        <div class="toggle" id="countdown-toggle" onclick="toggleCountdown()"></div>
+                    </div>
+                    <div class="timer-display" id="countdown-display">30 cycles</div>
+                    <div class="timer-options" id="countdown-options" style="display: none;">
+                        <div class="option-buttons">
+                            <button class="option-btn" data-value="20" onclick="setCountdownCycles(20)">20</button>
+                            <button class="option-btn active" data-value="30" onclick="setCountdownCycles(30)">30</button>
+                            <button class="option-btn" data-value="40" onclick="setCountdownCycles(40)">40</button>
+                            <button class="option-btn" data-value="50" onclick="setCountdownCycles(50)">50</button>
+                            <button class="option-btn" data-value="60" onclick="setCountdownCycles(60)">60</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1592,8 +1795,7 @@
                         <div class="color-column">
                             <div class="color-label">Dot Color</div>
                             <div class="color-picker-container">
-                                <input type="color" id="dot-color-picker" value="#ffffff" onchange="updateDotColor(this.value)">
-                                <div class="color-preview" id="dot-color-preview" style="background-color: #ffffff;"></div>
+                                <input type="color" id="dot-color-picker" value="#ffffff">
                             </div>
                             <div class="slider-group">
                                 <label>Dot Intensity: <span id="dot-intensity-value">150</span></label>
@@ -1615,8 +1817,7 @@
                         <div class="color-column">
                             <div class="color-label">Background Color</div>
                             <div class="color-picker-container">
-                                <input type="color" id="bg-color-picker" value="#0000ff" onchange="updateBackgroundColor(this.value)">
-                                <div class="color-preview" id="bg-color-preview" style="background-color: #0000ff;"></div>
+                                <input type="color" id="bg-color-picker" value="#0000ff">
                             </div>
                             <div class="slider-group">
                                 <label>Background Intensity: <span id="bg-intensity-value">50</span></label>
@@ -1711,18 +1912,36 @@
             <button class="toggle-settings-btn" onclick="toggleSettingsPanel()">✕</button>
         </div>
         <div class="settings-content">
-            <div class="settings-buttons">
-                <button class="settings-btn" onclick="manualSave()">💾 Save Current</button>
-                <button class="settings-btn" onclick="loadAndApplySettings()">📂 Load Saved</button>
-                <button class="settings-btn" onclick="testSaveLoadCycle()">🔄 Test Save/Load</button>
-                <button class="settings-btn" onclick="testLocalStorage()">🔧 Test Storage</button>
-                <button class="settings-btn" onclick="resetToDefaults()">🔄 Reset to Defaults</button>
-                <button class="settings-btn" onclick="SettingsManager.export()">📁 Export to File</button>
-                <label class="settings-btn" for="import-settings">
-                    📁 Import from File
-                    <input type="file" id="import-settings" accept=".json" style="display: none;" onchange="importSettingsFile(event)">
-                </label>
+            <!-- Visual Customization -->
+            <div class="settings-section">
+                <h4>🎨 Visual Customization</h4>
+                <div class="settings-item">
+                    <label for="color-scheme-selector">Color Scheme:</label>
+                    <select id="color-scheme-selector" class="scheme-selector">
+                        <option value="default">Default Blue</option>
+                        <option value="sunset">Sunset Gradient</option>
+                        <option value="ocean">Ocean Gradient</option>
+                        <option value="aurora">Aurora Gradient</option>
+                        <option value="geometric">Geometric Pattern</option>
+                    </select>
+                </div>
             </div>
+            
+            <!-- Settings Management -->
+            <div class="settings-section">
+                <h4>⚙️ Settings Management</h4>
+                <div class="settings-buttons">
+                    <button class="settings-btn" onclick="manualSave()">💾 Save Current</button>
+                    <button class="settings-btn" onclick="loadAndApplySettings()">📂 Load Saved</button>
+                    <button class="settings-btn" onclick="resetToDefaults()">🔄 Reset to Defaults</button>
+                    <button class="settings-btn" onclick="SettingsManager.export()">📁 Export to File</button>
+                    <label class="settings-btn" for="import-settings">
+                        📁 Import from File
+                        <input type="file" id="import-settings" accept=".json" style="display: none;" onchange="importSettingsFile(event)">
+                    </label>
+                </div>
+            </div>
+            
             <div class="settings-info">
                 <p><strong>Auto-Save:</strong> Settings are automatically saved when you change any control.</p>
                 <p><strong>Storage:</strong> Settings are stored locally in your browser and persist between sessions.</p>
@@ -1819,12 +2038,17 @@
         let state = {
             mainControlsOn: false,
             isRunning: false,
+            // Timer and Countdown state (matching iOS app)
+            timerEnabled: false,
+            selectedTimerSeconds: 30,
+            timerSeconds: [20, 30, 40, 50, 60],
+            remainingTime: 0,
             timerActive: false,
+            countdownEnabled: false,
+            selectedCountdownCycles: 30,
+            countdownCycles: [20, 30, 40, 50, 60],
+            remainingCycles: 0,
             countdownActive: false,
-            timerSeconds: 30,
-            countdownCycles: 30,
-            remainingTime: 30,
-            remainingCycles: 30,
             cycleCount: 0,
             connected: false,
             batteryLeft: 0,
@@ -2721,7 +2945,6 @@
                             const hexColor = rgbToHex(red, green, blue);
                             state.dotColor = hexColor;
                             document.getElementById('dot-color-picker').value = hexColor;
-                            document.getElementById('dot-color-preview').style.backgroundColor = hexColor;
                             addDebugMessage(`🎨 Dot color updated: ${hexColor} (R:${red} G:${green} B:${blue})`, 'success');
                         }
                     } catch (error) {
@@ -2734,7 +2957,6 @@
                         const hexColor = rgbToHex(red, green, blue);
                         state.dotColor = hexColor;
                         document.getElementById('dot-color-picker').value = hexColor;
-                        document.getElementById('dot-color-preview').style.backgroundColor = hexColor;
                             addDebugMessage(`🎨 Dot color updated (binary): ${hexColor}`, 'success');
                         }
                     }
@@ -2755,7 +2977,6 @@
                             const hexColor = rgbToHex(red, green, blue);
                             state.backgroundColor = hexColor;
                             document.getElementById('bg-color-picker').value = hexColor;
-                            document.getElementById('bg-color-preview').style.backgroundColor = hexColor;
                             addDebugMessage(`🎨 Background color updated: ${hexColor} (R:${red} G:${green} B:${blue})`, 'success');
                         }
                     } catch (error) {
@@ -2768,7 +2989,6 @@
                         const hexColor = rgbToHex(red, green, blue);
                         state.backgroundColor = hexColor;
                         document.getElementById('bg-color-picker').value = hexColor;
-                        document.getElementById('bg-color-preview').style.backgroundColor = hexColor;
                             addDebugMessage(`🎨 Background color updated (binary): ${hexColor}`, 'success');
                         }
                     }
@@ -2968,7 +3188,6 @@
         // Color update functions
         function updateDotColor(hexColor) {
             state.dotColor = hexColor;
-            document.getElementById('dot-color-preview').style.backgroundColor = hexColor;
             
             // Convert hex to RGB
             const rgb = hexToRgb(hexColor);
@@ -2995,7 +3214,6 @@
 
         function updateBackgroundColor(hexColor) {
             state.backgroundColor = hexColor;
-            document.getElementById('bg-color-preview').style.backgroundColor = hexColor;
             
             // Convert hex to RGB
             const rgb = hexToRgb(hexColor);
@@ -3018,6 +3236,41 @@
             saveSettingsDebounced('background-color-change');
             
             console.log('🔵 Color: Background color updated to', hexColor);
+        }
+
+        // Color scheme update function
+        function updateColorScheme(scheme) {
+            // Remove any existing geometric background class
+            document.body.classList.remove('geometric-background');
+            
+            let backgroundStyle;
+            
+            switch(scheme) {
+                case 'default':
+                    backgroundStyle = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                    break;
+                case 'sunset':
+                    backgroundStyle = 'linear-gradient(135deg, #ff7e5f 0%, #feb47b 50%, #ff6b6b 100%)';
+                    break;
+                case 'ocean':
+                    backgroundStyle = 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4facfe 100%)';
+                    break;
+                case 'aurora':
+                    backgroundStyle = 'linear-gradient(135deg, #a8edea 0%, #fed6e3 25%, #d299c2 50%, #fef9d7 75%, #667eea 100%)';
+                    break;
+                case 'geometric':
+                    // Add geometric background class instead of setting background style
+                    document.body.classList.add('geometric-background');
+                    addDebugMessage(`🎨 Color scheme updated to: ${scheme}`, 'info');
+                    console.log('🔵 Color: Color scheme updated to', scheme);
+                    return; // Exit early for geometric pattern
+                default:
+                    backgroundStyle = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            }
+            
+            document.body.style.background = backgroundStyle;
+            addDebugMessage(`🎨 Color scheme updated to: ${scheme}`, 'info');
+            console.log('🔵 Color: Color scheme updated to', scheme);
         }
 
         // Convert hex color to RGB
@@ -3220,24 +3473,19 @@
             await sendBLECommand('lightbarBrightFg', currentDotBrightness);     // Current foreground brightness from UI
             // 🎯 READ MORE CURRENT UI VALUES instead of hardcoded defaults
             const trailSlider = document.getElementById('trail-brightness');
-            const widthSlider = document.getElementById('dot-width');
+            const barWidthSlider = document.getElementById('bar-width');
             const slowTimeSlider = document.getElementById('slow-time');
             
             const currentTrailBrightness = trailSlider ? parseInt(trailSlider.value) : 255;
-            const currentPixelWidth = widthSlider ? parseInt(widthSlider.value) : 10;
+            const currentBarWidth = barWidthSlider ? parseInt(barWidthSlider.value) : 40;
             const currentSlowTime = slowTimeSlider ? parseInt(slowTimeSlider.value) : 0;
             
-            // 🔍 DEBUG: Check dot width value being sent to BLE
-            console.error('🔍 BLE DEBUG: About to send dot width (lightbarPixelWidth):', currentPixelWidth);
-            if (currentPixelWidth > 10) {
-                console.error('🚨🚨 BLE ALERT: Trying to send dot width', currentPixelWidth, '> 10!');
-                addDebugMessage(`🚨 BLE sending high dot width: ${currentPixelWidth}!`, 'error');
-            }
+            // 🔍 DEBUG: Check bar width value being sent to BLE
+            console.log('🔍 BLE DEBUG: About to send bar width (lightbarPixelStart):', currentBarWidth, '→ inverted:', 40 - currentBarWidth);
             
-            addDebugMessage(`💡 Sending CURRENT lightbar values: Trail=${currentTrailBrightness}, Width=${currentPixelWidth}, SlowTime=${currentSlowTime}`, 'ble');
+            addDebugMessage(`💡 Sending CURRENT lightbar values: Trail=${currentTrailBrightness}, BarWidth=${currentBarWidth}, SlowTime=${currentSlowTime}`, 'ble');
             await sendBLECommand('lightbarTrailBrightDelta', currentTrailBrightness); // Current trail brightness from UI
-            await sendBLECommand('lightbarPixelWidth', currentPixelWidth);    // Current pixel width from UI
-            await sendBLECommand('lightbarPixelStart', 0);     // Pixel start position (always 0)
+            await sendBLECommand('lightbarPixelStart', 40 - currentBarWidth);    // Bar width with inversion (40 - value)
             await sendBLECommand('lightbarSlowTime', currentSlowTime);       // Current slow time from UI
             // Send lightbar flow/flash state (preserve current UI state from combined toggle)
             const modeThumb = document.getElementById('mode-toggle-thumb');
@@ -3514,95 +3762,185 @@
             }
         }
 
-        // Timer Functions
+        // Timer Functions (matching iOS app)
         function toggleTimer() {
-            if (!state.mainControlsOn) return;
+            state.timerEnabled = !state.timerEnabled;
+            updateTimerUI();
             
-            state.timerActive = !state.timerActive;
-            updateUI();
-            
-            if (state.timerActive) {
-                startTimer();
-            } else {
+            if (!state.timerEnabled) {
                 stopTimer();
             }
         }
 
+        function setTimerSeconds(seconds) {
+            if (state.remainingTime > 0) return; // Don't allow changes when running
+            
+            state.selectedTimerSeconds = seconds;
+            updateTimerUI();
+        }
+
         function startTimer() {
+            if (!state.timerEnabled || state.remainingTime > 0) return;
+            
+            state.remainingTime = state.selectedTimerSeconds;
+            state.timerActive = true;
+            updateTimerUI();
+            
             const timerInterval = setInterval(() => {
-                if (!state.timerActive) {
+                if (!state.timerActive || state.remainingTime <= 0) {
                     clearInterval(timerInterval);
+                if (state.remainingTime <= 0) {
+                        // Timer finished - stop the session
+                    state.timerActive = false;
+                        state.isRunning = false;
+                        addDebugMessage('⏰ Timer finished - stopping session', 'info');
+                    updateUI();
+                }
                     return;
                 }
                 
                 state.remainingTime--;
-                updateTimerDisplay();
-                
-                if (state.remainingTime <= 0) {
-                    state.timerActive = false;
-                    clearInterval(timerInterval);
-                    alert('Timer finished!');
-                    updateUI();
-                }
+                updateTimerUI();
             }, 1000);
         }
 
         function stopTimer() {
             state.timerActive = false;
+            state.remainingTime = 0;
+            updateTimerUI();
         }
 
-        function resetTimer() {
-            state.remainingTime = state.timerSeconds;
-            state.timerActive = false;
-            updateUI();
+        function updateTimerUI() {
+            const timerToggle = document.getElementById('timer-toggle');
+            const timerDisplay = document.getElementById('timer-display');
+            const timerOptions = document.getElementById('timer-options');
+            
+            if (timerToggle) {
+                timerToggle.classList.toggle('active', state.timerEnabled);
+            }
+            
+            if (timerDisplay) {
+                if (state.remainingTime > 0) {
+                    timerDisplay.textContent = `${state.remainingTime}s`;
+                    timerDisplay.style.color = '#ff6b6b'; // Orange when running
+                } else {
+                    timerDisplay.textContent = `${state.selectedTimerSeconds}s`;
+                    timerDisplay.style.color = '#4ecdc4'; // Teal when not running
+                }
+            }
+            
+            if (timerOptions) {
+                timerOptions.style.display = state.timerEnabled ? 'block' : 'none';
+            }
+            
+            // Update option buttons
+            document.querySelectorAll('#timer-options .option-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.value) === state.selectedTimerSeconds);
+                btn.disabled = state.remainingTime > 0; // Disable when running
+            });
         }
 
-        // Countdown Functions
+        // Countdown Functions (matching iOS app)
         function toggleCountdown() {
-            if (!state.mainControlsOn) return;
+            state.countdownEnabled = !state.countdownEnabled;
+            updateCountdownUI();
             
-            state.countdownActive = !state.countdownActive;
-            updateUI();
-            
-            if (state.countdownActive) {
-                startCountdown();
-            } else {
+            if (!state.countdownEnabled) {
                 stopCountdown();
             }
         }
 
+        function setCountdownCycles(cycles) {
+            if (state.remainingCycles > 0) return; // Don't allow changes when running
+            
+            state.selectedCountdownCycles = cycles;
+            updateCountdownUI();
+        }
+
         function startCountdown() {
+            if (!state.countdownEnabled || state.remainingCycles > 0) return;
+            
+            state.remainingCycles = state.selectedCountdownCycles;
+            state.countdownActive = true;
+            updateCountdownUI();
+            
+            // Create a timer to check cycle count every second (like iOS app)
             const countdownInterval = setInterval(() => {
                 if (!state.countdownActive) {
                     clearInterval(countdownInterval);
                     return;
                 }
                 
-                state.remainingCycles--;
-                updateCountdownDisplay();
-                
-                if (state.remainingCycles <= 0) {
-                    state.countdownActive = false;
-                    clearInterval(countdownInterval);
-                    alert('Countdown finished!');
-                    updateUI();
-                }
+                updateCountdown();
             }, 1000);
         }
 
         function stopCountdown() {
             state.countdownActive = false;
+            state.remainingCycles = 0;
+            updateCountdownUI();
         }
 
-        function resetCountdown() {
-            state.remainingCycles = state.countdownCycles;
+        function updateCountdown() {
+            if (state.countdownEnabled && state.remainingCycles > 0) {
+                const cyclesCompleted = state.cycleCount;
+                const cyclesRemaining = state.selectedCountdownCycles - cyclesCompleted;
+                
+                if (cyclesRemaining <= 0) {
+                    // Countdown finished - stop the session
             state.countdownActive = false;
+                    state.isRunning = false;
+                    addDebugMessage('🔢 Countdown finished - stopping session', 'info');
             updateUI();
+                } else {
+                    state.remainingCycles = cyclesRemaining;
+                    updateCountdownUI();
+                }
+            }
+        }
+
+        function updateCountdownUI() {
+            const countdownToggle = document.getElementById('countdown-toggle');
+            const countdownDisplay = document.getElementById('countdown-display');
+            const countdownOptions = document.getElementById('countdown-options');
+            
+            if (countdownToggle) {
+                countdownToggle.classList.toggle('active', state.countdownEnabled);
+            }
+            
+            if (countdownDisplay) {
+                if (state.remainingCycles > 0) {
+                    countdownDisplay.textContent = `${state.remainingCycles} cycles`;
+                    countdownDisplay.style.color = '#ff6b6b'; // Orange when running
+                } else {
+                    countdownDisplay.textContent = `${state.selectedCountdownCycles} cycles`;
+                    countdownDisplay.style.color = '#4ecdc4'; // Teal when not running
+                }
+            }
+            
+            if (countdownOptions) {
+                countdownOptions.style.display = state.countdownEnabled ? 'block' : 'none';
+            }
+            
+            // Update option buttons
+            document.querySelectorAll('#countdown-options .option-btn').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.value) === state.selectedCountdownCycles);
+                btn.disabled = state.remainingCycles > 0; // Disable when running
+            });
         }
 
         // Session Functions
         function startSession() {
             state.cycleCount = 0;
+            
+            // Start timer and countdown if enabled (matching iOS app)
+            if (state.timerEnabled) {
+                startTimer();
+            }
+            if (state.countdownEnabled) {
+                startCountdown();
+            }
+            
             // Initialize arrows to center position when starting
             updateEMDRArrows('center');
             
@@ -3631,6 +3969,10 @@
 
         function stopSession() {
             state.isRunning = false;
+            
+            // Stop timer and countdown (matching iOS app)
+            stopTimer();
+            stopCountdown();
             
             // Stop polling sendToPhone characteristic when session ends
             stopSendToPhonePolling();
@@ -4103,6 +4445,7 @@
                     // Colors
                     dotColor: '#ffffff',        // Default white dot color
                     backgroundColor: '#0000ff', // Default blue background color
+                    colorScheme: 'default',     // Default color scheme
                     
                     // Speed Controls
                     speedValue: 5,
@@ -4244,6 +4587,7 @@
                     // Colors
                     settings.dotColor = document.getElementById('dot-color-picker')?.value || '#ffffff';
                     settings.backgroundColor = document.getElementById('bg-color-picker')?.value || '#0000ff';
+                    settings.colorScheme = document.getElementById('color-scheme-selector')?.value || 'default';
                     
                     // Speed Controls
                     settings.speedValue = parseInt(document.getElementById('speed-slider')?.value) || 5;
@@ -4337,13 +4681,15 @@
                     // Colors
                     if (settings.dotColor) {
                         document.getElementById('dot-color-picker').value = settings.dotColor;
-                        document.getElementById('dot-color-preview').style.backgroundColor = settings.dotColor;
                         state.dotColor = settings.dotColor;
                     }
                     if (settings.backgroundColor) {
                         document.getElementById('bg-color-picker').value = settings.backgroundColor;
-                        document.getElementById('bg-color-preview').style.backgroundColor = settings.backgroundColor;
                         state.backgroundColor = settings.backgroundColor;
+                    }
+                    if (settings.colorScheme) {
+                        document.getElementById('color-scheme-selector').value = settings.colorScheme;
+                        updateColorScheme(settings.colorScheme);
                     }
                     
                     // Speed Controls
@@ -4620,6 +4966,29 @@
                     });
                 }
             });
+            
+            // Color pickers auto-save
+            const dotColorPicker = document.getElementById('dot-color-picker');
+            if (dotColorPicker) {
+                dotColorPicker.addEventListener('change', () => {
+                    updateDotColor(dotColorPicker.value);
+                });
+            }
+            
+            const bgColorPicker = document.getElementById('bg-color-picker');
+            if (bgColorPicker) {
+                bgColorPicker.addEventListener('change', () => {
+                    updateBackgroundColor(bgColorPicker.value);
+                });
+            }
+            
+            const colorSchemeSelector = document.getElementById('color-scheme-selector');
+            if (colorSchemeSelector) {
+                colorSchemeSelector.addEventListener('change', () => {
+                    updateColorScheme(colorSchemeSelector.value);
+                    saveSettingsDebounced('color-scheme-change');
+                });
+            }
             
             console.log('✅ Auto-save event listeners set up');
         }
@@ -4973,7 +5342,7 @@
                                 characteristicKey = 'lightbarTrailBrightDelta';
                                 break;
                             case 'bar-width':
-                                // Bar width is inverted in Xcode
+                                // Bar width uses lightbarPixelStart with inversion (matches iOS)
                                 bleValue = 40 - parseInt(this.value);
                                 characteristicKey = 'lightbarPixelStart';
                                 break;
@@ -5082,7 +5451,7 @@
                 mainBtn.classList.remove('off');
                 mainBtn.classList.add('on');
                 mainIcon.textContent = '⚡';
-                        mainText.textContent = 'Main Controls ON v1.0.1';
+                        mainText.textContent = 'Main Controls ON v1.0.2';
                         mainIcon.classList.remove('spinner'); // Remove spinner when ON
             } else if (state.connected) {
                 // Connected but controls are OFF
@@ -5213,32 +5582,17 @@
                 throw error; // Re-throw to see where it came from
             }
             
-            // Call timer display update (outside try-catch since it's a separate function)
+            // Call timer and countdown UI updates (outside try-catch since they're separate functions)
             try {
-            updateTimerDisplay();
+                updateTimerUI();
+                updateCountdownUI();
             } catch (error) {
-                addDebugMessage(`🔴 ERROR in updateTimerDisplay: ${error.message}`, 'error');
-                console.error('updateTimerDisplay error:', error);
+                addDebugMessage(`🔴 ERROR in timer/countdown UI updates: ${error.message}`, 'error');
+                console.error('timer/countdown UI update error:', error);
             }
             
-            try {
-            updateCountdownDisplay();
-            } catch (error) {
-                addDebugMessage(`🔴 ERROR in updateCountdownDisplay: ${error.message}`, 'error');
-                console.error('updateCountdownDisplay error:', error);
-            }
         }
 
-        function updateTimerDisplay() {
-            const minutes = Math.floor(state.remainingTime / 60);
-            const seconds = state.remainingTime % 60;
-            document.getElementById('timer-display').textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        function updateCountdownDisplay() {
-            document.getElementById('countdown-display').textContent = state.remainingCycles;
-        }
     </script>
 </body>
 </html>
