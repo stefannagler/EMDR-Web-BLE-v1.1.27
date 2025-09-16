@@ -459,6 +459,15 @@
             100% { transform: scale(1); }
         }
 
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
         .cycle-counter {
             color: rgba(255, 255, 255, 0.8);
             font-size: 14px;
@@ -1005,7 +1014,7 @@
         
         @media (max-width: 800px) {
             .speed-test-controls {
-                flex-direction: column;
+            flex-direction: column;
                 align-items: stretch;
             }
             
@@ -1084,6 +1093,103 @@
         .floating-btn:hover {
             transform: scale(1.1);
             background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            padding: 0;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 14px 14px 0 0;
+        }
+        
+        .settings-header h3 {
+            margin: 0;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .toggle-settings-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+        
+        .toggle-settings-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .settings-content {
+            padding: 20px;
+        }
+        
+        .settings-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+        
+        .settings-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .settings-info p {
+            margin: 8px 0;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        #settings-status {
+            color: #4ecdc4;
+            font-weight: bold;
+            margin: 12px 0 0 0;
         }
 
         /* Debug Panel */
@@ -1190,11 +1296,14 @@
     <div class="fixed-header">
         <div class="header">
             <div class="header-top">
-                <h1>EMDR TLC</h1>
+            <h1>EMDR TLC</h1>
                 <!-- Main Controls Button in Header -->
                 <button class="header-main-controls-btn" id="main-controls-btn" onclick="toggleMainControls()">
                     <span id="main-controls-icon">⚡</span>
                     <span id="main-controls-text">Main Controls OFF</span>
+                </button>
+                <button class="header-main-controls-btn" onclick="toggleSettingsPanel()" title="Settings">
+                    ⚙️
                 </button>
             </div>
             <div class="status-bar">
@@ -1214,9 +1323,9 @@
                     <span id="connection-status">🔴</span>
                     <span id="connection-text">Disconnected</span>
                 </div>
+                </div>
             </div>
         </div>
-    </div>
 
     <!-- Main Grid Container -->
     <div class="container">
@@ -1275,14 +1384,14 @@
                     <div class="slider-container">
                         <input type="range" class="slider" min="0" max="10" value="5" id="speed-slider">
                     </div>
+                    </div>
                 </div>
             </div>
-        </div>
         
         <!-- Section 2: Tapper Controls -->
         <div class="section-container">
             <div class="section-title">🎯 Tapper Modalities</div>
-            
+
             <!-- Tapper Modalities -->
             <div class="modalities-section">
                 <div class="section-header">
@@ -1417,14 +1526,14 @@
                             </div>
                         </div>
                     </div>
+                    </div>
                 </div>
             </div>
-        </div>
         
         <!-- Section 3: Lightbar Controls -->
         <div class="section-container">
             <div class="section-title">💡 Lightbar Controls</div>
-            
+
             <!-- Lightbar Section -->
             <div class="lightbar-section">
                 <div class="section-header">
@@ -1440,32 +1549,32 @@
                     <div class="lightbar-main-controls">
                         <div class="lightbar-card mode-switch">
                             <h4 id="mode-switch-label">Flow Mode</h4>
-                            <div class="lightbar-controls">
+                        <div class="lightbar-controls">
                                 <div class="mode-toggle" id="flow-flash-toggle" onclick="toggleFlowFlashMode()">
                                     <div class="mode-toggle-track">
                                         <div class="mode-toggle-thumb" id="mode-toggle-thumb"></div>
                                         <div class="mode-labels">
                                             <span class="mode-label left">Flow</span>
                                             <span class="mode-label right">Flash</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
                         </div>
                     </div>
                     
                     <!-- Secondary controls on right -->
                     <div class="lightbar-secondary-controls">
                         <div class="lightbar-card compact">
-                            <h4>Headphone</h4>
-                            <div class="lightbar-controls">
-                                <div class="toggle" id="headphone-toggle" onclick="toggleLightbar('headphone')"></div>
-                            </div>
+                        <h4>Headphone</h4>
+                        <div class="lightbar-controls">
+                            <div class="toggle" id="headphone-toggle" onclick="toggleLightbar('headphone')"></div>
                         </div>
+                    </div>
                         <div class="lightbar-card compact">
-                            <h4>Vibrate</h4>
-                            <div class="lightbar-controls">
-                                <div class="toggle" id="vibrate-toggle" onclick="toggleLightbar('vibrate')"></div>
+                        <h4>Vibrate</h4>
+                        <div class="lightbar-controls">
+                            <div class="toggle" id="vibrate-toggle" onclick="toggleLightbar('vibrate')"></div>
                             </div>
                         </div>
                     </div>
@@ -1491,8 +1600,8 @@
                                 <input type="range" id="dot-intensity" min="0" max="255" value="150" class="slider">
                             </div>
                             <div class="slider-group">
-                                <label>Dot Width: <span id="dot-width-value">9</span></label>
-                                <input type="range" id="dot-width" min="0" max="15" value="9" class="slider">
+                                <label>Dot Width: <span id="dot-width-value">10</span></label>
+                                <input type="range" id="dot-width" min="0" max="10" value="10" class="slider">
                             </div>
                             <div class="slider-group">
                                 <label>Trail Brightness: <span id="trail-brightness-value">255</span></label>
@@ -1518,17 +1627,17 @@
                                 <input type="range" id="slow-time" min="0" max="15" value="5" class="slider">
                             </div>
                         </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
     
     <!-- Section 4: Random Controls (Full Width at Bottom) -->
     <div style="margin: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 25px; border: 1px solid rgba(255, 255, 255, 0.1);">
         <div class="section-title">🎲 Random Controls</div>
-        
-        <!-- Random Controls -->
+
+            <!-- Random Controls -->
             <div class="random-section">
                 <div class="section-header">
                     <span>🎲</span>
@@ -1587,13 +1696,40 @@
                 <div class="bouncy-ball-container">
                     <div class="bouncy-ball" id="bouncy-ball">🔴</div>
                 </div>
-            </div>
+        </div>
     </div>
 
     <!-- Floating Action Button -->
     <button class="floating-btn" id="floating-btn" onclick="floatingButtonAction()">
         <span id="floating-icon">⚡</span>
     </button>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settings-panel" style="display: none;">
+        <div class="settings-header">
+            <h3>⚙️ Settings Manager</h3>
+            <button class="toggle-settings-btn" onclick="toggleSettingsPanel()">✕</button>
+        </div>
+        <div class="settings-content">
+            <div class="settings-buttons">
+                <button class="settings-btn" onclick="manualSave()">💾 Save Current</button>
+                <button class="settings-btn" onclick="loadAndApplySettings()">📂 Load Saved</button>
+                <button class="settings-btn" onclick="testSaveLoadCycle()">🔄 Test Save/Load</button>
+                <button class="settings-btn" onclick="testLocalStorage()">🔧 Test Storage</button>
+                <button class="settings-btn" onclick="resetToDefaults()">🔄 Reset to Defaults</button>
+                <button class="settings-btn" onclick="SettingsManager.export()">📁 Export to File</button>
+                <label class="settings-btn" for="import-settings">
+                    📁 Import from File
+                    <input type="file" id="import-settings" accept=".json" style="display: none;" onchange="importSettingsFile(event)">
+                </label>
+            </div>
+            <div class="settings-info">
+                <p><strong>Auto-Save:</strong> Settings are automatically saved when you change any control.</p>
+                <p><strong>Storage:</strong> Settings are stored locally in your browser and persist between sessions.</p>
+                <p id="settings-status">Ready</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Debug Panel -->
     <div class="debug-panel" id="debug-panel">
@@ -1712,7 +1848,11 @@
             // Previous states for pressure mode exclusion logic (matching iOS)
             previousBuzzEnabled: true,  // iOS default
             previousLightEnabled: false, // iOS default  
-            previousSoundEnabled: false  // iOS default
+            previousSoundEnabled: false, // iOS default
+            
+            // Lightbar brightness preservation (matching iOS app)
+            preservedLightbarBrightFg: 150, // Default foreground brightness
+            preservedLightbarBrightBg: 50   // Default background brightness
         };
 
         // GATT Operation Queue to prevent conflicts
@@ -1806,19 +1946,89 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // Test localStorage immediately
+            console.log('🔧 Testing localStorage on page load...');
+            try {
+                localStorage.setItem('test_key', 'test_value');
+                const testValue = localStorage.getItem('test_key');
+                localStorage.removeItem('test_key');
+                console.log('✅ localStorage test: PASSED');
+                addDebugMessage('✅ localStorage is working');
+            } catch (error) {
+                console.error('❌ localStorage test: FAILED', error);
+                addDebugMessage('❌ localStorage test failed: ' + error.message);
+            }
+            
+            // Initialize UI first (this sets defaults)
             updateUI();
             setupSliders();
             setupSpeedTestSlider();
             setupEMDRVisualization();
             checkBluetoothSupport();
             
+            // THEN load and apply saved settings (this overrides defaults with saved values)
+            console.log('🔧 Loading settings after UI initialization...');
+            const savedSettings = SettingsManager.load();
+            console.log('🔧 Loaded settings:', savedSettings);
+            
+            console.log('🔧 Applying settings to UI...');
+            console.log('🔧 Settings to apply:', savedSettings);
+            SettingsManager.applySettings(savedSettings);
+            console.log('✅ Settings applied to UI');
+            
+            // Initialize lightbar state correctly (default ON like iOS)
+            const lightbarToggle = document.getElementById('lightbar-master-toggle');
+            if (lightbarToggle && savedSettings.lightbarMasterEnabled) {
+                lightbarToggle.classList.add('active');
+                // Enable brightness sliders
+                const dotSlider = document.getElementById('dot-intensity');
+                const bgSlider = document.getElementById('bg-intensity');
+                if (dotSlider) {
+                    dotSlider.disabled = false;
+                    dotSlider.style.opacity = '1';
+                }
+                if (bgSlider) {
+                    bgSlider.disabled = false;
+                    bgSlider.style.opacity = '1';
+                }
+            }
+            
+            // Verify settings were actually applied by checking a few key elements
+            setTimeout(() => {
+                console.log('🔍 Verifying settings application...');
+                const buzzToggle = document.getElementById('buzz-toggle');
+                const dotSlider = document.getElementById('dot-intensity');
+                console.log('🔍 Buzz toggle active?', buzzToggle?.classList.contains('active'));
+                console.log('🔍 Dot intensity value:', dotSlider?.value);
+                console.log('🔍 Verification complete');
+                
+                // 🎯 IMPORTANT: Send initial values AFTER settings are applied
+                // This ensures saved values (not defaults) are sent to BLE
+                console.log('🎯 Preparing to send saved settings to BLE device...');
+                // Note: sendInitialValues() will be called when BLE connects
+                // but now it will use the current UI values (which are the saved values)
+            }, 100);
+            
             // Add initial debug message
             addDebugMessage('EMDR Control Panel initialized', 'success');
+            
+            // Set up auto-save event listeners for all controls
+            setupAutoSaveEventListeners();
+            
+            // Initialization complete - enable auto-saving
+            setTimeout(() => {
+                isInitializing = false;
+                console.log('✅ Initialization complete - auto-saving now enabled');
+                addDebugMessage('✅ Settings system ready - auto-save enabled');
+            }, 1000);
+            
+            // Settings system is ready - no automatic test save
+            // Use the "🔄 Test Save/Load" button in Settings Panel to test manually
             
             // Auto-connect to previously paired device
             setTimeout(() => {
                 attemptAutoConnection();
-            }, 1000); // Small delay to let UI settle
+            }, 1500); // Slightly longer delay to let settings stabilize
         });
 
         // EMDR Visualization Functions
@@ -2005,13 +2215,13 @@
                 const stored = localStorage.getItem('emdr_paired_device');
                 if (stored) {
                     const deviceInfo = JSON.parse(stored);
-                    // Check if stored device is not too old (7 days)
-                    const weekInMs = 7 * 24 * 60 * 60 * 1000;
-                    if (Date.now() - deviceInfo.timestamp < weekInMs) {
+                    // Check if stored device is not too old (60 days)
+                    const sixtyDaysInMs = 60 * 24 * 60 * 60 * 1000;
+                    if (Date.now() - deviceInfo.timestamp < sixtyDaysInMs) {
                         return deviceInfo;
                     } else {
                         localStorage.removeItem('emdr_paired_device');
-                        addDebugMessage('🗑️ Removed old device info (>7 days)', 'info');
+                        addDebugMessage('🗑️ Removed old device info (>60 days)', 'info');
                     }
                 }
             } catch (error) {
@@ -2049,8 +2259,9 @@
                         updateUI();
                     }
                 } else {
-                    addDebugMessage('❌ Previously paired device not found - manual pairing required', 'error');
-                    localStorage.removeItem('emdr_paired_device');
+                    addDebugMessage('📱 Device not currently available - keeping pairing info for next connection', 'info');
+                    // Don't remove device info - device might just be turned off or out of range
+                    // Device info will be used for next manual connection attempt
                 }
             } catch (error) {
                 addDebugMessage(`❌ Auto-connection failed: ${error.message}`, 'error');
@@ -2776,6 +2987,9 @@
                 }
             }
             
+            // Auto-save settings after color change
+            saveSettingsDebounced('dot-color-change');
+            
             console.log('🔵 Color: Dot color updated to', hexColor);
         }
 
@@ -2799,6 +3013,9 @@
                     addDebugMessage(`🎨 ❌ Not connected - color change saved locally only`, 'error');
                 }
             }
+            
+            // Auto-save settings after color change
+            saveSettingsDebounced('background-color-change');
             
             console.log('🔵 Color: Background color updated to', hexColor);
         }
@@ -2990,27 +3207,66 @@
             // Send lightbar settings (required for peripheral to work properly)
             addDebugMessage('💡 Sending lightbar settings...', 'ble');
             await sendBLECommand('lampOptions', 0);            // Lamp options
-            await sendBLECommand('lightbarEmdrLightFlag', 1);  // EMDR mode enabled
-            await sendBLECommand('lightbarBrightBg', 50);      // Background brightness (matches iOS default)
-            await sendBLECommand('lightbarBrightFg', 150);     // Foreground brightness (matches iOS default)
-            await sendBLECommand('lightbarTrailBrightDelta', 255); // Trail brightness (max)
-            await sendBLECommand('lightbarPixelWidth', 10);    // Pixel width (matches iOS default: 10, not 9)
-            await sendBLECommand('lightbarPixelStart', 0);     // Pixel start position
-            await sendBLECommand('lightbarSlowTime', 0);       // Slow time at ends (matches iOS default: 0, not 5)
+            // Note: iOS app doesn't use lightbarEmdrLightFlag - it controls lightbar via brightness values
+            
+            // 🎯 READ CURRENT UI VALUES instead of hardcoded defaults
+            const bgIntensitySlider = document.getElementById('bg-intensity');
+            const dotIntensitySlider = document.getElementById('dot-intensity');
+            const currentBgBrightness = bgIntensitySlider ? parseInt(bgIntensitySlider.value) : 50;
+            const currentDotBrightness = dotIntensitySlider ? parseInt(dotIntensitySlider.value) : 150;
+            
+            addDebugMessage(`💡 Sending CURRENT brightness values: BG=${currentBgBrightness}, DOT=${currentDotBrightness}`, 'ble');
+            await sendBLECommand('lightbarBrightBg', currentBgBrightness);      // Current background brightness from UI
+            await sendBLECommand('lightbarBrightFg', currentDotBrightness);     // Current foreground brightness from UI
+            // 🎯 READ MORE CURRENT UI VALUES instead of hardcoded defaults
+            const trailSlider = document.getElementById('trail-brightness');
+            const widthSlider = document.getElementById('dot-width');
+            const slowTimeSlider = document.getElementById('slow-time');
+            
+            const currentTrailBrightness = trailSlider ? parseInt(trailSlider.value) : 255;
+            const currentPixelWidth = widthSlider ? parseInt(widthSlider.value) : 10;
+            const currentSlowTime = slowTimeSlider ? parseInt(slowTimeSlider.value) : 0;
+            
+            // 🔍 DEBUG: Check dot width value being sent to BLE
+            console.error('🔍 BLE DEBUG: About to send dot width (lightbarPixelWidth):', currentPixelWidth);
+            if (currentPixelWidth > 10) {
+                console.error('🚨🚨 BLE ALERT: Trying to send dot width', currentPixelWidth, '> 10!');
+                addDebugMessage(`🚨 BLE sending high dot width: ${currentPixelWidth}!`, 'error');
+            }
+            
+            addDebugMessage(`💡 Sending CURRENT lightbar values: Trail=${currentTrailBrightness}, Width=${currentPixelWidth}, SlowTime=${currentSlowTime}`, 'ble');
+            await sendBLECommand('lightbarTrailBrightDelta', currentTrailBrightness); // Current trail brightness from UI
+            await sendBLECommand('lightbarPixelWidth', currentPixelWidth);    // Current pixel width from UI
+            await sendBLECommand('lightbarPixelStart', 0);     // Pixel start position (always 0)
+            await sendBLECommand('lightbarSlowTime', currentSlowTime);       // Current slow time from UI
             // Send lightbar flow/flash state (preserve current UI state from combined toggle)
             const modeThumb = document.getElementById('mode-toggle-thumb');
             const currentFlowState = modeThumb ? (!modeThumb.classList.contains('flash-mode') ? 1 : 0) : 1;
             await sendBLECommand('lightbarFlowing', currentFlowState); // Current flow state (1=Flow, 0=Flash)
             await sendBLECommand('lightbarNumLeds', 140);      // LED count (matches iOS default)
             
-            // Send lightbar random controls (all off by default)
-            addDebugMessage('🎲 Sending random controls (all OFF)...', 'ble');
-            await sendBLECommand('lightbarRndForegroundColourOnOff', 0);
-            await sendBLECommand('lightbarRndForegroundColourTime', 0);
-            await sendBLECommand('lightbarRndBackgroundColourOnOff', 0);
-            await sendBLECommand('lightbarRndBackgroundColourTime', 0);
-            await sendBLECommand('lightbarRndStripWidthOnOff', 0);
-            await sendBLECommand('lightbarRndStripWidthTime', 0);
+            // 🎯 READ CURRENT RANDOM CONTROL VALUES from UI
+            const dotColorToggle = document.getElementById('random-dot-color');
+            const dotColorTimeSlider = document.getElementById('random-dot-color-time');
+            const bgColorToggle = document.getElementById('random-bg-color');
+            const bgColorTimeSlider = document.getElementById('random-bg-color-time');
+            const widthToggle = document.getElementById('random-bar-width');
+            const widthTimeSlider = document.getElementById('random-bar-width-time');
+            
+            const currentDotColorState = dotColorToggle ? (dotColorToggle.classList.contains('active') ? 1 : 0) : 0;
+            const currentDotColorTime = dotColorTimeSlider ? parseInt(dotColorTimeSlider.value) : 0;
+            const currentBgColorState = bgColorToggle ? (bgColorToggle.classList.contains('active') ? 1 : 0) : 0;
+            const currentBgColorTime = bgColorTimeSlider ? parseInt(bgColorTimeSlider.value) : 0;
+            const currentWidthState = widthToggle ? (widthToggle.classList.contains('active') ? 1 : 0) : 0;
+            const currentWidthTime = widthTimeSlider ? parseInt(widthTimeSlider.value) : 0;
+            
+            addDebugMessage(`🎲 Sending CURRENT random controls: DotColor=${currentDotColorState}(${currentDotColorTime}s), BgColor=${currentBgColorState}(${currentBgColorTime}s), Width=${currentWidthState}(${currentWidthTime}s)`, 'ble');
+            await sendBLECommand('lightbarRndForegroundColourOnOff', currentDotColorState);
+            await sendBLECommand('lightbarRndForegroundColourTime', currentDotColorTime);
+            await sendBLECommand('lightbarRndBackgroundColourOnOff', currentBgColorState);
+            await sendBLECommand('lightbarRndBackgroundColourTime', currentBgColorTime);
+            await sendBLECommand('lightbarRndStripWidthOnOff', currentWidthState);
+            await sendBLECommand('lightbarRndStripWidthTime', currentWidthTime);
             
             // Send additional lightbar controls (iOS defaults)
             await sendBLECommand('lightbarFlagClearMaxStrip', 0);  // Clear max strip flag
@@ -3038,11 +3294,22 @@
             
             addDebugMessage(`🎯 Sent current UI states: Buzz=${currentBuzzState}, Light=${currentLightState}, Sound=${currentSoundState}, Pressure=${currentPressureState}`, 'info');
             
-            // Send tapper intensities (iOS defaults)
-            await sendBLECommand('tapperBuzzIntensity', 127);  // Mid-range (iOS default: 127.0)
-            await sendBLECommand('tapperLightIntensity', 127); // Mid-range (iOS default: 127.0)
-            await sendBLECommand('tapperSoundIntensity', 127); // Mid-range (iOS default: 127.0)
-            await sendBLECommand('tapperPressureIntensity', 2); // Low pressure (iOS default: 2.0)
+            // 🎯 READ CURRENT TAPPER INTENSITY VALUES from UI sliders
+            const buzzIntensitySlider = document.getElementById('buzz-intensity');
+            const lightIntensitySlider = document.getElementById('light-intensity');
+            const soundIntensitySlider = document.getElementById('sound-intensity');
+            const pressureIntensitySlider = document.getElementById('pressure-intensity');
+            
+            const currentBuzzIntensity = buzzIntensitySlider ? parseInt(buzzIntensitySlider.value) : 127;
+            const currentLightIntensity = lightIntensitySlider ? parseInt(lightIntensitySlider.value) : 127;
+            const currentSoundIntensity = soundIntensitySlider ? parseInt(soundIntensitySlider.value) : 127;
+            const currentPressureIntensity = pressureIntensitySlider ? parseInt(pressureIntensitySlider.value) : 2;
+            
+            addDebugMessage(`🎯 Sending CURRENT tapper intensities: Buzz=${currentBuzzIntensity}, Light=${currentLightIntensity}, Sound=${currentSoundIntensity}, Pressure=${currentPressureIntensity}`, 'ble');
+            await sendBLECommand('tapperBuzzIntensity', currentBuzzIntensity);  // Current buzz intensity from UI
+            await sendBLECommand('tapperLightIntensity', currentLightIntensity); // Current light intensity from UI
+            await sendBLECommand('tapperSoundIntensity', currentSoundIntensity); // Current sound intensity from UI
+            await sendBLECommand('tapperPressureIntensity', currentPressureIntensity); // Current pressure intensity from UI
             
             // Send tapper modes (iOS defaults)
             await sendBLECommand('tapperBuzzOther', 2);        // Duration mode (iOS default: buzzMode = 2)
@@ -3060,6 +3327,64 @@
             
             addDebugMessage('✅ All initial values sent successfully!', 'success');
             addDebugMessage('🚨 ESP32 should now be ready for Main Controls ON', 'info');
+            
+            // 🎯 AUTOMATICALLY TURN ON MAIN CONTROLS (if enabled in settings)
+            const currentSettings = SettingsManager.getCurrentSettings();
+            if (currentSettings.autoTurnOnMainControls) {
+                // Show progress indicator immediately
+                addDebugMessage('⏳ Preparing to activate Main Controls...', 'info');
+                
+                // Add visual indicator to Main Controls button
+                const mainBtn = document.getElementById('main-controls-btn');
+                const mainIcon = document.getElementById('main-controls-icon');
+                const mainText = document.getElementById('main-controls-text');
+                
+                if (mainBtn && mainIcon && mainText) {
+                    // Add pulsing animation during countdown
+                    mainBtn.style.animation = 'pulse 0.5s infinite';
+                    mainIcon.textContent = '⏳';
+                    mainText.textContent = 'Preparing...';
+                }
+                
+                // Add a countdown indicator
+                let countdown = 3;
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    if (countdown > 0) {
+                        addDebugMessage(`⏳ Auto-activation in ${countdown}...`, 'info');
+                        if (mainText) {
+                            mainText.textContent = `Activating in ${countdown}...`;
+                        }
+                    }
+                }, 333); // Update every 333ms for 3 updates in 1 second
+                
+                setTimeout(() => {
+                    clearInterval(countdownInterval);
+                    addDebugMessage('🎯 Auto-triggering Main Controls ON...', 'info');
+                    
+                    // Clean up visual indicators
+                    if (mainBtn) {
+                        mainBtn.style.animation = ''; // Remove pulsing animation
+                    }
+                    
+                    if (!state.mainControlsOn) {
+                        toggleMainControls(); // This will turn ON main controls
+                        addDebugMessage('✅ Main Controls automatically activated!', 'success');
+                        addDebugMessage('🎉 ESP32 is now ready to use!', 'success');
+                    } else {
+                        addDebugMessage('ℹ️ Main Controls already ON', 'info');
+                        addDebugMessage('✅ ESP32 is ready to use!', 'success');
+                        
+                        // Update button state manually if already ON
+                        if (mainIcon && mainText) {
+                            mainIcon.textContent = '⚡';
+                            mainText.textContent = 'Main Controls ON v1.0.1';
+                        }
+                    }
+                }, 1000); // Wait 1 second after initial values are sent
+            } else {
+                addDebugMessage('ℹ️ Auto-activation disabled - Main Controls remain OFF', 'info');
+            }
         }
 
         // Manual reconnect function (for user-triggered reconnection)
@@ -3438,6 +3763,9 @@
             }
             
             addDebugMessage(`🎯 Tapper ${type} toggled: ${newState}`, 'info');
+            
+            // Auto-save settings after modality change
+            saveSettingsDebounced('modality-change');
         }
 
         // Update intensity slider
@@ -3447,11 +3775,15 @@
                 valueElement.textContent = value;
             }
             
-            // Send to BLE
+            // Debounce BLE command for intensity changes
             const intensityKey = `tapper${type.charAt(0).toUpperCase() + type.slice(1)}Intensity`;
-            sendBLECommand(intensityKey, parseInt(value));
+            debounceSliderBLE(`${type}-intensity`, () => {
+                sendBLECommand(intensityKey, parseInt(value));
+                addDebugMessage(`🎛️ ${type} intensity: ${value} (debounced)`, 'info');
+            });
             
-            addDebugMessage(`🎛️ ${type} intensity: ${value}`, 'info');
+            // Auto-save settings after intensity change
+            saveSettingsDebounced('intensity-change');
         }
 
         // Set mode step
@@ -3500,36 +3832,95 @@
             }
             
             addDebugMessage(`🎚️ ${type} mode: ${step}`, 'info');
+            
+            // Auto-save settings after mode change
+            saveSettingsDebounced('mode-change');
         }
 
-        // Lightbar Master Toggle
+        // Lightbar Master Toggle (matching iOS app behavior exactly)
         function toggleLightbarMaster() {
             const toggle = document.getElementById('lightbar-master-toggle');
             const isActive = toggle.classList.contains('active');
+            const newState = !isActive;
             
-            if (isActive) {
-                toggle.classList.remove('active');
-            } else {
+            // Update UI
+            if (newState) {
                 toggle.classList.add('active');
+            } else {
+                toggle.classList.remove('active');
             }
             
-            // Send BLE command
+            // Handle BLE commands exactly like iOS app
             if (state.connected) {
-                const value = isActive ? 0 : 1;
-                addDebugMessage(`📡 BLE: Sending lightbarEmdrLightFlag = ${value}`, 'ble');
-                sendBLECommand('lightbarEmdrLightFlag', value);
-                
-                // When turning ON, also send current brightness values (like Xcode)
-                if (!isActive) {
-                    const dotIntensity = document.getElementById('dot-intensity')?.value || 150;
-                    const bgIntensity = document.getElementById('bg-intensity')?.value || 50;
-                    addDebugMessage(`💡 Sending brightness values: Dot=${dotIntensity}, BG=${bgIntensity}`, 'ble');
+                if (newState) {
+                    // Lightbar turning ON - restore preserved brightness values (like iOS)
+                    const dotIntensity = state.preservedLightbarBrightFg || 150;
+                    const bgIntensity = state.preservedLightbarBrightBg || 50;
+                    
+                    addDebugMessage(`💡 Lightbar ON - restoring preserved brightness: FG=${dotIntensity}, BG=${bgIntensity}`, 'info');
+                    
+                    // Update UI sliders to show restored values
+                    const dotSlider = document.getElementById('dot-intensity');
+                    const bgSlider = document.getElementById('bg-intensity');
+                    const dotValueDisplay = document.getElementById('dot-intensity-value');
+                    const bgValueDisplay = document.getElementById('bg-intensity-value');
+                    
+                    if (dotSlider && dotValueDisplay) {
+                        dotSlider.value = dotIntensity;
+                        dotValueDisplay.textContent = dotIntensity;
+                        dotSlider.disabled = false;
+                        dotSlider.style.opacity = '1';
+                    }
+                    if (bgSlider && bgValueDisplay) {
+                        bgSlider.value = bgIntensity;
+                        bgValueDisplay.textContent = bgIntensity;
+                        bgSlider.disabled = false;
+                        bgSlider.style.opacity = '1';
+                    }
+                    
+                    // Send restored brightness values to device
                     sendBLECommand('lightbarBrightFg', parseInt(dotIntensity));
                     sendBLECommand('lightbarBrightBg', parseInt(bgIntensity));
+                } else {
+                    // Lightbar turning OFF - preserve current brightness values and set to 0 (like iOS)
+                    const currentDotIntensity = parseInt(document.getElementById('dot-intensity')?.value) || 150;
+                    const currentBgIntensity = parseInt(document.getElementById('bg-intensity')?.value) || 50;
+                    
+                    // Preserve current values for restoration later
+                    state.preservedLightbarBrightFg = currentDotIntensity;
+                    state.preservedLightbarBrightBg = currentBgIntensity;
+                    
+                    addDebugMessage(`💡 Lightbar OFF - preserving current brightness: FG=${currentDotIntensity}, BG=${currentBgIntensity}`, 'info');
+                    
+                    // Send 0 to both brightness characteristics to turn off lightbar
+                    sendBLECommand('lightbarBrightFg', 0);
+                    sendBLECommand('lightbarBrightBg', 0);
+                    
+                    // Update UI sliders to show preserved values but disable them (lightbar OFF)
+                    const dotSlider = document.getElementById('dot-intensity');
+                    const bgSlider = document.getElementById('bg-intensity');
+                    const dotValueDisplay = document.getElementById('dot-intensity-value');
+                    const bgValueDisplay = document.getElementById('bg-intensity-value');
+                    
+                    if (dotSlider && dotValueDisplay) {
+                        dotSlider.value = currentDotIntensity;
+                        dotValueDisplay.textContent = `${currentDotIntensity} (OFF)`;
+                        dotSlider.disabled = true;
+                        dotSlider.style.opacity = '0.5';
+                    }
+                    if (bgSlider && bgValueDisplay) {
+                        bgSlider.value = currentBgIntensity;
+                        bgValueDisplay.textContent = `${currentBgIntensity} (OFF)`;
+                        bgSlider.disabled = true;
+                        bgSlider.style.opacity = '0.5';
+                    }
                 }
             }
             
-            addDebugMessage(`💡 Lightbar Master toggled: ${!isActive}`, 'info');
+            addDebugMessage(`💡 Lightbar Master toggled: ${newState} (matching iOS app behavior)`, 'info');
+            
+            // Auto-save settings after lightbar master change
+            saveSettingsDebounced('lightbar-master-change');
         }
 
         // Combined Flow/Flash Mode Toggle (single switch for both modes)
@@ -3658,6 +4049,783 @@
             }
             
             addDebugMessage(`💡 Lightbar ${type} toggled: ${!isActive}`, 'info');
+            
+            // Auto-save settings after lightbar change
+            saveSettingsDebounced('lightbar-toggle-change');
+        }
+
+        // Settings Manager
+        const SettingsManager = {
+            STORAGE_KEY: 'emdrSettings',
+            
+            getDefaults: function() {
+                return {
+                    // Tapper Modalities
+                    buzzEnabled: true,
+                    lightEnabled: false,
+                    soundEnabled: false,
+                    pressureEnabled: false,
+                    
+                    // Tapper Intensities (0-100)
+                    buzzIntensity: 50,
+                    lightIntensity: 50,
+                    soundIntensity: 50,
+                    pressureIntensity: 50,
+                    
+                    // Tapper Modes (0-2)
+                    buzzMode: 0,
+                    lightMode: 0,
+                    soundMode: 0,
+                    pressureMode: 0,
+                    
+                    // Lightbar Controls
+                    flowEnabled: true,
+                    flashEnabled: false,
+                    headphoneEnabled: false,
+                    vibrateEnabled: false,
+                    
+                    // Lightbar Settings (all lightbar sliders)
+                    foregroundBrightness: 150, // Default for dot-intensity slider
+                    backgroundBrightness: 50,  // Default for bg-intensity slider
+                    dotWidth: 10,              // Default for dot-width slider (max=10, matches iOS default)
+                    trailBrightness: 255,      // Default for trail-brightness slider
+                    barWidth: 40,              // Default for bar-width slider
+                    slowTime: 0,               // Default for slow-time slider
+                    
+                    // Random Controls
+                    randomForegroundColor: false,
+                    randomBackgroundColor: false,
+                    randomStripWidth: false,
+                    randomForegroundTime: 50,
+                    randomBackgroundTime: 50,
+                    randomStripTime: 50,
+                    
+                    // Colors
+                    dotColor: '#ffffff',        // Default white dot color
+                    backgroundColor: '#0000ff', // Default blue background color
+                    
+                    // Speed Controls
+                    speedValue: 5,
+                    animationSpeed: 2.0,
+                    
+                    // Session Settings
+                    sessionDuration: 30,
+                    
+                    // Master Controls
+                    tapperMasterEnabled: false,
+                    lightbarMasterEnabled: true, // Default ON to match iOS app
+                    
+                    // Auto-activation
+                    autoTurnOnMainControls: true, // Automatically turn ON main controls after connection
+                    
+                    // Lightbar Brightness Preservation
+                    preservedLightbarBrightFg: 150,
+                    preservedLightbarBrightBg: 50
+                };
+            },
+            
+            save: function(settings = null) {
+                try {
+                    // Don't save during initial page load to prevent overwriting saved settings
+                    if (isInitializing) {
+                        console.log('🚫 Skipping save during initialization to prevent overwriting saved settings');
+                        return;
+                    }
+                    
+                    // Check if localStorage is available
+                    if (typeof(Storage) === "undefined") {
+                        throw new Error("localStorage not supported");
+                    }
+                    
+                    const settingsToSave = settings || this.getCurrentSettings();
+                    console.log('💾 Attempting to save settings:', settingsToSave);
+                    
+                    const jsonString = JSON.stringify(settingsToSave);
+                    localStorage.setItem(this.STORAGE_KEY, jsonString);
+                    
+                    // Verify the save worked
+                    const verification = localStorage.getItem(this.STORAGE_KEY);
+                    if (verification === jsonString) {
+                        console.log('✅ Settings saved and verified in localStorage');
+                        addDebugMessage('💾 Settings saved successfully');
+                    } else {
+                        throw new Error("Save verification failed");
+                    }
+                } catch (error) {
+                    console.error('❌ Failed to save settings:', error);
+                    addDebugMessage('❌ Failed to save settings: ' + error.message);
+                    
+                    // Try to provide helpful debugging info
+                    try {
+                        const storageTest = localStorage.getItem('test');
+                        localStorage.setItem('test', 'test');
+                        localStorage.removeItem('test');
+                        console.log('📊 localStorage basic test: PASSED');
+                    } catch (storageError) {
+                        console.error('📊 localStorage basic test: FAILED', storageError);
+                        addDebugMessage('🚫 localStorage is not working: ' + storageError.message);
+                    }
+                }
+            },
+            
+            load: function() {
+                try {
+                    console.log('📂 Attempting to load settings from localStorage...');
+                    const saved = localStorage.getItem(this.STORAGE_KEY);
+                    
+                    if (saved) {
+                        console.log('📂 Found saved settings:', saved.substring(0, 100) + '...');
+                        const settings = JSON.parse(saved);
+                        console.log('✅ Settings loaded from localStorage:', settings);
+                        addDebugMessage('💾 Settings loaded successfully');
+                        return { ...this.getDefaults(), ...settings }; // Merge with defaults for new settings
+                    } else {
+                        console.log('📂 No saved settings found, using defaults');
+                        addDebugMessage('📂 No saved settings - using defaults');
+                    }
+                } catch (error) {
+                    console.warn('⚠️ Failed to load settings, using defaults:', error);
+                    addDebugMessage('⚠️ Failed to load settings: ' + error.message);
+                }
+                
+                const defaults = this.getDefaults();
+                console.log('📂 Returning default settings:', defaults);
+                return defaults;
+            },
+            
+            getCurrentSettings: function() {
+                const settings = {};
+                
+                try {
+                    // Tapper Modalities (correct element IDs)
+                    settings.buzzEnabled = document.getElementById('buzz-toggle')?.classList.contains('active') || false;
+                    settings.lightEnabled = document.getElementById('light-toggle')?.classList.contains('active') || false;
+                    settings.soundEnabled = document.getElementById('sound-toggle')?.classList.contains('active') || false;
+                    settings.pressureEnabled = document.getElementById('pressure-toggle')?.classList.contains('active') || false;
+                    
+                    // Tapper Intensities (correct element IDs)
+                    settings.buzzIntensity = parseInt(document.getElementById('buzz-intensity')?.value) || 50;
+                    settings.lightIntensity = parseInt(document.getElementById('light-intensity')?.value) || 50;
+                    settings.soundIntensity = parseInt(document.getElementById('sound-intensity')?.value) || 50;
+                    settings.pressureIntensity = parseInt(document.getElementById('pressure-intensity')?.value) || 50;
+                    
+                    // Tapper Modes
+                    settings.buzzMode = parseInt(document.getElementById('buzzMode')?.value) || 0;
+                    settings.lightMode = parseInt(document.getElementById('lightMode')?.value) || 0;
+                    settings.soundMode = parseInt(document.getElementById('soundMode')?.value) || 0;
+                    settings.pressureMode = parseInt(document.getElementById('pressureMode')?.value) || 0;
+                    
+                    // Lightbar Controls
+                    const modeToggle = document.querySelector('.mode-toggle');
+                    settings.flowEnabled = modeToggle?.classList.contains('flow') || true;
+                    settings.flashEnabled = !settings.flowEnabled;
+                    settings.headphoneEnabled = document.getElementById('headphoneToggle')?.classList.contains('active') || false;
+                    settings.vibrateEnabled = document.getElementById('vibrateToggle')?.classList.contains('active') || false;
+                    
+                    // Lightbar Settings (all lightbar sliders)
+                    settings.foregroundBrightness = parseInt(document.getElementById('dot-intensity')?.value) || 150;
+                    settings.backgroundBrightness = parseInt(document.getElementById('bg-intensity')?.value) || 50;
+                    const dotWidthElement = document.getElementById('dot-width');
+                    const dotWidthValue = dotWidthElement ? parseInt(dotWidthElement.value) : 10;
+                    console.log('🔍 DEBUG: Reading dot-width from UI:', dotWidthValue, 'element found:', !!dotWidthElement);
+                    settings.dotWidth = dotWidthValue;
+                    settings.trailBrightness = parseInt(document.getElementById('trail-brightness')?.value) || 255;
+                    settings.barWidth = parseInt(document.getElementById('bar-width')?.value) || 40;
+                    settings.slowTime = parseInt(document.getElementById('slow-time')?.value) || 0;
+                    
+                    // Random Controls
+                    settings.randomForegroundColor = document.getElementById('randomForegroundToggle')?.classList.contains('active') || false;
+                    settings.randomBackgroundColor = document.getElementById('randomBackgroundToggle')?.classList.contains('active') || false;
+                    settings.randomStripWidth = document.getElementById('randomStripToggle')?.classList.contains('active') || false;
+                    settings.randomForegroundTime = parseInt(document.getElementById('randomForegroundTime')?.value) || 50;
+                    settings.randomBackgroundTime = parseInt(document.getElementById('randomBackgroundTime')?.value) || 50;
+                    settings.randomStripTime = parseInt(document.getElementById('randomStripTime')?.value) || 50;
+                    
+                    // Colors
+                    settings.dotColor = document.getElementById('dot-color-picker')?.value || '#ffffff';
+                    settings.backgroundColor = document.getElementById('bg-color-picker')?.value || '#0000ff';
+                    
+                    // Speed Controls
+                    settings.speedValue = parseInt(document.getElementById('speed-slider')?.value) || 5;
+                    settings.animationSpeed = parseFloat(document.getElementById('speed-test-slider')?.value) || 2.0;
+                    
+                    // Master Controls
+                    settings.tapperMasterEnabled = document.getElementById('tapperMasterToggle')?.classList.contains('active') || false;
+                    settings.lightbarMasterEnabled = document.getElementById('lightbar-master-toggle')?.classList.contains('active') || false;
+                    
+                    // Auto-activation (always default to true for now, could add UI toggle later)
+                    settings.autoTurnOnMainControls = true;
+                    
+                    // Lightbar Brightness Preservation
+                    settings.preservedLightbarBrightFg = state.preservedLightbarBrightFg || 150;
+                    settings.preservedLightbarBrightBg = state.preservedLightbarBrightBg || 50;
+                    
+                } catch (error) {
+                    console.warn('⚠️ Error reading current settings:', error);
+                }
+                
+                return settings;
+            },
+            
+            applySettings: function(settings) {
+                try {
+                    console.log('🔧 Applying settings to UI elements...');
+                    
+                    // Tapper Modalities
+                    console.log('🔧 Setting tapper modalities:', {
+                        buzz: settings.buzzEnabled,
+                        light: settings.lightEnabled,
+                        sound: settings.soundEnabled,
+                        pressure: settings.pressureEnabled
+                    });
+                    this.setToggleState('buzz-toggle', settings.buzzEnabled);
+                    this.setToggleState('light-toggle', settings.lightEnabled);
+                    this.setToggleState('sound-toggle', settings.soundEnabled);
+                    this.setToggleState('pressure-toggle', settings.pressureEnabled);
+                    
+                    // Tapper Intensities (correct element IDs)
+                    this.setSliderValue('buzz-intensity', settings.buzzIntensity);
+                    this.setSliderValue('light-intensity', settings.lightIntensity);
+                    this.setSliderValue('sound-intensity', settings.soundIntensity);
+                    this.setSliderValue('pressure-intensity', settings.pressureIntensity);
+                    
+                    // Tapper Modes
+                    this.setSliderValue('buzzMode', settings.buzzMode);
+                    this.setSliderValue('lightMode', settings.lightMode);
+                    this.setSliderValue('soundMode', settings.soundMode);
+                    this.setSliderValue('pressureMode', settings.pressureMode);
+                    
+                    // Lightbar Controls
+                    const modeToggle = document.querySelector('.mode-toggle');
+                    if (modeToggle) {
+                        if (settings.flowEnabled) {
+                            modeToggle.classList.add('flow');
+                            modeToggle.classList.remove('flash');
+                        } else {
+                            modeToggle.classList.add('flash');
+                            modeToggle.classList.remove('flow');
+                        }
+                    }
+                    this.setToggleState('headphoneToggle', settings.headphoneEnabled);
+                    this.setToggleState('vibrateToggle', settings.vibrateEnabled);
+                    
+                    // Lightbar Settings (all lightbar sliders)
+                    this.setSliderValue('dot-intensity', settings.foregroundBrightness);
+                    this.setSliderValue('bg-intensity', settings.backgroundBrightness);
+                    
+                    // 🔍 DEBUG: Check dot width value before applying
+                    console.log('🔍 DEBUG: About to set dot-width to:', settings.dotWidth);
+                    if (settings.dotWidth > 10) {
+                        console.error('🚨 ALERT: Dot width value is too high:', settings.dotWidth, '- clamping to 10');
+                        addDebugMessage(`🚨 ALERT: Dot width was ${settings.dotWidth}, clamped to 10`, 'error');
+                        settings.dotWidth = 10; // Clamp to max value
+                    }
+                    this.setSliderValue('dot-width', settings.dotWidth);
+                    
+                    this.setSliderValue('trail-brightness', settings.trailBrightness);
+                    this.setSliderValue('bar-width', settings.barWidth);
+                    this.setSliderValue('slow-time', settings.slowTime);
+                    
+                    // Random Controls
+                    this.setToggleState('randomForegroundToggle', settings.randomForegroundColor);
+                    this.setToggleState('randomBackgroundToggle', settings.randomBackgroundColor);
+                    this.setToggleState('randomStripToggle', settings.randomStripWidth);
+                    this.setSliderValue('randomForegroundTime', settings.randomForegroundTime);
+                    this.setSliderValue('randomBackgroundTime', settings.randomBackgroundTime);
+                    this.setSliderValue('randomStripTime', settings.randomStripTime);
+                    
+                    // Colors
+                    if (settings.dotColor) {
+                        document.getElementById('dot-color-picker').value = settings.dotColor;
+                        document.getElementById('dot-color-preview').style.backgroundColor = settings.dotColor;
+                        state.dotColor = settings.dotColor;
+                    }
+                    if (settings.backgroundColor) {
+                        document.getElementById('bg-color-picker').value = settings.backgroundColor;
+                        document.getElementById('bg-color-preview').style.backgroundColor = settings.backgroundColor;
+                        state.backgroundColor = settings.backgroundColor;
+                    }
+                    
+                    // Speed Controls
+                    this.setSliderValue('speed-slider', settings.speedValue);
+                    this.setSliderValue('speed-test-slider', settings.animationSpeed);
+                    
+                    // Update speed test display
+                    const speedDisplay = document.getElementById('speed-test-value');
+                    if (speedDisplay) {
+                        speedDisplay.textContent = settings.animationSpeed.toFixed(1);
+                    }
+                    speedTestState.animationSpeed = settings.animationSpeed;
+                    
+                    // Master Controls
+                    this.setToggleState('tapperMasterToggle', settings.tapperMasterEnabled);
+                    this.setToggleState('lightbar-master-toggle', settings.lightbarMasterEnabled);
+                    
+                    // Restore preserved brightness values to state
+                    if (settings.preservedLightbarBrightFg !== undefined) {
+                        state.preservedLightbarBrightFg = settings.preservedLightbarBrightFg;
+                    }
+                    if (settings.preservedLightbarBrightBg !== undefined) {
+                        state.preservedLightbarBrightBg = settings.preservedLightbarBrightBg;
+                    }
+                    
+                    console.log('✅ Settings applied to UI');
+                    addDebugMessage('💾 Settings applied to interface');
+                    
+                } catch (error) {
+                    console.error('❌ Error applying settings:', error);
+                    addDebugMessage('❌ Error applying settings: ' + error.message);
+                }
+            },
+            
+            setToggleState: function(elementId, isActive) {
+                const element = document.getElementById(elementId);
+                console.log(`🔧 Setting toggle ${elementId}:`, isActive, element ? 'found' : 'NOT FOUND');
+                if (element) {
+                    if (isActive) {
+                        element.classList.add('active');
+                        console.log(`✅ Added 'active' to ${elementId}`);
+                    } else {
+                        element.classList.remove('active');
+                        console.log(`❌ Removed 'active' from ${elementId}`);
+                    }
+                } else {
+                    console.warn(`⚠️ Element not found: ${elementId}`);
+                }
+            },
+            
+            setSliderValue: function(elementId, value) {
+                const element = document.getElementById(elementId);
+                console.log(`🔧 Setting slider ${elementId}:`, value, element ? 'found' : 'NOT FOUND');
+                if (element) {
+                    // 🔍 Special handling for dot-width to ensure it doesn't exceed max
+                    if (elementId === 'dot-width') {
+                        const maxValue = parseInt(element.max) || 10;
+                        if (value > maxValue) {
+                            console.warn(`⚠️ WARNING: ${elementId} value ${value} exceeds max ${maxValue} - clamping to ${maxValue}`);
+                            value = maxValue;
+                        }
+                    }
+                    element.value = value;
+                    console.log(`✅ Set ${elementId} value to ${value}`);
+                    // Trigger change event to update any displays
+                    element.dispatchEvent(new Event('input', { bubbles: true }));
+                } else {
+                    console.warn(`⚠️ Slider element not found: ${elementId}`);
+                }
+            },
+            
+            reset: function() {
+                try {
+                    localStorage.removeItem(this.STORAGE_KEY);
+                    const defaults = this.getDefaults();
+                    this.applySettings(defaults);
+                    console.log('✅ Settings reset to defaults');
+                    addDebugMessage('🔄 Settings reset to defaults');
+                } catch (error) {
+                    console.error('❌ Error resetting settings:', error);
+                }
+            },
+            
+            export: function() {
+                const settings = this.getCurrentSettings();
+                const dataStr = JSON.stringify(settings, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'emdr-settings.json';
+                link.click();
+                URL.revokeObjectURL(url);
+                addDebugMessage('📁 Settings exported to file');
+            },
+            
+            import: function(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const settings = JSON.parse(e.target.result);
+                        this.applySettings(settings);
+                        this.save(settings);
+                        addDebugMessage('📁 Settings imported from file');
+                    } catch (error) {
+                        console.error('❌ Error importing settings:', error);
+                        addDebugMessage('❌ Invalid settings file');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        };
+
+        // Debouncing system for sliders to prevent BLE command spam
+        const sliderDebounceTimers = {};
+        const SLIDER_DEBOUNCE_DELAY = 300; // ms - wait 300ms after user stops sliding
+        
+        // Flag to prevent auto-saving during initial page load
+        let isInitializing = true;
+        
+        // 🎯 UNIFIED SAVING SYSTEM
+        let saveTimeout = null;
+        const SAVE_DELAY = 500; // ms - wait 500ms after last change before saving
+        
+        // One central save function with smart debouncing
+        function saveSettingsDebounced(reason = 'auto') {
+            if (isInitializing) {
+                console.log('🚫 Skipping save during initialization:', reason);
+                return;
+            }
+            
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                try {
+                    SettingsManager.save();
+                    console.log(`💾 Settings saved (${reason})`);
+                } catch (error) {
+                    console.error(`❌ Save failed (${reason}):`, error);
+                }
+            }, SAVE_DELAY);
+        }
+        
+        // 🔍 DOT WIDTH MONITOR - Watch for unexpected changes
+        function monitorDotWidth() {
+            const dotWidthSlider = document.getElementById('dot-width');
+            if (dotWidthSlider) {
+                const currentValue = parseInt(dotWidthSlider.value);
+                if (currentValue > 10) {
+                    console.error('🚨🚨 DOT WIDTH ALERT: Value is', currentValue, '(max should be 10)');
+                    addDebugMessage(`🚨 DOT WIDTH ALERT: ${currentValue} > 10!`, 'error');
+                    
+                    // Force fix it
+                    dotWidthSlider.value = 10;
+                    const valueDisplay = document.getElementById('dot-width-value');
+                    if (valueDisplay) valueDisplay.textContent = '10';
+                    
+                    addDebugMessage('✅ Dot width forced back to 10', 'success');
+                }
+            }
+        }
+        
+        // Monitor dot width every 2 seconds
+        setInterval(monitorDotWidth, 2000);
+        
+        function debounceSliderBLE(sliderId, callback, delay = SLIDER_DEBOUNCE_DELAY) {
+            // Clear existing timer for this slider
+            if (sliderDebounceTimers[sliderId]) {
+                clearTimeout(sliderDebounceTimers[sliderId]);
+            }
+            
+            // Set new timer
+            sliderDebounceTimers[sliderId] = setTimeout(() => {
+                callback();
+                delete sliderDebounceTimers[sliderId];
+            }, delay);
+        }
+
+        // Auto-save Event Listeners Setup
+        function setupAutoSaveEventListeners() {
+            // Speed slider auto-save
+            const speedSlider = document.getElementById('speed-slider');
+            if (speedSlider) {
+                speedSlider.addEventListener('input', () => {
+                    // Update speed display
+                    const speedValue = document.getElementById('speed-value');
+                    if (speedValue) {
+                        speedValue.textContent = speedSlider.value;
+                    }
+                    // Auto-save settings
+                    saveSettingsDebounced('speed-change');
+                });
+            }
+            
+            // Animation speed slider auto-save
+            const animationSpeedSlider = document.getElementById('speed-test-slider');
+            if (animationSpeedSlider) {
+                animationSpeedSlider.addEventListener('input', () => {
+                    // Update animation speed display
+                    const speedDisplay = document.getElementById('speed-test-value');
+                    if (speedDisplay) {
+                        speedDisplay.textContent = parseFloat(animationSpeedSlider.value).toFixed(1);
+                    }
+                    speedTestState.animationSpeed = parseFloat(animationSpeedSlider.value);
+                    // Auto-save settings
+                    saveSettingsDebounced('animation-speed-change');
+                });
+            }
+            
+            // Intensity sliders auto-save with debouncing
+            ['buzz', 'light', 'sound', 'pressure'].forEach(type => {
+                const intensitySlider = document.getElementById(`${type}-intensity`);
+                if (intensitySlider) {
+                    intensitySlider.addEventListener('input', () => {
+                        // Update display immediately
+                        const valueElement = document.getElementById(`${type}-intensity-value`);
+                        if (valueElement) {
+                            valueElement.textContent = intensitySlider.value;
+                        }
+                        
+                        // Debounce BLE command
+                        const intensityKey = `tapper${type.charAt(0).toUpperCase() + type.slice(1)}Intensity`;
+                        debounceSliderBLE(`${type}-intensity-direct`, () => {
+                            if (state.connected) {
+                                sendBLECommand(intensityKey, parseInt(intensitySlider.value));
+                                addDebugMessage(`🎛️ ${type} intensity: ${intensitySlider.value} (debounced)`, 'info');
+                            }
+                        });
+                        
+                        // Auto-save settings (using unified system)
+                        saveSettingsDebounced(`${type}-intensity-change`);
+                    });
+                }
+            });
+            
+            // Brightness sliders auto-save (these are handled by main setupSliders function with debouncing)
+            // Note: dot-intensity and bg-intensity sliders are already handled in setupSliders() with debouncing
+            
+            // Random control sliders auto-save with debouncing
+            ['randomForegroundTime', 'randomBackgroundTime', 'randomStripTime'].forEach(sliderId => {
+                const slider = document.getElementById(sliderId);
+                if (slider) {
+                    slider.addEventListener('input', () => {
+                        // Update display immediately
+                        const valueElement = document.getElementById(sliderId + '-value');
+                        if (valueElement) {
+                            valueElement.textContent = slider.value;
+                        }
+                        
+                        // Debounce BLE command
+                        let characteristicKey;
+                        switch(sliderId) {
+                            case 'randomForegroundTime':
+                                characteristicKey = 'lightbarRndForegroundColourTime';
+                                break;
+                            case 'randomBackgroundTime':
+                                characteristicKey = 'lightbarRndBackgroundColourTime';
+                                break;
+                            case 'randomStripTime':
+                                characteristicKey = 'lightbarRndStripWidthTime';
+                                break;
+                        }
+                        
+                        if (characteristicKey) {
+                            debounceSliderBLE(`${sliderId}-ble`, () => {
+                                if (state.connected) {
+                                    sendBLECommand(characteristicKey, parseInt(slider.value));
+                                    addDebugMessage(`🎲 ${characteristicKey}: ${slider.value} (debounced)`, 'info');
+                                }
+                            });
+                        }
+                        
+                        // Auto-save settings (using unified system)
+                        saveSettingsDebounced(`${sliderId}-change`);
+                    });
+                }
+            });
+            
+            console.log('✅ Auto-save event listeners set up');
+        }
+
+        // Settings Panel Functions
+        function toggleSettingsPanel() {
+            const panel = document.getElementById('settings-panel');
+            if (panel.style.display === 'none' || !panel.style.display) {
+                panel.style.display = 'block';
+                updateSettingsStatus('Settings panel opened');
+            } else {
+                panel.style.display = 'none';
+            }
+        }
+
+        function manualSave() {
+            try {
+                // Force immediate save (bypass debouncing and initialization check)
+                clearTimeout(saveTimeout); // Cancel any pending saves
+                SettingsManager.save();
+                updateSettingsStatus('💾 Settings saved manually');
+                addDebugMessage('💾 Settings manually saved', 'success');
+            } catch (error) {
+                updateSettingsStatus('❌ Failed to save settings');
+                addDebugMessage('❌ Failed to save settings: ' + error.message, 'error');
+            }
+        }
+
+        function loadAndApplySettings() {
+            try {
+                const settings = SettingsManager.load();
+                SettingsManager.applySettings(settings);
+                updateSettingsStatus('✅ Settings loaded and applied');
+                addDebugMessage('📂 Settings loaded from localStorage', 'success');
+            } catch (error) {
+                updateSettingsStatus('❌ Failed to load settings');
+                addDebugMessage('❌ Failed to load settings: ' + error.message, 'error');
+            }
+        }
+
+        function resetToDefaults() {
+            if (confirm('Reset all settings to defaults? This will overwrite your current configuration.')) {
+                try {
+                    SettingsManager.reset();
+                    updateSettingsStatus('🔄 Settings reset to defaults');
+                    addDebugMessage('🔄 Settings reset to factory defaults', 'success');
+                } catch (error) {
+                    updateSettingsStatus('❌ Failed to reset settings');
+                    addDebugMessage('❌ Failed to reset settings: ' + error.message, 'error');
+                }
+            }
+        }
+
+        function importSettingsFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                try {
+                    SettingsManager.import(file);
+                    updateSettingsStatus('📁 Settings imported from file');
+                    addDebugMessage('📁 Settings imported successfully', 'success');
+                } catch (error) {
+                    updateSettingsStatus('❌ Failed to import settings');
+                    addDebugMessage('❌ Failed to import settings: ' + error.message, 'error');
+                }
+                // Reset file input
+                event.target.value = '';
+            }
+        }
+
+        function testLocalStorage() {
+            updateSettingsStatus('🔧 Testing localStorage...');
+            
+            try {
+                // Test basic localStorage functionality
+                const testKey = 'emdr_test_' + Date.now();
+                const testValue = { test: true, timestamp: Date.now(), random: Math.random() };
+                const testJson = JSON.stringify(testValue);
+                
+                console.log('🔧 Testing localStorage with key:', testKey);
+                console.log('🔧 Test data:', testValue);
+                
+                // Write test
+                localStorage.setItem(testKey, testJson);
+                console.log('✅ localStorage.setItem: SUCCESS');
+                
+                // Read test
+                const retrieved = localStorage.getItem(testKey);
+                console.log('✅ localStorage.getItem: SUCCESS', retrieved);
+                
+                // Parse test
+                const parsed = JSON.parse(retrieved);
+                console.log('✅ JSON.parse: SUCCESS', parsed);
+                
+                // Verify test
+                if (parsed.test === testValue.test && parsed.timestamp === testValue.timestamp) {
+                    console.log('✅ Data verification: SUCCESS');
+                } else {
+                    throw new Error('Data verification failed');
+                }
+                
+                // Cleanup
+                localStorage.removeItem(testKey);
+                console.log('✅ localStorage.removeItem: SUCCESS');
+                
+                // Test EMDR settings specifically
+                const currentSettings = SettingsManager.getCurrentSettings();
+                console.log('📊 Current settings:', currentSettings);
+                
+                const settingsJson = JSON.stringify(currentSettings);
+                console.log('📊 Settings JSON length:', settingsJson.length);
+                
+                updateSettingsStatus('✅ localStorage test PASSED');
+                addDebugMessage('✅ localStorage test completed successfully');
+                
+                // Now try to save actual settings (force immediate save)
+                clearTimeout(saveTimeout);
+                SettingsManager.save();
+                
+            } catch (error) {
+                console.error('❌ localStorage test FAILED:', error);
+                updateSettingsStatus('❌ localStorage test FAILED: ' + error.message);
+                addDebugMessage('❌ localStorage test failed: ' + error.message);
+                
+                // Additional debugging
+                console.log('🔍 Browser info:', navigator.userAgent);
+                console.log('🔍 Storage support:', typeof(Storage) !== "undefined");
+                console.log('🔍 localStorage object:', localStorage);
+                
+                try {
+                    console.log('🔍 localStorage length:', localStorage.length);
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        console.log(`🔍 localStorage[${i}]:`, key, '=', localStorage.getItem(key)?.substring(0, 50) + '...');
+                    }
+                } catch (inspectError) {
+                    console.error('🔍 localStorage inspection failed:', inspectError);
+                }
+            }
+        }
+
+        function testSaveLoadCycle() {
+            updateSettingsStatus('🔄 Testing save/load cycle...');
+            
+            try {
+                console.log('🔄 === SAVE/LOAD CYCLE TEST ===');
+                
+                // Step 1: Get current UI state
+                console.log('📊 Step 1: Reading current UI state...');
+                const currentSettings = SettingsManager.getCurrentSettings();
+                console.log('📊 Current UI settings:', currentSettings);
+                
+                // Step 2: Save current settings (force save even during initialization)
+                console.log('💾 Step 2: Saving settings...');
+                const wasInitializing = isInitializing;
+                isInitializing = false;
+                SettingsManager.save(currentSettings);
+                isInitializing = wasInitializing;
+                
+                // Step 3: Load saved settings
+                console.log('📂 Step 3: Loading saved settings...');
+                const loadedSettings = SettingsManager.load();
+                console.log('📂 Loaded settings:', loadedSettings);
+                
+                // Step 4: Compare
+                console.log('🔍 Step 4: Comparing settings...');
+                const keys = Object.keys(currentSettings);
+                let differences = [];
+                
+                keys.forEach(key => {
+                    if (currentSettings[key] !== loadedSettings[key]) {
+                        differences.push(`${key}: ${currentSettings[key]} → ${loadedSettings[key]}`);
+                    }
+                });
+                
+                if (differences.length === 0) {
+                    console.log('✅ Perfect match! Save/load cycle working correctly.');
+                    updateSettingsStatus('✅ Save/load cycle PASSED');
+                    addDebugMessage('✅ Save/load cycle test passed');
+                } else {
+                    console.warn('⚠️ Differences found:', differences);
+                    updateSettingsStatus('⚠️ Save/load differences found');
+                    addDebugMessage('⚠️ Save/load test found differences: ' + differences.join(', '));
+                }
+                
+                // Step 5: Apply loaded settings to verify UI update
+                console.log('🔧 Step 5: Applying loaded settings to UI...');
+                SettingsManager.applySettings(loadedSettings);
+                
+                console.log('🔄 === SAVE/LOAD CYCLE TEST COMPLETE ===');
+                
+            } catch (error) {
+                console.error('❌ Save/load cycle test failed:', error);
+                updateSettingsStatus('❌ Save/load cycle FAILED');
+                addDebugMessage('❌ Save/load cycle test failed: ' + error.message);
+            }
+        }
+
+        function updateSettingsStatus(message) {
+            const statusElement = document.getElementById('settings-status');
+            if (statusElement) {
+                statusElement.textContent = message;
+                // Reset to "Ready" after 3 seconds
+                setTimeout(() => {
+                    statusElement.textContent = 'Ready';
+                }, 3000);
+            }
         }
 
         // Speed Test Functions
@@ -3746,6 +4914,9 @@
             }
             
             addDebugMessage(`🎲 Random ${id} toggled: ${!isActive}`, 'info');
+            
+            // 🎯 AUTO-SAVE ALWAYS (regardless of BLE connection)
+            saveSettingsDebounced(`${id}-toggle-change`);
         }
 
         // Slider Setup
@@ -3758,14 +4929,17 @@
                         const uiValue = parseInt(this.value);
                         const bleValue = 10 - uiValue; // Invert: UI 0→10, BLE 10→0 (0=fast, 10=slow)
                         
+                        // Update UI immediately (no delay for visual feedback)
                         state.speed = uiValue; // Keep UI value in state
                         document.getElementById('speed-value').textContent = uiValue;
                         
-                        // Send inverted BLE command for speed changes
+                        // Debounce BLE command to prevent spam during sliding
+                        debounceSliderBLE('speed-slider', () => {
                         if (state.connected) {
-                            sendBLECommand('speed', bleValue);
-                            addDebugMessage(`⚡ Speed: UI=${uiValue} → BLE=${bleValue} (${uiValue === 0 ? 'slowest' : uiValue === 10 ? 'fastest' : 'mid'})`, 'info');
+                                sendBLECommand('speed', bleValue);
+                                addDebugMessage(`⚡ Speed: UI=${uiValue} → BLE=${bleValue} (debounced)`, 'info');
                         }
+                        });
                         
                         // EMDR visualization will automatically use the new speed
                         return;
@@ -3777,9 +4951,14 @@
                         valueSpan.textContent = this.value;
                     }
                     
-                    // Send BLE command for slider changes
+                    // 🎯 AUTO-SAVE ALWAYS (regardless of BLE connection)
+                    saveSettingsDebounced(`${this.id}-change`);
+                    
+                    // Debounce BLE commands for all other sliders (only if connected)
                     if (state.connected) {
                         let characteristicKey;
+                        let bleValue = parseInt(this.value);
+                        
                         switch(this.id) {
                             case 'dot-intensity':
                                 characteristicKey = 'lightbarBrightFg';
@@ -3795,10 +4974,9 @@
                                 break;
                             case 'bar-width':
                                 // Bar width is inverted in Xcode
-                                const invertedValue = 40 - parseInt(this.value);
+                                bleValue = 40 - parseInt(this.value);
                                 characteristicKey = 'lightbarPixelStart';
-                                sendBLECommand(characteristicKey, invertedValue);
-                                return;
+                                break;
                             case 'slow-time':
                                 characteristicKey = 'lightbarSlowTime';
                                 break;
@@ -3813,10 +4991,15 @@
                                 break;
                             default:
                                 console.warn('Unknown slider ID:', this.id);
+                                // Still save even for unknown sliders
                                 return;
                         }
-                        addDebugMessage(`📡 BLE: Sending ${characteristicKey} = ${this.value}`, 'ble');
-                        sendBLECommand(characteristicKey, parseInt(this.value));
+                        
+                        // Debounce BLE command
+                        debounceSliderBLE(this.id, () => {
+                            addDebugMessage(`📡 BLE: Sending ${characteristicKey} = ${bleValue} (debounced)`, 'ble');
+                            sendBLECommand(characteristicKey, bleValue);
+                        });
                     }
                 });
             });
@@ -3833,7 +5016,7 @@
                     manualReconnect();
                 } else {
                     addDebugMessage('🔵 First-time connection...', 'info');
-                    connectToEMDRDevice();
+                connectToEMDRDevice();
                 }
             }
         }
@@ -3888,124 +5071,139 @@
                 if (batteryLeft) batteryLeft.textContent = state.batteryLeft + '%';
                 if (batteryRight) batteryRight.textContent = state.batteryRight + '%';
                 
-                // Main Controls Button
-                const mainBtn = document.getElementById('main-controls-btn');
-                const mainIcon = document.getElementById('main-controls-icon');
-                const mainText = document.getElementById('main-controls-text');
+            // Main Controls Button
+            const mainBtn = document.getElementById('main-controls-btn');
+            const mainIcon = document.getElementById('main-controls-icon');
+            const mainText = document.getElementById('main-controls-text');
                 addDebugMessage(`🔧 DEBUG: Main controls elements - btn: ${mainBtn ? 'found' : 'NULL'}, icon: ${mainIcon ? 'found' : 'NULL'}, text: ${mainText ? 'found' : 'NULL'}`, 'info');
-                
+            
                 if (mainBtn && mainIcon && mainText) {
-                    if (state.mainControlsOn) {
-                        mainBtn.classList.remove('off');
-                        mainBtn.classList.add('on');
-                        mainIcon.textContent = '⚡';
-                        mainText.textContent = 'Main Controls ON';
+            if (state.mainControlsOn) {
+                mainBtn.classList.remove('off');
+                mainBtn.classList.add('on');
+                mainIcon.textContent = '⚡';
+                        mainText.textContent = 'Main Controls ON v1.0.1';
+                        mainIcon.classList.remove('spinner'); // Remove spinner when ON
+            } else if (state.connected) {
+                // Connected but controls are OFF
+                mainBtn.classList.remove('on');
+                mainBtn.classList.add('off');
+                mainIcon.textContent = '⚡';
+                mainText.textContent = 'Main Controls OFF';
+                        mainIcon.classList.remove('spinner'); // Remove spinner when connected
                     } else {
+                        // Disconnected - show spinner
                         mainBtn.classList.remove('on');
                         mainBtn.classList.add('off');
-                        mainIcon.textContent = '⚡';
-                        mainText.textContent = 'Main Controls OFF';
+                        mainIcon.textContent = '🔄'; // Rotating arrow
+                        mainText.textContent = 'Waiting for connection...';
+                        mainIcon.classList.add('spinner'); // Add spinning animation
                     }
-                }
+            }
 
-                // Controls Section
-                const controlsSection = document.getElementById('controls-section');
+            // Controls Section
+            const controlsSection = document.getElementById('controls-section');
                 addDebugMessage(`🔧 DEBUG: Controls section: ${controlsSection ? 'found' : 'NULL'}`, 'info');
                 
                 if (controlsSection) {
-                    if (state.mainControlsOn) {
-                        controlsSection.classList.add('show');
-                    } else {
-                        controlsSection.classList.remove('show');
+            if (state.mainControlsOn) {
+                controlsSection.classList.add('show');
+            } else {
+                controlsSection.classList.remove('show');
                     }
-                }
+            }
                 
                 addDebugMessage('🔧 DEBUG: updateUI main elements completed', 'info');
-                
-                // Start/Stop Button
-                const startStopBtn = document.getElementById('start-stop-btn');
-                const startStopIcon = document.getElementById('start-stop-icon');
-                const startStopText = document.getElementById('start-stop-text');
-                addDebugMessage(`🔧 DEBUG: Start/Stop elements - btn: ${startStopBtn ? 'found' : 'NULL'}, icon: ${startStopIcon ? 'found' : 'NULL'}, text: ${startStopText ? 'found' : 'NULL'}`, 'info');
-                
-                if (startStopBtn && startStopIcon && startStopText) {
-                    if (state.isRunning) {
-                        startStopBtn.classList.remove('stopped');
-                        startStopBtn.classList.add('running');
-                        startStopIcon.textContent = '⏹️';
-                        startStopText.textContent = 'Stop';
-                    } else {
-                        startStopBtn.classList.remove('running');
-                        startStopBtn.classList.add('stopped');
-                        startStopIcon.textContent = '▶️';
-                        startStopText.textContent = 'Start';
-                    }
-                }
 
-                // Timer Button
-                const timerBtn = document.getElementById('timer-btn');
+            // Start/Stop Button
+            const startStopBtn = document.getElementById('start-stop-btn');
+            const startStopIcon = document.getElementById('start-stop-icon');
+            const startStopText = document.getElementById('start-stop-text');
+                addDebugMessage(`🔧 DEBUG: Start/Stop elements - btn: ${startStopBtn ? 'found' : 'NULL'}, icon: ${startStopIcon ? 'found' : 'NULL'}, text: ${startStopText ? 'found' : 'NULL'}`, 'info');
+            
+                if (startStopBtn && startStopIcon && startStopText) {
+            if (state.isRunning) {
+                startStopBtn.classList.remove('stopped');
+                startStopBtn.classList.add('running');
+                startStopIcon.textContent = '⏹️';
+                startStopText.textContent = 'Stop';
+            } else {
+                startStopBtn.classList.remove('running');
+                startStopBtn.classList.add('stopped');
+                startStopIcon.textContent = '▶️';
+                startStopText.textContent = 'Start';
+                    }
+            }
+
+            // Timer Button
+            const timerBtn = document.getElementById('timer-btn');
                 addDebugMessage(`🔧 DEBUG: Timer button: ${timerBtn ? 'found' : 'NULL'}`, 'info');
                 if (timerBtn) {
-                    if (state.timerActive) {
-                        timerBtn.classList.add('active');
-                        timerBtn.textContent = 'Timer ON';
-                    } else {
-                        timerBtn.classList.remove('active');
-                        timerBtn.textContent = 'Timer';
+            if (state.timerActive) {
+                timerBtn.classList.add('active');
+                timerBtn.textContent = 'Timer ON';
+            } else {
+                timerBtn.classList.remove('active');
+                timerBtn.textContent = 'Timer';
                     }
-                }
+            }
 
-                // Countdown Button
-                const countdownBtn = document.getElementById('countdown-btn');
+            // Countdown Button
+            const countdownBtn = document.getElementById('countdown-btn');
                 addDebugMessage(`🔧 DEBUG: Countdown button: ${countdownBtn ? 'found' : 'NULL'}`, 'info');
                 if (countdownBtn) {
-                    if (state.countdownActive) {
-                        countdownBtn.classList.add('active');
-                        countdownBtn.textContent = 'Countdown ON';
-                    } else {
-                        countdownBtn.classList.remove('active');
-                        countdownBtn.textContent = 'Countdown';
+            if (state.countdownActive) {
+                countdownBtn.classList.add('active');
+                countdownBtn.textContent = 'Countdown ON';
+            } else {
+                countdownBtn.classList.remove('active');
+                countdownBtn.textContent = 'Countdown';
                     }
-                }
+            }
                 
                 addDebugMessage('🔧 DEBUG: Starting remaining UI elements...', 'info');
 
-                // Cycle Counter
+            // Cycle Counter
                 const cycleCount = document.getElementById('cycle-count');
                 addDebugMessage(`🔧 DEBUG: Cycle counter: ${cycleCount ? 'found' : 'NULL'}`, 'info');
                 if (cycleCount) {
                     cycleCount.textContent = state.cycleCount;
                 }
 
-                // Connection Status
-                const connectionStatus = document.getElementById('connection-status');
-                const connectionText = document.getElementById('connection-text');
+            // Connection Status
+            const connectionStatus = document.getElementById('connection-status');
+            const connectionText = document.getElementById('connection-text');
                 addDebugMessage(`🔧 DEBUG: Connection elements - status: ${connectionStatus ? 'found' : 'NULL'}, text: ${connectionText ? 'found' : 'NULL'}`, 'info');
-                
+            
                 if (connectionStatus && connectionText) {
-                    if (state.connected) {
-                        connectionStatus.textContent = '🟢';
-                        connectionText.textContent = 'Connected';
-                    } else {
-                        connectionStatus.textContent = '🔴';
-                        connectionText.textContent = 'Disconnected';
+            if (state.connected) {
+                connectionStatus.textContent = '🟢';
+                connectionText.textContent = 'Connected';
+                connectionStatus.classList.remove('spinner'); // Remove spinner when connected
+            } else {
+                connectionStatus.textContent = '🔄'; // Rotating arrow symbol
+                connectionText.textContent = 'Disconnected';
+                connectionStatus.classList.add('spinner'); // Add spinning animation
                     }
-                }
+            }
 
-                // Floating Button
-                const floatingBtn = document.getElementById('floating-btn');
-                const floatingIcon = document.getElementById('floating-icon');
+            // Floating Button
+            const floatingBtn = document.getElementById('floating-btn');
+            const floatingIcon = document.getElementById('floating-icon');
                 addDebugMessage(`🔧 DEBUG: Floating elements - btn: ${floatingBtn ? 'found' : 'NULL'}, icon: ${floatingIcon ? 'found' : 'NULL'}`, 'info');
-                
+            
                 if (floatingIcon) {
-                    if (state.connected && state.mainControlsOn) {
-                        floatingIcon.textContent = state.isRunning ? '⏹️' : '▶️';
-                    } else if (state.connected) {
-                        floatingIcon.textContent = '⚡';
-                    } else {
-                        floatingIcon.textContent = '🔗';
+            if (state.connected && state.mainControlsOn) {
+                floatingIcon.textContent = state.isRunning ? '⏹️' : '▶️';
+                        floatingIcon.classList.remove('spinner');
+            } else if (state.connected) {
+                floatingIcon.textContent = '⚡';
+                        floatingIcon.classList.remove('spinner');
+            } else {
+                        floatingIcon.textContent = '🔄'; // Rotating arrow for disconnected
+                        floatingIcon.classList.add('spinner'); // Add spinning animation
                     }
-                }
+            }
                 
                 addDebugMessage('🔧 DEBUG: updateUI completed successfully!', 'info');
                 
@@ -4017,14 +5215,14 @@
             
             // Call timer display update (outside try-catch since it's a separate function)
             try {
-                updateTimerDisplay();
+            updateTimerDisplay();
             } catch (error) {
                 addDebugMessage(`🔴 ERROR in updateTimerDisplay: ${error.message}`, 'error');
                 console.error('updateTimerDisplay error:', error);
             }
             
             try {
-                updateCountdownDisplay();
+            updateCountdownDisplay();
             } catch (error) {
                 addDebugMessage(`🔴 ERROR in updateCountdownDisplay: ${error.message}`, 'error');
                 console.error('updateCountdownDisplay error:', error);
