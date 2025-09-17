@@ -1658,7 +1658,7 @@
             <button id="connection-prompt-button" class="connection-prompt-button" onclick="connectToEMDRDevice()">
                 <span class="connection-prompt-button-icon">🔗</span>
                 <span class="connection-prompt-button-text">Connect Device</span>
-            </button>
+        </button>
         </div>
     </div>
 
@@ -3602,9 +3602,11 @@
                 await sendColorCommand('lightbarBgColour', bgRgb.r, bgRgb.g, bgRgb.b);
             }
             
-            // Send speed (inverted: UI 5 → BLE 5, but inversion logic is UI 0→10 = BLE 10→0)
-            const bleSpeed = 10 - state.speed; // Invert speed for BLE
-            addDebugMessage(`⚡ Sending speed: UI=${state.speed} → BLE=${bleSpeed}`, 'ble');
+            // Send speed (read current value from UI slider, not state)
+            const speedSlider = document.getElementById('speed-slider');
+            const currentSpeed = speedSlider ? parseInt(speedSlider.value) : 5;
+            const bleSpeed = 10 - currentSpeed; // Invert speed for BLE
+            addDebugMessage(`⚡ Sending speed: UI=${currentSpeed} → BLE=${bleSpeed}`, 'ble');
             await sendBLECommand('speed', bleSpeed);
             
             // Send lightbar settings (required for peripheral to work properly)
@@ -3847,8 +3849,10 @@
                     state.cycleCount = 0;
                     addDebugMessage('🔄 Cycle count reset to 0 for new session', 'ble');
                     
-                    // Send speed first
-                    sendBLECommand('speed', state.speed);
+                    // Send speed first (invert UI value for BLE)
+                    const bleSpeed = 10 - state.speed;
+                    addDebugMessage(`⚡ Session start speed: UI=${state.speed} → BLE=${bleSpeed}`, 'ble');
+                    sendBLECommand('speed', bleSpeed);
                     
                     // Then send start flag
                     addDebugMessage(`📡 BLE: Sending startStop = 1`, 'ble');
@@ -4904,6 +4908,17 @@
                     }
                     element.value = value;
                     console.log(`✅ Set ${elementId} value to ${value}`);
+                    
+                    // Special handling for speed slider to ensure display is updated
+                    if (elementId === 'speed-slider') {
+                        const speedDisplay = document.getElementById('speed-value');
+                        if (speedDisplay) {
+                            speedDisplay.textContent = value;
+                            console.log(`🔧 Updated speed display to: ${value}`);
+                        }
+                        state.speed = value; // Update state as well
+                    }
+                    
                     // Trigger change event to update any displays
                     element.dispatchEvent(new Event('input', { bubbles: true }));
                 } else {
