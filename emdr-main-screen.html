@@ -1474,6 +1474,141 @@
                 top: 10px;
             }
         }
+
+        /* Connection Prompt Banner */
+        .connection-prompt-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 20px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .connection-prompt-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .connection-prompt-icon {
+            font-size: 48px;
+            animation: pulse 2s infinite;
+        }
+
+        .connection-prompt-text {
+            flex: 1;
+            text-align: center;
+        }
+
+        .connection-prompt-text h2 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .connection-prompt-text p {
+            margin: 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .connection-prompt-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            color: white;
+            padding: 16px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .connection-prompt-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .connection-prompt-button:active {
+            transform: translateY(0);
+        }
+
+        .connection-prompt-button-icon {
+            font-size: 20px;
+        }
+
+        .connection-prompt-button-text {
+            font-size: 16px;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Adjust main content when banner is shown */
+        body.connection-prompt-visible .container {
+            margin-top: 120px;
+        }
+
+        /* Responsive design for connection prompt */
+        @media (max-width: 768px) {
+            .connection-prompt-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .connection-prompt-icon {
+                font-size: 36px;
+            }
+            
+            .connection-prompt-text h2 {
+                font-size: 20px;
+            }
+            
+            .connection-prompt-text p {
+                font-size: 14px;
+            }
+            
+            .connection-prompt-button {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+            
+            body.connection-prompt-visible .container {
+                margin-top: 140px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1511,6 +1646,21 @@
                 </div>
             </div>
         </div>
+
+    <!-- Connection Prompt Banner (shown when disconnected) -->
+    <div id="connection-prompt-banner" class="connection-prompt-banner" style="display: none;">
+        <div class="connection-prompt-content">
+            <div class="connection-prompt-icon">📱</div>
+            <div class="connection-prompt-text">
+                <h2>Connect to EMDR Device</h2>
+                <p>Click the button to connect to your ESP32 device</p>
+            </div>
+            <button id="connection-prompt-button" class="connection-prompt-button" onclick="connectToEMDRDevice()">
+                <span class="connection-prompt-button-icon">🔗</span>
+                <span class="connection-prompt-button-text">Connect Device</span>
+            </button>
+        </div>
+    </div>
 
     <!-- Main Grid Container -->
     <div class="container">
@@ -5554,6 +5704,18 @@
                 connectionText.textContent = 'Disconnected';
                 connectionStatus.classList.add('spinner'); // Add spinning animation
                     }
+            }
+
+            // Connection Prompt Banner
+            const connectionBanner = document.getElementById('connection-prompt-banner');
+            if (connectionBanner) {
+                if (state.connected) {
+                    connectionBanner.style.display = 'none';
+                    document.body.classList.remove('connection-prompt-visible');
+                } else {
+                    connectionBanner.style.display = 'block';
+                    document.body.classList.add('connection-prompt-visible');
+                }
             }
 
             // Floating Button
