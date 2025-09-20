@@ -2525,8 +2525,6 @@
                 centerArrow = document.getElementById('arrow-center');
                 rightArrow = document.getElementById('arrow-right');
                 
-                addDebugMessage(`🔧 DEBUG: Arrow elements - left: ${leftArrow ? 'found' : 'NULL'}, center: ${centerArrow ? 'found' : 'NULL'}, right: ${rightArrow ? 'found' : 'NULL'}`, 'info');
-                
                 if (!leftArrow || !centerArrow || !rightArrow) {
                     addDebugMessage('🔴 ERROR: One or more arrow elements not found', 'error');
                     return;
@@ -4005,7 +4003,7 @@
                         // Update button state manually if already ON
                         if (mainIcon && mainText) {
                             mainIcon.textContent = '⚡';
-                            mainText.textContent = 'Main Controls ON v1.0.4';
+                            mainText.textContent = 'Main Controls ON v1.0.5';
                         }
                     }
                 }, 1000); // Wait 1 second after initial values are sent
@@ -5817,12 +5815,9 @@
         // UI Updates
         function updateUI() {
             try {
-                addDebugMessage('🔧 DEBUG: Starting updateUI...', 'info');
-                
                 // Battery display (moved to top for immediate update)
                 const batteryLeft = document.getElementById('battery-left');
                 const batteryRight = document.getElementById('battery-right');
-                addDebugMessage(`🔧 DEBUG: Battery elements - left: ${batteryLeft ? 'found' : 'NULL'}, right: ${batteryRight ? 'found' : 'NULL'}`, 'info');
                 
                 if (batteryLeft) batteryLeft.textContent = state.batteryLeft + '%';
                 if (batteryRight) batteryRight.textContent = state.batteryRight + '%';
@@ -5831,14 +5826,13 @@
             const mainBtn = document.getElementById('main-controls-btn');
             const mainIcon = document.getElementById('main-controls-icon');
             const mainText = document.getElementById('main-controls-text');
-                addDebugMessage(`🔧 DEBUG: Main controls elements - btn: ${mainBtn ? 'found' : 'NULL'}, icon: ${mainIcon ? 'found' : 'NULL'}, text: ${mainText ? 'found' : 'NULL'}`, 'info');
             
                 if (mainBtn && mainIcon && mainText) {
             if (state.mainControlsOn) {
                 mainBtn.classList.remove('off');
                 mainBtn.classList.add('on');
                 mainIcon.textContent = '⚡';
-                        mainText.textContent = 'Main Controls ON v1.0.4';
+                        mainText.textContent = 'Main Controls ON v1.0.5';
                         mainIcon.classList.remove('spinner'); // Remove spinner when ON
             } else if (state.connected) {
                 // Connected but controls are OFF
@@ -5859,8 +5853,6 @@
 
             // Controls Section
             const controlsSection = document.getElementById('controls-section');
-                addDebugMessage(`🔧 DEBUG: Controls section: ${controlsSection ? 'found' : 'NULL'}`, 'info');
-                
                 if (controlsSection) {
             if (state.mainControlsOn) {
                 controlsSection.classList.add('show');
@@ -5869,13 +5861,10 @@
                     }
             }
                 
-                addDebugMessage('🔧 DEBUG: updateUI main elements completed', 'info');
-
             // Start/Stop Button
             const startStopBtn = document.getElementById('start-stop-btn');
             const startStopIcon = document.getElementById('start-stop-icon');
             const startStopText = document.getElementById('start-stop-text');
-                addDebugMessage(`🔧 DEBUG: Start/Stop elements - btn: ${startStopBtn ? 'found' : 'NULL'}, icon: ${startStopIcon ? 'found' : 'NULL'}, text: ${startStopText ? 'found' : 'NULL'}`, 'info');
             
                 if (startStopBtn && startStopIcon && startStopText) {
             if (state.isRunning) {
@@ -5893,7 +5882,6 @@
 
             // Timer Button
             const timerBtn = document.getElementById('timer-btn');
-                addDebugMessage(`🔧 DEBUG: Timer button: ${timerBtn ? 'found' : 'NULL'}`, 'info');
                 if (timerBtn) {
             if (state.timerActive) {
                 timerBtn.classList.add('active');
@@ -5906,7 +5894,6 @@
 
             // Countdown Button
             const countdownBtn = document.getElementById('countdown-btn');
-                addDebugMessage(`🔧 DEBUG: Countdown button: ${countdownBtn ? 'found' : 'NULL'}`, 'info');
                 if (countdownBtn) {
             if (state.countdownActive) {
                 countdownBtn.classList.add('active');
@@ -5917,11 +5904,8 @@
                     }
             }
                 
-                addDebugMessage('🔧 DEBUG: Starting remaining UI elements...', 'info');
-
             // Cycle Counter
                 const cycleCount = document.getElementById('cycle-count');
-                addDebugMessage(`🔧 DEBUG: Cycle counter: ${cycleCount ? 'found' : 'NULL'}`, 'info');
                 if (cycleCount) {
                     cycleCount.textContent = state.cycleCount;
                 }
@@ -5929,7 +5913,6 @@
             // Connection Status
             const connectionStatus = document.getElementById('connection-status');
             const connectionText = document.getElementById('connection-text');
-                addDebugMessage(`🔧 DEBUG: Connection elements - status: ${connectionStatus ? 'found' : 'NULL'}, text: ${connectionText ? 'found' : 'NULL'}`, 'info');
             
                 if (connectionStatus && connectionText) {
             if (state.connected) {
@@ -5958,7 +5941,6 @@
             // Floating Button
             const floatingBtn = document.getElementById('floating-btn');
             const floatingIcon = document.getElementById('floating-icon');
-                addDebugMessage(`🔧 DEBUG: Floating elements - btn: ${floatingBtn ? 'found' : 'NULL'}, icon: ${floatingIcon ? 'found' : 'NULL'}`, 'info');
             
                 if (floatingIcon) {
             if (state.connected && state.mainControlsOn) {
@@ -5973,7 +5955,6 @@
                     }
             }
                 
-                addDebugMessage('🔧 DEBUG: updateUI completed successfully!', 'info');
                 
             } catch (error) {
                 addDebugMessage(`🔴 ERROR in updateUI: ${error.message}`, 'error');
