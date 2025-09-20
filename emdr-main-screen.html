@@ -697,10 +697,12 @@
             background: rgba(255, 255, 255, 0.2);
             outline: none;
             -webkit-appearance: none;
+            appearance: none;
         }
 
         .intensity-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
+            appearance: none;
             appearance: none;
             width: 16px;
             height: 16px;
@@ -833,10 +835,12 @@
             border-radius: 2px;
             outline: none;
             -webkit-appearance: none;
+            appearance: none;
         }
 
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
+            appearance: none;
             width: 16px;
             height: 16px;
             background: #4ecdc4;
@@ -903,6 +907,7 @@
             background: none;
             padding: 0;
             -webkit-appearance: none;
+            appearance: none;
             -moz-appearance: none;
             appearance: none;
         }
@@ -3727,7 +3732,229 @@
             
             addDebugMessage('✅ All initial values sent successfully!', 'success');
             addDebugMessage('🚨 ESP32 should now be ready for Main Controls ON', 'info');
+        }
+
+        // Send saved settings (matching phone UI sendSavedSettings() behavior)
+        async function sendSavedSettings(settings) {
+            addDebugMessage('=== sendSavedSettings() - Loading saved settings ===', 'ble');
             
+            // Initialize currentValues if not exists
+            if (!state.currentValues) {
+                state.currentValues = {};
+            }
+            
+            // Load saved settings into currentValues (matching phone behavior)
+            state.currentValues.tapperBuzzOther = settings.buzzMode || 2;
+            state.currentValues.tapperLightOther = settings.lightMode || 2;
+            state.currentValues.tapperSoundOther = settings.soundMode || 2;
+            state.currentValues.tapperPressureOther = settings.pressureMode || 2;
+            
+            state.currentValues.tapperBuzzIntensity = settings.buzzIntensity || 127;
+            state.currentValues.tapperLightIntensity = settings.lightIntensity || 127;
+            state.currentValues.tapperSoundIntensity = settings.soundIntensity || 127;
+            state.currentValues.tapperPressureIntensity = settings.pressureIntensity || 2;
+            
+            // Load lightbar settings
+            state.currentValues.lightbarFgColour = settings.lightbarFgColour || 0;
+            state.currentValues.lightbarBgColour = settings.lightbarBgColour || 0;
+            state.currentValues.lightbarBrightBg = settings.lightbarBrightBg || 60;
+            state.currentValues.lightbarBrightFg = settings.lightbarBrightFg || 146;
+            state.currentValues.lightbarTrailBrightDelta = settings.lightbarTrailBrightDelta || 255;
+            state.currentValues.lightbarPixelWidth = settings.lightbarPixelWidth || 10;
+            state.currentValues.lightbarPixelStart = settings.lightbarPixelStart || 0;
+            state.currentValues.lightbarSlowTime = settings.lightbarSlowTime || 0;
+            state.currentValues.lightbarNumLeds = settings.lightbarNumLeds || 140;
+            state.currentValues.lightbarFlagClearMaxStrip = settings.lightbarFlagClearMaxStrip || 0;
+            state.currentValues.lightbarSetTimerSpinner = settings.lightbarSetTimerSpinner || 0;
+            
+            // PRESERVE CURRENT LAMP MODE - Don't override if lamp is currently active
+            const currentLampMode = state.currentValues.lightbarEmdrLightFlag ?? 1;
+            if (currentLampMode === 0) {
+                addDebugMessage('📱 sendSavedSettings: Preserving current lamp mode (lightbarEmdrLightFlag = 0)', 'info');
+            } else {
+                state.currentValues.lightbarEmdrLightFlag = settings.lightbarEmdrLightFlag || 1;
+            }
+            
+            state.currentValues.lightbarFlowing = settings.flowEnabled ? 1 : 0;
+            
+            // Load random settings
+            state.currentValues.lightbarRndForegroundColourOnOff = settings.randomDotColorEnabled ? 1 : 0;
+            state.currentValues.lightbarRndForegroundColourTime = settings.randomDotColorTime || 60;
+            state.currentValues.lightbarRndBackgroundColourOnOff = settings.randomBackColorEnabled ? 1 : 0;
+            state.currentValues.lightbarRndBackgroundColourTime = settings.randomBackColorTime || 60;
+            state.currentValues.lightbarRndStripWidthOnOff = settings.randomBarWidthEnabled ? 1 : 0;
+            state.currentValues.lightbarRndStripWidthTime = settings.randomBarWidthTime || 60;
+            
+            // Load speed setting
+            state.currentValues.speed = settings.speed || 5;
+            
+            // Send saved color wheel RGB values to peripheral
+            if (settings.dotColorRed !== undefined && settings.dotColorGreen !== undefined && settings.dotColorBlue !== undefined) {
+                const dotRed = Math.max(0, Math.min(255, settings.dotColorRed));
+                const dotGreen = Math.max(0, Math.min(255, settings.dotColorGreen));
+                const dotBlue = Math.max(0, Math.min(255, settings.dotColorBlue));
+                await sendColorCommand('lightbarFgColour', dotRed, dotGreen, dotBlue);
+                addDebugMessage(`📱 sendSavedSettings: Sent dot color RGB - R:${dotRed} G:${dotGreen} B:${dotBlue}`, 'ble');
+            }
+            
+            if (settings.backgroundColorRed !== undefined && settings.backgroundColorGreen !== undefined && settings.backgroundColorBlue !== undefined) {
+                const bgRed = Math.max(0, Math.min(255, settings.backgroundColorRed));
+                const bgGreen = Math.max(0, Math.min(255, settings.backgroundColorGreen));
+                const bgBlue = Math.max(0, Math.min(255, settings.backgroundColorBlue));
+                await sendColorCommand('lightbarBgColour', bgRed, bgGreen, bgBlue);
+                addDebugMessage(`📱 sendSavedSettings: Sent background color RGB - R:${bgRed} G:${bgGreen} B:${bgBlue}`, 'ble');
+            }
+            
+            // Send all settings to peripheral immediately
+            await sendAllValues();
+            addDebugMessage('📱 sendSavedSettings: Sent all settings to peripheral', 'ble');
+        }
+
+        // Send all values (matching phone UI sendAllValues() behavior)
+        async function sendAllValues() {
+            if (!state.connected) {
+                addDebugMessage('🔴 sendAllValues: Not connected to BLE device', 'error');
+                return;
+            }
+
+            addDebugMessage('=== sendAllValues() - Sending all saved values ===', 'ble');
+            
+            // PRESERVE CURRENT LAMP MODE - Check if lamp mode is currently active
+            const currentLampMode = state.currentValues?.lightbarEmdrLightFlag ?? 1;
+            const wasLampModeActive = currentLampMode === 0;
+            
+            if (wasLampModeActive) {
+                addDebugMessage('📱 sendAllValues: Lamp mode was active, will preserve it', 'info');
+            }
+
+            // Always send onOff first if it's set
+            if (state.mainControlsOn !== undefined) {
+                addDebugMessage(`📱 Sending onOff first: ${state.mainControlsOn ? 1 : 0}`, 'ble');
+                await sendBLECommand('onOff', state.mainControlsOn ? 1 : 0);
+            }
+
+            // If we're turning off the device, only send essential values
+            if (state.mainControlsOn === false) {
+                const essentialKeys = [
+                    'startStop', 'tapperOnOff', 'tapperBuzzFlag', 'tapperLightFlag', 
+                    'tapperSoundFlag', 'tapperPressureFlag', 'tapperBuzzOther', 
+                    'tapperLightOther', 'tapperSoundOther', 'tapperPressureOther'
+                ];
+                
+                for (const key of essentialKeys) {
+                    const value = state.currentValues?.[key] ?? 0;
+                    addDebugMessage(`📱 Sending essential value ${key}: ${value}`, 'ble');
+                    await sendBLECommand(key, value);
+                }
+                return;
+            }
+
+            // When starting, send all values in the same order as phone UI
+            const orderedKeys = [
+                // Basic controls - onOff is already sent
+                'startStop', 'tapperOnOff',
+                
+                // Flag controls
+                'tapperBuzzFlag', 'tapperLightFlag', 'tapperSoundFlag', 'tapperPressureFlag',
+                
+                // Intensity controls
+                'tapperBuzzIntensity', 'tapperLightIntensity', 'tapperSoundIntensity', 'tapperPressureIntensity',
+                
+                // Other controls
+                'tapperBuzzOther', 'tapperLightOther', 'tapperSoundOther', 'tapperPressureOther',
+                
+                // Tapper light controls
+                'lampOptions', 'lightbarEmdrLightFlag',
+                
+                // Lightbar brightness controls
+                'lightbarBrightBg', 'lightbarBrightFg',
+                'lightbarTrailBrightDelta', 'lightbarPixelWidth', 'lightbarPixelStart', 'lightbarSlowTime',
+                
+                // Lightbar random controls
+                'lightbarRndForegroundColourOnOff', 'lightbarRndForegroundColourTime',
+                'lightbarRndBackgroundColourOnOff', 'lightbarRndBackgroundColourTime',
+                'lightbarRndStripWidthOnOff', 'lightbarRndStripWidthTime',
+                
+                // Lightbar flow controls
+                'lightbarFlowing',
+                
+                // Lightbar LED controls
+                'lightbarNumLeds', 'lightbarFlagClearMaxStrip',
+                
+                // Lightbar timer control
+                'lightbarSetTimerSpinner',
+                
+                // Speed control
+                'speed'
+            ];
+
+            for (const key of orderedKeys) {
+                let value = state.currentValues?.[key] ?? 0;
+                
+                // SPECIAL HANDLING FOR LAMP MODE - Preserve lamp mode if it was active
+                if (key === 'lightbarEmdrLightFlag' && wasLampModeActive) {
+                    value = 0;  // Force lamp mode
+                    addDebugMessage(`📱 sendAllValues: Preserving lamp mode - sending lightbarEmdrLightFlag = 0`, 'ble');
+                }
+                
+                // Skip sending zero values for most characteristics (except essential ones)
+                const essentialKeys = ['onOff', 'startStop', 'tapperOnOff', 'lightbarEmdrLightFlag'];
+                if (value === 0 && !essentialKeys.includes(key)) {
+                    addDebugMessage(`📱 Skipping zero value for ${key}`, 'info');
+                    continue;
+                }
+                
+                addDebugMessage(`📱 Sending ${key}: ${value}`, 'ble');
+                await sendBLECommand(key, value);
+            }
+            
+            addDebugMessage('📱 Completed sendAllValues()', 'success');
+        }
+
+        // Main Controls Toggle (matching phone UI behavior)
+        async function toggleMainControls() {
+            const wasOn = state.mainControlsOn;
+            state.mainControlsOn = !state.mainControlsOn;
+            
+            // Debug output for Main Controls button
+            addDebugMessage('=== Main Controls Button Pressed ===', 'info');
+            addDebugMessage(`🔄 Main Controls: ${wasOn ? 'ON' : 'OFF'} → ${state.mainControlsOn ? 'ON' : 'OFF'}`, 'info');
+            addDebugMessage(`🔄 State Change: ${wasOn} → ${state.mainControlsOn}`, 'info');
+            
+            if (state.mainControlsOn) {
+                // When turning ON, send all saved settings for refresh
+                addDebugMessage('📱 DEBUG: Main Controls turning ON - sending saved settings', 'info');
+                const savedSettings = SettingsManager.getCurrentSettings();
+                if (savedSettings) {
+                    addDebugMessage('📱 DEBUG: Loading saved settings for Main Controls ON', 'info');
+                    await sendSavedSettings(savedSettings);
+                } else {
+                    addDebugMessage('📱 DEBUG: No saved settings found, sending current values', 'info');
+                    await sendAllValues();
+                }
+            } else {
+                // When turning OFF, just send the off command
+                addDebugMessage('📱 DEBUG: Main Controls turning OFF', 'info');
+            }
+            
+            // Send BLE command
+            if (state.connected) {
+                const onOffValue = state.mainControlsOn ? 1 : 0;
+                addDebugMessage(`📡 BLE: Sending onOff command`, 'ble');
+                addDebugMessage(`📡 BLE: Command: onOff = ${onOffValue}`, 'ble');
+                addDebugMessage(`📡 BLE: Characteristic UUID: ${BLE_CONFIG.characteristicUUIDs.onOff}`, 'ble');
+                await sendBLECommand('onOff', onOffValue);
+                addDebugMessage(`📡 BLE: ✅ Main Controls command sent successfully`, 'success');
+            } else {
+                addDebugMessage(`🔴 BLE: Not connected - Main Controls change saved locally only`, 'error');
+                addDebugMessage('💡 TIP: Click the connection button to reconnect to ESP32', 'info');
+            }
+            
+            updateUI();
+        }
+
+        // Auto-activation function
+        async function autoActivateMainControls() {
             // 🎯 AUTOMATICALLY TURN ON MAIN CONTROLS (if enabled in settings)
             const currentSettings = SettingsManager.getCurrentSettings();
             if (currentSettings.autoTurnOnMainControls) {
@@ -3778,7 +4005,7 @@
                         // Update button state manually if already ON
                         if (mainIcon && mainText) {
                             mainIcon.textContent = '⚡';
-                            mainText.textContent = 'Main Controls ON v1.0.3';
+                            mainText.textContent = 'Main Controls ON v1.0.4';
                         }
                     }
                 }, 1000); // Wait 1 second after initial values are sent
@@ -3793,31 +4020,6 @@
             await reconnectToDevice();
         }
 
-        // Main Controls Toggle
-        function toggleMainControls() {
-            const wasOn = state.mainControlsOn;
-            state.mainControlsOn = !state.mainControlsOn;
-            
-            // Debug output for Main Controls button
-            addDebugMessage('=== Main Controls Button Pressed ===', 'info');
-            addDebugMessage(`🔄 Main Controls: ${wasOn ? 'ON' : 'OFF'} → ${state.mainControlsOn ? 'ON' : 'OFF'}`, 'info');
-            addDebugMessage(`🔄 State Change: ${wasOn} → ${state.mainControlsOn}`, 'info');
-            
-            // Send BLE command
-            if (state.connected) {
-                const onOffValue = state.mainControlsOn ? 1 : 0;
-                addDebugMessage(`📡 BLE: Sending onOff command`, 'ble');
-                addDebugMessage(`📡 BLE: Command: onOff = ${onOffValue}`, 'ble');
-                addDebugMessage(`📡 BLE: Characteristic UUID: ${BLE_CONFIG.characteristicUUIDs.onOff}`, 'ble');
-                sendBLECommand('onOff', onOffValue);
-                addDebugMessage(`📡 BLE: ✅ Main Controls command sent successfully`, 'success');
-            } else {
-                addDebugMessage(`🔴 BLE: Not connected - Main Controls change saved locally only`, 'error');
-                addDebugMessage('💡 TIP: Click the connection button to reconnect to ESP32', 'info');
-            }
-            
-            updateUI();
-        }
 
         // Start/Stop Toggle
         function toggleStartStop() {
@@ -3946,8 +4148,18 @@
                 if (state.remainingTime <= 0) {
                         // Timer finished - stop the session
                     state.timerActive = false;
+                    state.remainingTime = 0; // Reset remaining time to 0
                         state.isRunning = false;
                         addDebugMessage('⏰ Timer finished - stopping session', 'info');
+                        
+                        // Send BLE stop commands (matching manual stop behavior)
+                        if (state.connected) {
+                            addDebugMessage('📡 BLE: Sending stop commands due to timer completion', 'ble');
+                            sendBLECommand('startStop', 0);
+                            sendBLECommand('tapperOnOff', 0);
+                            addDebugMessage('📡 BLE: ✅ Timer stop commands sent successfully', 'success');
+                        }
+                        
                     updateUI();
                 }
                     return;
@@ -4043,8 +4255,18 @@
                 if (cyclesRemaining <= 0) {
                     // Countdown finished - stop the session
             state.countdownActive = false;
+            state.remainingCycles = 0; // Reset remaining cycles to 0
                     state.isRunning = false;
                     addDebugMessage('🔢 Countdown finished - stopping session', 'info');
+                    
+                    // Send BLE stop commands (matching manual stop behavior)
+                    if (state.connected) {
+                        addDebugMessage('📡 BLE: Sending stop commands due to countdown completion', 'ble');
+                        sendBLECommand('startStop', 0);
+                        sendBLECommand('tapperOnOff', 0);
+                        addDebugMessage('📡 BLE: ✅ Countdown stop commands sent successfully', 'success');
+                    }
+                    
             updateUI();
                 } else {
                     state.remainingCycles = cyclesRemaining;
@@ -5616,7 +5838,7 @@
                 mainBtn.classList.remove('off');
                 mainBtn.classList.add('on');
                 mainIcon.textContent = '⚡';
-                        mainText.textContent = 'Main Controls ON v1.0.3';
+                        mainText.textContent = 'Main Controls ON v1.0.4';
                         mainIcon.classList.remove('spinner'); // Remove spinner when ON
             } else if (state.connected) {
                 // Connected but controls are OFF
