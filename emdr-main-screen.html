@@ -498,8 +498,8 @@
         }
 
         .start-stop-btn.stopped {
-            background: #4ecdc4;
-            border-color: #4ecdc4;
+            background: #4a90e2;
+            border-color: #4a90e2;
         }
 
         @keyframes pulse {
@@ -612,6 +612,17 @@
             transform: scale(0.95);
         }
         
+        .central-play-btn.running {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .central-play-btn.stopped {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+        
         .unit-status {
             color: rgba(255, 255, 255, 0.8);
             font-size: 12px;
@@ -640,25 +651,6 @@
             background: transparent;
         }
         
-        .mute-btn {
-            position: absolute;
-            right: -50px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.2s ease;
-        }
-        
-        .mute-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
         
         .speed-card {
             text-align: center;
@@ -687,6 +679,7 @@
             color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
         }
+
         
         .speed-control-mobile label {
             font-size: 14px;
@@ -763,11 +756,6 @@
                 font-size: 14px;
             }
             
-            .mute-btn {
-                width: 35px;
-                height: 35px;
-                font-size: 14px;
-            }
             
             .speed-control-mobile label {
                 font-size: 13px;
@@ -1302,6 +1290,19 @@
             transform: scale(1.1);
             background: rgba(255, 255, 255, 0.3);
         }
+        
+        .floating-btn.running {
+            background: rgba(255, 107, 107, 0.8);
+            border-color: rgba(255, 107, 107, 0.6);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        .floating-btn.stopped {
+            background: rgba(74, 144, 226, 0.8);
+            border-color: rgba(74, 144, 226, 0.6);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+        }
 
         /* Settings Panel */
         .settings-panel {
@@ -1771,6 +1772,36 @@
             
             <!-- Mobile-Optimized EMDR Layout -->
             <div class="emdr-mobile-layout">
+
+                <!-- Main EMDR Controls -->
+                <div class="emdr-card main-controls-card">
+                    <div class="central-controls">
+                        <!-- EMDR Direction Indicators -->
+                        <div class="nav-arrow nav-left" id="emdr-left-indicator">⬅️</div>
+                        
+                        <!-- Central Play Button -->
+                        <div class="central-play-section">
+                            <button class="central-play-btn" id="central-play-btn" onclick="toggleStartStop()">
+                                <span id="central-play-icon">▶️</span>
+                            </button>
+                            <div class="unit-status" id="unit-status">Unit Off</div>
+                            <div class="cycle-counter" id="cycle-counter">0 cycles</div>
+                        </div>
+                        
+                        <!-- EMDR Direction Indicators -->
+                        <div class="nav-arrow nav-right" id="emdr-right-indicator">➡️</div>
+                        
+                    </div>
+                </div>
+
+                <!-- Speed Control Card -->
+                <div class="emdr-card speed-card">
+                    <div class="speed-control-mobile">
+                        <label>Speed: <span id="speed-value-mobile">0</span></label>
+                        <input type="range" class="speed-slider-mobile" min="0" max="10" value="0" id="speed-slider-mobile">
+                    </div>
+                </div>
+
                 <!-- Timer/Countdown Card -->
                 <div class="emdr-card timer-countdown-card">
                     <div class="emdr-toggle-item">
@@ -1807,39 +1838,6 @@
                     </div>
                 </div>
 
-                <!-- Main EMDR Controls -->
-                <div class="emdr-card main-controls-card">
-                    <div class="central-controls">
-                        <!-- EMDR Direction Indicators -->
-                        <div class="nav-arrow nav-left" id="emdr-left-indicator">⬅️</div>
-                        
-                        <!-- Central Play Button -->
-                        <div class="central-play-section">
-                            <button class="central-play-btn" id="central-play-btn" onclick="toggleStartStop()">
-                                <span id="central-play-icon">▶️</span>
-                            </button>
-                            <div class="unit-status" id="unit-status">Unit Off</div>
-                            <div class="cycle-counter" id="cycle-counter">0 cycles</div>
-                        </div>
-                        
-                        <!-- EMDR Direction Indicators -->
-                        <div class="nav-arrow nav-right" id="emdr-right-indicator">➡️</div>
-                        
-                        <!-- Mute Button -->
-                        <button class="mute-btn" id="mute-btn" onclick="toggleMute()">
-                            <span id="mute-icon">🔇</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Speed Control Card -->
-                <div class="emdr-card speed-card">
-                    <div class="speed-control-mobile">
-                        <label>Speed: <span id="speed-value-mobile">0</span></label>
-                        <input type="range" class="speed-slider-mobile" min="0" max="10" value="0" id="speed-slider-mobile">
-                    </div>
-                </div>
-
                 <!-- Audio Control Card -->
                 <div class="emdr-card audio-card">
                     <div class="audio-control-mobile">
@@ -1847,6 +1845,7 @@
                         <div class="toggle" id="audio-toggle" onclick="toggleAudio()"></div>
                     </div>
                 </div>
+
             </div>
         </div> <!-- End of emdr-section -->
         
@@ -2500,9 +2499,9 @@
                 addDebugMessage('✅ Settings system ready - auto-save enabled');
             }, 1000);
             
-            // Auto-connect to previously paired device
+            // Auto-connect to previously paired device with multiple attempts
             setTimeout(() => {
-                attemptAutoConnection();
+                attemptAutoConnectionWithRetries();
             }, 1500);
         });
 
@@ -2679,7 +2678,7 @@
         function playLeftBell() {
             if (state.audioEnabled) {
                 // Lower frequency for left ear, played in left channel
-                createTibetanBellSound(600, 1500, 'left');
+                createTibetanBellSound(600, 300, 'left');
                 addDebugMessage('🔔 Left bell sound played (left channel)', 'info');
             }
         }
@@ -2687,7 +2686,7 @@
         function playRightBell() {
             if (state.audioEnabled) {
                 // Higher frequency for right ear, played in right channel
-                createTibetanBellSound(1000, 1500, 'right');
+                createTibetanBellSound(1000, 300, 'right');
                 addDebugMessage('🔔 Right bell sound played (right channel)', 'info');
             }
         }
@@ -2703,6 +2702,22 @@
                     audioToggle.classList.remove('active');
                     addDebugMessage('🔇 Audio disabled', 'info');
                 }
+            }
+        }
+
+        function updateConnectionStatus() {
+            const statusText = document.getElementById('connection-status-text');
+            const storedDevice = getStoredDeviceInfo();
+            
+            if (state.connected) {
+                if (statusText) statusText.textContent = `Connected to ${state.bleDevice?.name || 'ESP32'}`;
+                if (statusText) statusText.style.color = '#4ecdc4';
+            } else if (storedDevice) {
+                if (statusText) statusText.textContent = `Paired: ${storedDevice.name} (Offline)`;
+                if (statusText) statusText.style.color = '#ffd93d';
+            } else {
+                if (statusText) statusText.textContent = 'No Device Paired';
+                if (statusText) statusText.style.color = '#ff6b6b';
             }
         }
 
@@ -2781,11 +2796,74 @@
                         updateUI();
                     }
                 } else {
-                    addDebugMessage('📱 Device not currently available - keeping pairing info for next connection', 'info');
+                    addDebugMessage('📱 Device not currently available - trying to reconnect...', 'info');
+                    // Try to reconnect using stored device info
+                    await attemptReconnection(storedDevice);
                 }
             } catch (error) {
                 addDebugMessage(`❌ Auto-connection failed: ${error.message}`, 'error');
                 console.error('Auto-connection error:', error);
+                
+                // Try one more time with a different approach
+                setTimeout(async () => {
+                    addDebugMessage('🔄 Retrying auto-connection...', 'info');
+                    await attemptReconnection(storedDevice);
+                }, 3000);
+            }
+        }
+
+        async function attemptAutoConnectionWithRetries() {
+            const maxRetries = 3;
+            let retryCount = 0;
+            
+            const tryConnection = async () => {
+                retryCount++;
+                addDebugMessage(`🔄 Auto-connection attempt ${retryCount}/${maxRetries}`, 'info');
+                
+                try {
+                    await attemptAutoConnection();
+                    if (state.connected) {
+                        addDebugMessage('✅ Auto-connection successful!', 'success');
+                        return; // Success, stop retrying
+                    }
+                } catch (error) {
+                    addDebugMessage(`❌ Attempt ${retryCount} failed: ${error.message}`, 'error');
+                }
+                
+                // If not connected and still have retries left
+                if (!state.connected && retryCount < maxRetries) {
+                    const delay = retryCount * 2000; // Increasing delay: 2s, 4s, 6s
+                    addDebugMessage(`⏳ Retrying in ${delay/1000} seconds...`, 'info');
+                    setTimeout(tryConnection, delay);
+                } else if (!state.connected) {
+                    addDebugMessage('❌ Auto-connection failed after all attempts. Manual pairing required.', 'error');
+                }
+            };
+            
+            await tryConnection();
+        }
+
+        async function attemptReconnection(storedDevice) {
+            try {
+                // Try to request the device again using stored info
+                addDebugMessage(`🔄 Attempting to reconnect to ${storedDevice.name}...`, 'ble');
+                
+                const device = await navigator.bluetooth.requestDevice({
+                    filters: [{ name: storedDevice.name }],
+                    optionalServices: [BLE_CONFIG.serviceUUID]
+                });
+                
+                if (device) {
+                    addDebugMessage(`✅ Successfully reconnected to ${device.name}`, 'success');
+                    state.bleDevice = device;
+                    await connectToStoredDevice();
+                }
+            } catch (error) {
+                if (error.name === 'NotFoundError') {
+                    addDebugMessage('📱 Device not found - may need manual pairing', 'info');
+                } else {
+                    addDebugMessage(`❌ Reconnection failed: ${error.message}`, 'error');
+                }
             }
         }
 
@@ -4207,20 +4285,6 @@
             addDebugMessage(`🎯 Tapper Master toggled: ${newState}`, 'info');
         }
 
-        // EMDR Mute Toggle
-        function toggleMute() {
-            const muteBtn = document.getElementById('mute-btn');
-            const muteIcon = document.getElementById('mute-icon');
-            const isMuted = muteIcon.textContent === '🔇';
-            
-            if (isMuted) {
-                muteIcon.textContent = '🔊';
-                addDebugMessage(`🔊 EMDR Sound: ON`, 'info');
-            } else {
-                muteIcon.textContent = '🔇';
-                addDebugMessage(`🔇 EMDR Sound: OFF`, 'info');
-            }
-        }
 
         // Update EMDR Status Display
         function updateEMDRStatus() {
@@ -5433,7 +5497,7 @@
                         mainBtn.classList.remove('off');
                         mainBtn.classList.add('on');
                         mainIcon.textContent = '⚡';
-                        mainText.textContent = 'Main Controls ON v1.0.8';
+                        mainText.textContent = 'Main Controls ON v1.0.10';
                         mainIcon.classList.remove('spinner');
                     } else if (state.connected) {
                         mainBtn.classList.remove('on');
@@ -5451,21 +5515,18 @@
                 }
 
                 // Start/Stop Button
-                const startStopBtn = document.getElementById('start-stop-btn');
-                const startStopIcon = document.getElementById('start-stop-icon');
-                const startStopText = document.getElementById('start-stop-text');
+                const startStopBtn = document.getElementById('central-play-btn');
+                const startStopIcon = document.getElementById('central-play-icon');
                 
-                if (startStopBtn && startStopIcon && startStopText) {
+                if (startStopBtn && startStopIcon) {
                     if (state.isRunning) {
                         startStopBtn.classList.remove('stopped');
                         startStopBtn.classList.add('running');
                         startStopIcon.textContent = '⏹️';
-                        startStopText.textContent = 'Stop';
                     } else {
                         startStopBtn.classList.remove('running');
                         startStopBtn.classList.add('stopped');
                         startStopIcon.textContent = '▶️';
-                        startStopText.textContent = 'Start';
                     }
                 }
 
@@ -5517,16 +5578,27 @@
                 const floatingBtn = document.getElementById('floating-btn');
                 const floatingIcon = document.getElementById('floating-icon');
                 
-                if (floatingIcon) {
+                if (floatingBtn && floatingIcon) {
                     if (state.connected && state.mainControlsOn) {
                         floatingIcon.textContent = state.isRunning ? '⏹️' : '▶️';
                         floatingIcon.classList.remove('spinner');
+                        
+                        // Update floating button colors
+                        if (state.isRunning) {
+                            floatingBtn.classList.remove('stopped');
+                            floatingBtn.classList.add('running');
+                        } else {
+                            floatingBtn.classList.remove('running');
+                            floatingBtn.classList.add('stopped');
+                        }
                     } else if (state.connected) {
                         floatingIcon.textContent = '⚡';
                         floatingIcon.classList.remove('spinner');
+                        floatingBtn.classList.remove('running', 'stopped');
                     } else {
                         floatingIcon.textContent = '🔄';
                         floatingIcon.classList.add('spinner');
+                        floatingBtn.classList.remove('running', 'stopped');
                     }
                 }
                 
