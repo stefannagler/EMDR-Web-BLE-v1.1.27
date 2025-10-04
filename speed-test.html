@@ -1690,11 +1690,29 @@
                 clearInterval(randomHeightInterval);
             }
             
+            // Track last height change time to respect the interval
+            let lastHeightChangeTime = Date.now();
+            
             randomHeightInterval = setInterval(() => {
-                if (emdrAppState.randomHeightEnabled && emdrAppState.isInfinityPattern) {
-                    changeRandomHeight();
+                if (emdrAppState.randomHeightEnabled && emdrAppState.isInfinityPattern && infinityAnimation) {
+                    const now = Date.now();
+                    const timeSinceLastChange = (now - lastHeightChangeTime) / 1000; // seconds
+                    
+                    // Only check for center passage if enough time has passed since last change
+                    if (timeSinceLastChange >= emdrAppState.randomInterval) {
+                        // Only change height when ball is near center (time close to 0.0)
+                        const time = infinityAnimation.time;
+                        const timeFromCenter = Math.min(time, 1.0 - time); // Distance from 0.0 or 1.0 (both are center)
+                        
+                        // Change height when ball is within 5% of center (0.05 = 5% of cycle)
+                        if (timeFromCenter < 0.05) {
+                            changeRandomHeight();
+                            lastHeightChangeTime = now;
+                            console.log(`📊 Random height changed at time ${time.toFixed(3)} (near center)`);
+                        }
+                    }
                 }
-            }, emdrAppState.randomInterval * 1000); // Use same interval as audio
+            }, 100); // Check every 100ms for smooth detection
         }
 
         function stopRandomHeightChanges() {
