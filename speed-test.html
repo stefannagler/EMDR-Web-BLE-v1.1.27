@@ -710,8 +710,21 @@
         }
 
         // Tibetan Bell Audio System with Stereo Channels
+        let globalAudioContext = null;
+        
+        function getAudioContext() {
+            if (!globalAudioContext) {
+                globalAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+                // Resume context if it's suspended (Safari requirement)
+                if (globalAudioContext.state === 'suspended') {
+                    globalAudioContext.resume();
+                }
+            }
+            return globalAudioContext;
+        }
+        
         function createTibetanBellSound(frequency = 800, duration = 2000, channel = 'both') {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const audioContext = getAudioContext();
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
             const pannerNode = audioContext.createStereoPanner();
@@ -771,6 +784,12 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize audio context on first user interaction (Safari requirement)
+            document.addEventListener('click', function() {
+                if (globalAudioContext && globalAudioContext.state === 'suspended') {
+                    globalAudioContext.resume();
+                }
+            }, { once: true });
             // Initialize infinity animation
             infinityAnimation = new AnimatedInfinity('infinity-canvas', {
                 speed: 1.0 / speedTestState.animationSpeed, // cycles per second
