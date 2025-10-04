@@ -221,6 +221,26 @@
         .size-controls .speed-test-slider-group {
             flex: 0 0 120px; /* Fixed width for each slider */
         }
+
+        .audio-freq-controls {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            gap: 20px;
+            margin-top: 10px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 80px;
+            align-items: center;
+        }
+
+        .audio-freq-controls .speed-test-slider-group {
+            flex: 0 0 150px;
+            min-width: 150px;
+            text-align: center;
+        }
         
         .line-toggle-btn {
             padding: 8px 12px;
@@ -250,21 +270,71 @@
             color: #4ecdc4;
         }
 
+        .audio-freq-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .audio-freq-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .audio-freq-btn.active {
+            background: linear-gradient(145deg, rgba(78, 205, 196, 0.4), rgba(78, 205, 196, 0.2));
+            border-color: rgba(78, 205, 196, 0.6);
+            color: #4ecdc4;
+        }
+
+        .size-toggle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .size-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .size-toggle-btn.active {
+            background: linear-gradient(145deg, rgba(78, 205, 196, 0.4), rgba(78, 205, 196, 0.2));
+            border-color: rgba(78, 205, 196, 0.6);
+            color: #4ecdc4;
+        }
+
         .bouncy-ball {
             position: absolute;
             top: 50%;
             left: 50%;
             width: 60px;
             height: 60px;
-            background: radial-gradient(circle at 30% 30%, #ff6b6b, #ee5a52, #c44569);
+            background: #ff6b6b;
             border-radius: 50%;
             transform: translate(-50%, -50%);
             transition: left 3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 2s ease;
             user-select: none;
-            box-shadow: 
-                0 6px 20px rgba(255, 107, 107, 0.6),
-                inset 0 2px 4px rgba(255, 255, 255, 0.3),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
             border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
@@ -286,11 +356,7 @@
 
         .bouncy-ball.stopping {
             background: radial-gradient(circle at 30% 30%, #ff9999, #ff7777, #ff5555) !important;
-            box-shadow: 
-                0 6px 20px rgba(255, 153, 153, 0.6),
-                inset 0 2px 4px rgba(255, 255, 255, 0.3),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.2) !important;
-            transition: background 0.5s ease, box-shadow 0.5s ease !important;
+            transition: background 0.5s ease !important;
         }
 
         .bouncy-ball.animating {
@@ -464,21 +530,36 @@
                 <input type="range" id="speed-test-slider" min="1.0" max="3.0" step="0.1" value="2.0" class="slider">
             </div>
                 <div class="speed-test-buttons">
-                    <button class="speed-test-btn" id="toggle-btn" onclick="toggleSpeedTest()">Start</button>
+                    <button class="speed-test-btn" id="toggle-btn" onclick="toggleEmdrApp()">Start</button>
                     <button class="speed-test-btn" id="pattern-btn" onclick="togglePattern()">∞ Pattern</button>
                     <button class="speed-test-btn" id="audio-btn" onclick="toggleAudio()">🔔 Audio</button>
                     
-                    <div class="size-controls" id="size-controls" style="display: none;">
-                        <div class="speed-test-slider-group">
-                            <label>Width: <span id="widthValue">650</span></label>
-                            <input type="range" id="widthSlider" min="300" max="800" value="650" class="slider">
-                        </div>
-                        <div class="speed-test-slider-group">
-                            <label>Height: <span id="heightValue">500</span></label>
-                            <input type="range" id="heightSlider" min="150" max="500" value="500" class="slider">
-                        </div>
-                        <button class="line-toggle-btn" id="line-toggle-btn" onclick="toggleInfinityLine()" title="Toggle Infinity Line">📏</button>
+                <div class="size-controls" id="size-controls" style="display: none;">
+                    <div class="speed-test-slider-group">
+                        <label>Width: <span id="widthValue">650</span></label>
+                        <input type="range" id="widthSlider" min="300" max="800" value="650" class="slider">
                     </div>
+                    <div class="speed-test-slider-group">
+                        <label>Height: <span id="heightValue">500</span></label>
+                        <input type="range" id="heightSlider" min="150" max="500" value="500" class="slider">
+                    </div>
+                    <button class="line-toggle-btn" id="line-toggle-btn" onclick="toggleInfinityLine()" title="Toggle Infinity Line Visibility">📏</button>
+                </div>
+                
+                <button class="size-toggle-btn" id="size-toggle-btn" onclick="toggleSizeControls()" title="Adjust Infinity Loop Size">📐</button>
+                    
+                <div class="audio-freq-controls" id="audio-freq-controls" style="display: none;">
+                    <div class="speed-test-slider-group">
+                        <label>L Sound: <span id="leftFreqValue">600</span> Hz</label>
+                        <input type="range" id="leftFreqSlider" min="300" max="1000" value="600" class="slider">
+                    </div>
+                    <div class="speed-test-slider-group">
+                        <label>R Sound: <span id="rightFreqValue">800</span> Hz</label>
+                        <input type="range" id="rightFreqSlider" min="300" max="1000" value="800" class="slider">
+                    </div>
+                </div>
+                
+                <button class="audio-freq-btn" id="audio-freq-btn" onclick="toggleAudioFrequency()" title="Adjust Left/Right Sound Frequencies">🎵</button>
                 </div>
         </div>
         
@@ -489,8 +570,8 @@
     </div>
 
     <script>
-        // Speed Test State
-        let speedTestState = {
+        // EMDR App State
+        let emdrAppState = {
             isRunning: false,
             animationSpeed: 2.0,
             targetSpeed: 2.0, // Target speed for smooth transitions
@@ -498,8 +579,123 @@
             isInfinityPattern: false,
             audioEnabled: false,
             audioVolume: 0.5,
-            showInfinityLine: true // Show infinity line by default
+            showInfinityLine: true, // Show infinity line by default
+            leftFrequency: 600,
+            rightFrequency: 800,
+            infinityWidth: 650,
+            infinityHeight: 500
         };
+
+        // Load settings from localStorage
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('emdrAppSettings');
+            if (savedSettings) {
+                try {
+                    const settings = JSON.parse(savedSettings);
+                    emdrAppState.animationSpeed = settings.animationSpeed || 2.0;
+                    emdrAppState.targetSpeed = settings.animationSpeed || 2.0;
+                    emdrAppState.audioEnabled = settings.audioEnabled || false;
+                    emdrAppState.showInfinityLine = settings.showInfinityLine !== undefined ? settings.showInfinityLine : true;
+                    emdrAppState.leftFrequency = settings.leftFrequency || 600;
+                    emdrAppState.rightFrequency = settings.rightFrequency || 800;
+                    emdrAppState.infinityWidth = settings.infinityWidth || 650;
+                    emdrAppState.infinityHeight = settings.infinityHeight || 500;
+                } catch (e) {
+                    console.log('Error loading settings:', e);
+                }
+            }
+        }
+
+        // Save settings to localStorage
+        function saveSettings() {
+            const settings = {
+                animationSpeed: emdrAppState.animationSpeed,
+                audioEnabled: emdrAppState.audioEnabled,
+                showInfinityLine: emdrAppState.showInfinityLine,
+                leftFrequency: emdrAppState.leftFrequency,
+                rightFrequency: emdrAppState.rightFrequency,
+                infinityWidth: emdrAppState.infinityWidth,
+                infinityHeight: emdrAppState.infinityHeight
+            };
+            localStorage.setItem('emdrAppSettings', JSON.stringify(settings));
+        }
+
+        // Update UI elements with loaded settings
+        function updateUIWithLoadedSettings() {
+            // Update speed slider
+            const speedSlider = document.getElementById('speed-test-slider');
+            const speedValue = document.getElementById('speed-test-value');
+            if (speedSlider && speedValue) {
+                speedSlider.value = emdrAppState.animationSpeed.toFixed(1);
+                speedValue.textContent = emdrAppState.animationSpeed.toFixed(1);
+            }
+
+            // Update audio button
+            const audioBtn = document.getElementById('audio-btn');
+            if (audioBtn) {
+                if (emdrAppState.audioEnabled) {
+                    audioBtn.classList.add('running');
+                    audioBtn.textContent = '🔔 Audio';
+                } else {
+                    audioBtn.classList.remove('running');
+                    audioBtn.textContent = '🔔 Audio';
+                }
+            }
+
+            // Update infinity line button
+            const lineBtn = document.getElementById('line-toggle-btn');
+            if (lineBtn) {
+                if (emdrAppState.showInfinityLine) {
+                    lineBtn.classList.add('active');
+                    lineBtn.textContent = '📏';
+                } else {
+                    lineBtn.classList.remove('active');
+                    lineBtn.textContent = '🚫';
+                }
+            }
+
+            // Update frequency sliders and values
+            const leftFreqSlider = document.getElementById('leftFreqSlider');
+            const leftFreqValue = document.getElementById('leftFreqValue');
+            const rightFreqSlider = document.getElementById('rightFreqSlider');
+            const rightFreqValue = document.getElementById('rightFreqValue');
+
+            if (leftFreqSlider && leftFreqValue) {
+                leftFreqSlider.value = emdrAppState.leftFrequency;
+                leftFreqValue.textContent = emdrAppState.leftFrequency;
+            }
+
+            if (rightFreqSlider && rightFreqValue) {
+                rightFreqSlider.value = emdrAppState.rightFrequency;
+                rightFreqValue.textContent = emdrAppState.rightFrequency;
+            }
+
+            // Update width and height sliders and values
+            const widthSlider = document.getElementById('widthSlider');
+            const widthValue = document.getElementById('widthValue');
+            const heightSlider = document.getElementById('heightSlider');
+            const heightValue = document.getElementById('heightValue');
+
+            if (widthSlider && widthValue) {
+                widthSlider.value = emdrAppState.infinityWidth;
+                widthValue.textContent = emdrAppState.infinityWidth;
+            }
+
+            if (heightSlider && heightValue) {
+                heightSlider.value = emdrAppState.infinityHeight;
+                heightValue.textContent = emdrAppState.infinityHeight;
+            }
+            
+            // Set initial visibility of size button based on current pattern
+            const sizeToggleBtn = document.getElementById('size-toggle-btn');
+            if (sizeToggleBtn) {
+                if (emdrAppState.isInfinityPattern) {
+                    sizeToggleBtn.style.display = 'flex'; // Show in infinity mode
+                } else {
+                    sizeToggleBtn.style.display = 'none'; // Hide in horizontal mode
+                }
+            }
+        }
 
         // Animated Infinity Class
         class AnimatedInfinity {
@@ -555,7 +751,7 @@
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 
                 // Draw full infinity path only if enabled
-                if (speedTestState.showInfinityLine) {
+                if (emdrAppState.showInfinityLine) {
                     this.ctx.beginPath();
                     const segments = 300; // Increased segments for better continuity
                     for (let i = 0; i <= segments; i++) {
@@ -651,12 +847,12 @@
                 this.lastTime = currentTime;
                 
                 // Smooth speed transition
-                const speedDifference = speedTestState.targetSpeed - speedTestState.animationSpeed;
+                const speedDifference = emdrAppState.targetSpeed - emdrAppState.animationSpeed;
                 const speedTransitionRate = 2.0; // How fast to transition (higher = faster transition)
-                speedTestState.animationSpeed += speedDifference * speedTransitionRate * deltaTime;
+                emdrAppState.animationSpeed += speedDifference * speedTransitionRate * deltaTime;
                 
                 // Update infinity animation speed smoothly
-                this.speed = 1.0 / speedTestState.animationSpeed; // cycles per second
+                this.speed = 1.0 / emdrAppState.animationSpeed; // cycles per second
                 
                 // Update time based on actual elapsed time, not frames
                 this.time += this.speed * deltaTime;
@@ -667,11 +863,11 @@
                 
                 // Left trigger: when ball reaches left extreme (time crosses 0.25)
                 if (this.time >= 0.25 && this.lastXPosition < 0.25) {
-                    playLeftBell(); // Play left bell when ball is at left extreme
+                    playRightBell(); // Play right bell when ball is at left extreme (swapped)
                 }
                 // Right trigger: when ball reaches right extreme (time crosses 0.75)
                 if (this.time >= 0.75 && this.lastXPosition < 0.75) {
-                    playRightBell(); // Play right bell when ball is at right extreme
+                    playLeftBell(); // Play left bell when ball is at right extreme (swapped)
                 }
                 
                 // Update tracking for next frame
@@ -685,8 +881,8 @@
                         this.time = 0;
                         
                         // IMPORTANT: Update global state
-                        speedTestState.isRunning = false;
-                        speedTestState.stopRequested = false;
+                        emdrAppState.isRunning = false;
+                        emdrAppState.stopRequested = false;
                         
                         // Reset button text and class
                         const toggleBtn = document.getElementById('toggle-btn');
@@ -750,7 +946,7 @@
             // Create bell-like envelope (quick attack, slow decay)
             const now = audioContext.currentTime;
             gainNode.gain.setValueAtTime(0, now);
-            gainNode.gain.linearRampToValueAtTime(speedTestState.audioVolume * 0.8, now + 0.01); // Quick attack
+            gainNode.gain.linearRampToValueAtTime(emdrAppState.audioVolume * 0.8, now + 0.01); // Quick attack
             gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration / 1000); // Slow decay
             
             // Start and stop
@@ -759,18 +955,24 @@
         }
 
         function playLeftBell() {
-            if (speedTestState.audioEnabled) {
-                // Lower frequency for left ear, played in left channel
-                createTibetanBellSound(600, 1000, 'left');
+            console.log('playLeftBell called, audioEnabled:', emdrAppState.audioEnabled);
+            if (emdrAppState.audioEnabled) {
+                // Use configured frequency for left ear, played in left channel
+                createTibetanBellSound(emdrAppState.leftFrequency, 1000, 'left');
                 console.log('🔔 Left bell sound played (left channel)');
+            } else {
+                console.log('🔇 Audio disabled, left bell not played');
             }
         }
 
         function playRightBell() {
-            if (speedTestState.audioEnabled) {
-                // Higher frequency for right ear, played in right channel
-                createTibetanBellSound(800, 1000, 'right');
+            console.log('playRightBell called, audioEnabled:', emdrAppState.audioEnabled);
+            if (emdrAppState.audioEnabled) {
+                // Use configured frequency for right ear, played in right channel
+                createTibetanBellSound(emdrAppState.rightFrequency, 1000, 'right');
                 console.log('🔔 Right bell sound played (right channel)');
+            } else {
+                console.log('🔇 Audio disabled, right bell not played');
             }
         }
 
@@ -784,6 +986,9 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // Load saved settings first
+            loadSettings();
+            
             // Initialize audio context on first user interaction (Safari requirement)
             document.addEventListener('click', function() {
                 if (globalAudioContext && globalAudioContext.state === 'suspended') {
@@ -792,10 +997,10 @@
             }, { once: true });
             // Initialize infinity animation
             infinityAnimation = new AnimatedInfinity('infinity-canvas', {
-                speed: 1.0 / speedTestState.animationSpeed, // cycles per second
+                speed: 1.0 / emdrAppState.animationSpeed, // cycles per second
                 size: 60, // Match the size slider default
-                width: 650, // Updated default width
-                height: 500 // Updated default height
+                width: emdrAppState.infinityWidth, // Use saved width
+                height: emdrAppState.infinityHeight // Use saved height
             });
             
             // Don't draw infinity pattern on startup since we start in horizontal mode
@@ -806,7 +1011,7 @@
             const speedParam = urlParams.get('speed');
             if (speedParam) {
                 const urlSpeed = parseFloat(speedParam);
-                speedTestState.animationSpeed = urlSpeed;
+                emdrAppState.animationSpeed = urlSpeed;
                 const slider = document.getElementById('speed-test-slider');
                 const valueDisplay = document.getElementById('speed-test-value');
                 if (slider && valueDisplay) {
@@ -816,11 +1021,17 @@
                 }
             }
             
-            setupSpeedTestSlider();
+            setupEmdrAppSlider();
             setupSizeControls();
+            
+            // Setup audio frequency controls
+            setupAudioFrequencyControls();
+            
+            // Update UI with loaded settings
+            updateUIWithLoadedSettings();
         });
 
-        function setupSpeedTestSlider() {
+        function setupEmdrAppSlider() {
             const slider = document.getElementById('speed-test-slider');
             const valueDisplay = document.getElementById('speed-test-value');
             
@@ -828,8 +1039,9 @@
                 slider.addEventListener('input', function() {
                     // Set target speed for smooth transition
                     const sliderValue = parseFloat(this.value);
-                    speedTestState.targetSpeed = sliderValue; // Set target speed
+                    emdrAppState.targetSpeed = sliderValue; // Set target speed
                     valueDisplay.textContent = sliderValue.toFixed(1);
+                    saveSettings(); // Save speed setting
                     
                     // Don't immediately change speed - let the smooth transition handle it
                 });
@@ -846,40 +1058,69 @@
             if (widthSlider && widthValue) {
                 widthSlider.addEventListener('input', (e) => {
                     const newWidth = parseInt(e.target.value);
+                    emdrAppState.infinityWidth = newWidth;
                     if (infinityAnimation) {
                         infinityAnimation.setWidth(newWidth);
                     }
                     widthValue.textContent = newWidth;
+                    saveSettings(); // Save width setting
                 });
             }
-            
+
             // Height controls
             if (heightSlider && heightValue) {
                 heightSlider.addEventListener('input', (e) => {
                     const newHeight = parseInt(e.target.value);
+                    emdrAppState.infinityHeight = newHeight;
                     if (infinityAnimation) {
                         infinityAnimation.setHeight(newHeight);
                     }
                     heightValue.textContent = newHeight;
+                    saveSettings(); // Save height setting
                 });
             }
         }
 
-        function toggleSpeedTest() {
+        function setupAudioFrequencyControls() {
+            const leftFreqSlider = document.getElementById('leftFreqSlider');
+            const rightFreqSlider = document.getElementById('rightFreqSlider');
+            const leftFreqValue = document.getElementById('leftFreqValue');
+            const rightFreqValue = document.getElementById('rightFreqValue');
+
+            if (leftFreqSlider && leftFreqValue) {
+                leftFreqSlider.addEventListener('input', (e) => {
+                    const newFreq = parseInt(e.target.value);
+                    emdrAppState.leftFrequency = newFreq;
+                    leftFreqValue.textContent = newFreq;
+                    saveSettings(); // Save left frequency setting
+                });
+            }
+
+            if (rightFreqSlider && rightFreqValue) {
+                rightFreqSlider.addEventListener('input', (e) => {
+                    const newFreq = parseInt(e.target.value);
+                    emdrAppState.rightFrequency = newFreq;
+                    rightFreqValue.textContent = newFreq;
+                    saveSettings(); // Save right frequency setting
+                });
+            }
+        }
+
+        function toggleEmdrApp() {
             const toggleBtn = document.getElementById('toggle-btn');
             
-            console.log('toggleSpeedTest called, isRunning:', speedTestState.isRunning, 'isInfinityPattern:', speedTestState.isInfinityPattern, 'button found:', !!toggleBtn);
+            console.log('toggleEmdrApp called, isRunning:', emdrAppState.isRunning, 'isInfinityPattern:', emdrAppState.isInfinityPattern, 'button found:', !!toggleBtn);
             
             if (!toggleBtn || !infinityAnimation) return;
             
-            if (speedTestState.isRunning) {
+            if (emdrAppState.isRunning) {
                 // Request stop and let animations handle their own stopping
-                speedTestState.stopRequested = true;
+                emdrAppState.stopRequested = true;
                 toggleBtn.textContent = 'Stopping...';
                 toggleBtn.disabled = true; // Disable button during stopping
                 
                 // Stop animations and reset positions
-                if (speedTestState.isInfinityPattern) {
+                if (emdrAppState.isInfinityPattern) {
                     infinityAnimation.setBallColor('#ff9999'); // Change to lighter red for stopping
                     infinityAnimation.stop(); // Request smooth stop at end of cycle
                 } else {
@@ -889,21 +1130,21 @@
                 }
                 
             } else {
-                console.log('Starting animation, isInfinityPattern:', speedTestState.isInfinityPattern);
+                console.log('Starting animation, isInfinityPattern:', emdrAppState.isInfinityPattern);
                 // Start the animation
-                speedTestState.isRunning = true;
-                speedTestState.stopRequested = false;
+                emdrAppState.isRunning = true;
+                emdrAppState.stopRequested = false;
                 
                 // Reset ball color
                 infinityAnimation.setBallColor('#ff6b6b');
                 
-                if (speedTestState.isInfinityPattern) {
-                    console.log('Starting INFINITY pattern with speed:', speedTestState.animationSpeed);
+                if (emdrAppState.isInfinityPattern) {
+                    console.log('Starting INFINITY pattern with speed:', emdrAppState.animationSpeed);
                     // Update speed based on slider for infinity pattern (actual seconds)
-                    infinityAnimation.speed = 1.0 / speedTestState.animationSpeed; // cycles per second
+                    infinityAnimation.speed = 1.0 / emdrAppState.animationSpeed; // cycles per second
                     infinityAnimation.start();
                 } else {
-                    console.log('Starting HORIZONTAL pattern with speed:', speedTestState.animationSpeed);
+                    console.log('Starting HORIZONTAL pattern with speed:', emdrAppState.animationSpeed);
                     // Reset horizontal ball color and stopping state
                     horizontalBallColor = '#ff6b6b';
                     horizontalIsStopping = false;
@@ -921,7 +1162,7 @@
             const ball = document.getElementById('bouncy-ball');
             const toggleBtn = document.getElementById('toggle-btn');
             
-            if (!ball || !speedTestState.isRunning || !speedTestState.stopRequested) return;
+            if (!ball || !emdrAppState.isRunning || !emdrAppState.stopRequested) return;
             
             // Get current position
             const ballRect = ball.getBoundingClientRect();
@@ -931,7 +1172,7 @@
             
             let shouldStop = false;
             
-            if (speedTestState.isInfinityPattern) {
+            if (emdrAppState.isInfinityPattern) {
                 // For infinity pattern, stop when ball is near the starting position (top of infinity)
                 // Check if ball is near the starting position (50% left, 40% top)
                 const startLeft = containerRect.width * 0.5;
@@ -946,14 +1187,14 @@
             }
             
             if (shouldStop) {
-                speedTestState.isRunning = false;
-                speedTestState.stopRequested = false;
+                emdrAppState.isRunning = false;
+                emdrAppState.stopRequested = false;
                 
                 ball.classList.remove('animating', 'infinity', 'stopping');
                 ball.style.setProperty('--animation-duration', '');
                 
                 // Reset to appropriate start position
-                if (speedTestState.isInfinityPattern) {
+                if (emdrAppState.isInfinityPattern) {
                     ball.style.left = '50%';
                     ball.style.top = '40%';
                 } else {
@@ -990,9 +1231,9 @@
             if (!patternBtn || !toggleBtn) return;
             
             // Stop any running animation and reset to fresh start state
-            if (speedTestState.isRunning) {
+            if (emdrAppState.isRunning) {
                 // Stop current animation
-                if (speedTestState.isInfinityPattern) {
+                if (emdrAppState.isInfinityPattern) {
                     infinityAnimation.stopImmediately(); // Force immediate stop
                     // Clear infinity canvas immediately
                     const canvas = document.getElementById('infinity-canvas');
@@ -1003,8 +1244,8 @@
                 }
                 
                 // Reset state to fresh start
-                speedTestState.isRunning = false;
-                speedTestState.stopRequested = false;
+                emdrAppState.isRunning = false;
+                emdrAppState.stopRequested = false;
                 toggleBtn.textContent = 'Start';
                 toggleBtn.classList.remove('running');
                 toggleBtn.disabled = false;
@@ -1012,36 +1253,52 @@
             }
             
             // Toggle pattern
-            speedTestState.isInfinityPattern = !speedTestState.isInfinityPattern;
+            emdrAppState.isInfinityPattern = !emdrAppState.isInfinityPattern;
             
             // Update button text and style
-            if (speedTestState.isInfinityPattern) {
+            if (emdrAppState.isInfinityPattern) {
                 patternBtn.textContent = '↔ Pattern';
                 patternBtn.classList.add('running');
-                // Show size controls for infinity pattern
-                document.getElementById('size-controls').style.display = 'flex';
                 // Show infinity pattern (static)
                 infinityAnimation.draw();
+                
+                // Show size button when switching to infinity mode
+                const sizeToggleBtn = document.getElementById('size-toggle-btn');
+                if (sizeToggleBtn) {
+                    sizeToggleBtn.style.display = 'flex'; // Show the size button in infinity mode
+                }
             } else {
                 patternBtn.textContent = '∞ Pattern';
                 patternBtn.classList.remove('running');
-                // Hide size controls for horizontal pattern
-                document.getElementById('size-controls').style.display = 'none';
                 // Clear infinity canvas first, then show horizontal ball at start position
                 const canvas = document.getElementById('infinity-canvas');
                 const ctx = canvas.getContext('2d');
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 drawHorizontalBallAtStart();
+                
+                // Hide size controls and size button when switching to horizontal mode
+                const sizeControls = document.getElementById('size-controls');
+                const sizeToggleBtn = document.getElementById('size-toggle-btn');
+                if (sizeControls) {
+                    sizeControls.style.display = 'none';
+                }
+                if (sizeToggleBtn) {
+                    sizeToggleBtn.classList.remove('active');
+                    sizeToggleBtn.title = 'Adjust Infinity Loop Size';
+                    sizeToggleBtn.style.display = 'none'; // Hide the size button in horizontal mode
+                }
             }
         }
 
         function toggleAudio() {
-            speedTestState.audioEnabled = !speedTestState.audioEnabled;
+            emdrAppState.audioEnabled = !emdrAppState.audioEnabled;
+            saveSettings(); // Save audio setting
+            
             const audioBtn = document.getElementById('audio-btn');
             if (audioBtn) {
-                if (speedTestState.audioEnabled) {
+                if (emdrAppState.audioEnabled) {
                     audioBtn.classList.add('running');
-                    audioBtn.textContent = '🔊 Audio';
+                    audioBtn.textContent = '🔔 Audio';
                     console.log('🔊 Audio enabled - Tibetan bells will play for left/right movement');
                 } else {
                     audioBtn.classList.remove('running');
@@ -1052,23 +1309,62 @@
         }
 
         function toggleInfinityLine() {
-            speedTestState.showInfinityLine = !speedTestState.showInfinityLine;
+            emdrAppState.showInfinityLine = !emdrAppState.showInfinityLine;
+            saveSettings(); // Save line visibility setting
+            
             const lineBtn = document.getElementById('line-toggle-btn');
             if (lineBtn) {
-                if (speedTestState.showInfinityLine) {
+                if (emdrAppState.showInfinityLine) {
                     lineBtn.classList.add('active');
                     lineBtn.textContent = '📏';
+                    lineBtn.title = 'Hide Infinity Line Visibility';
                     console.log('📏 Infinity line shown');
                 } else {
                     lineBtn.classList.remove('active');
                     lineBtn.textContent = '🚫';
+                    lineBtn.title = 'Show Infinity Line Visibility';
                     console.log('🚫 Infinity line hidden');
                 }
             }
             
             // Redraw infinity pattern if currently visible
-            if (speedTestState.isInfinityPattern && infinityAnimation) {
+            if (emdrAppState.isInfinityPattern && infinityAnimation) {
                 infinityAnimation.draw();
+            }
+        }
+
+        function toggleAudioFrequency() {
+            const controls = document.getElementById('audio-freq-controls');
+            const btn = document.getElementById('audio-freq-btn');
+            
+            if (controls.style.display === 'none' || controls.style.display === '') {
+                controls.style.display = 'flex';
+                btn.classList.add('active');
+                btn.title = 'Hide Left/Right Sound Frequency Settings';
+            } else {
+                controls.style.display = 'none';
+                btn.classList.remove('active');
+                btn.title = 'Adjust Left/Right Sound Frequencies';
+            }
+        }
+
+        function toggleSizeControls() {
+            // Only allow size controls in infinity mode
+            if (!emdrAppState.isInfinityPattern) {
+                return;
+            }
+            
+            const controls = document.getElementById('size-controls');
+            const btn = document.getElementById('size-toggle-btn');
+            
+            if (controls.style.display === 'none' || controls.style.display === '') {
+                controls.style.display = 'flex';
+                btn.classList.add('active');
+                btn.title = 'Hide Infinity Size Controls';
+            } else {
+                controls.style.display = 'none';
+                btn.classList.remove('active');
+                btn.title = 'Adjust Infinity Loop Size';
             }
         }
 
@@ -1093,16 +1389,16 @@
             let lastEasedProgress = 0;
             
             function animate(currentTime) {
-                if (!speedTestState.isRunning || speedTestState.isInfinityPattern) {
-                    if (!speedTestState.isRunning) console.log('Horizontal: Animation not running, exiting');
-                    if (speedTestState.isInfinityPattern) console.log('Horizontal: Infinity pattern selected, exiting');
+                if (!emdrAppState.isRunning || emdrAppState.isInfinityPattern) {
+                    if (!emdrAppState.isRunning) console.log('Horizontal: Animation not running, exiting');
+                    if (emdrAppState.isInfinityPattern) console.log('Horizontal: Infinity pattern selected, exiting');
                     return;
                 }
                 
                 
                 // Debug: Log position and stopRequested status every 60 frames (roughly once per second)
                 if (Math.floor(currentTime / 1000) !== Math.floor((currentTime - 16) / 1000)) {
-                    console.log('Horizontal: Position:', position, 'stopRequested:', speedTestState.stopRequested, 'direction:', direction);
+                    console.log('Horizontal: Position:', position, 'stopRequested:', emdrAppState.stopRequested, 'direction:', direction);
                 }
                 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1116,12 +1412,12 @@
                 lastTime = currentTime;
                 
                 // Smooth speed transition for horizontal animation
-                const speedDifference = speedTestState.targetSpeed - speedTestState.animationSpeed;
+                const speedDifference = emdrAppState.targetSpeed - emdrAppState.animationSpeed;
                 const speedTransitionRate = 2.0; // How fast to transition (higher = faster transition)
-                speedTestState.animationSpeed += speedDifference * speedTransitionRate * deltaTime;
+                emdrAppState.animationSpeed += speedDifference * speedTransitionRate * deltaTime;
                 
                 // Calculate cycle progress
-                const cycleDuration = speedTestState.animationSpeed; // seconds for full cycle
+                const cycleDuration = emdrAppState.animationSpeed; // seconds for full cycle
                 const cycleElapsed = (currentTime - cycleStartTime) / 1000; // seconds elapsed
                 const cycleProgress = (cycleElapsed % cycleDuration) / cycleDuration; // 0 to 1
                 
@@ -1165,7 +1461,7 @@
                 
                 // Check if we should stop (when stop is requested and ball is near left edge)
                 // Use cycleProgress for reliable stopping detection
-                if (speedTestState.stopRequested && (cycleProgress < 0.02 || cycleProgress > 0.98)) {
+                if (emdrAppState.stopRequested && (cycleProgress < 0.02 || cycleProgress > 0.98)) {
                     // Stop when ball reaches left edge - draw the ball at its final position first
                     horizontalIsStopping = false;
                     horizontalBallColor = '#ff6b6b'; // Reset to normal color
@@ -1187,8 +1483,8 @@
                     ctx.fill();
                     
                     // IMPORTANT: Reset global state
-                    speedTestState.isRunning = false;
-                    speedTestState.stopRequested = false;
+                    emdrAppState.isRunning = false;
+                    emdrAppState.stopRequested = false;
                     
                     // Reset button text and class
                     const toggleBtn = document.getElementById('toggle-btn');
@@ -1282,9 +1578,9 @@
         // Handle window close
         window.addEventListener('beforeunload', function() {
             stopAnimationCheck();
-            if (speedTestState.isRunning) {
-                speedTestState.isRunning = false;
-                speedTestState.stopRequested = false;
+            if (emdrAppState.isRunning) {
+                emdrAppState.isRunning = false;
+                emdrAppState.stopRequested = false;
             }
         });
     </script>
