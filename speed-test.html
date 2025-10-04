@@ -761,7 +761,7 @@
         function playLeftBell() {
             if (speedTestState.audioEnabled) {
                 // Lower frequency for left ear, played in left channel
-                createTibetanBellSound(600, 300, 'left');
+                createTibetanBellSound(600, 1000, 'left');
                 console.log('🔔 Left bell sound played (left channel)');
             }
         }
@@ -769,7 +769,7 @@
         function playRightBell() {
             if (speedTestState.audioEnabled) {
                 // Higher frequency for right ear, played in right channel
-                createTibetanBellSound(1000, 300, 'right');
+                createTibetanBellSound(1000, 1000, 'right');
                 console.log('🔔 Right bell sound played (right channel)');
             }
         }
