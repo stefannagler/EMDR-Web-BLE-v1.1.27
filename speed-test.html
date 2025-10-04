@@ -986,7 +986,16 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Load saved settings first
+            // Check for URL speed parameter first (only if present)
+            const urlParams = new URLSearchParams(window.location.search);
+            const speedParam = urlParams.get('speed');
+            if (speedParam) {
+                const urlSpeed = parseFloat(speedParam);
+                emdrAppState.animationSpeed = urlSpeed;
+                emdrAppState.targetSpeed = urlSpeed;
+            }
+            
+            // Load saved settings (this will override URL parameter if no URL parameter exists)
             loadSettings();
             
             // Initialize audio context on first user interaction (Safari requirement)
@@ -1006,20 +1015,6 @@
             // Don't draw infinity pattern on startup since we start in horizontal mode
             // Draw initial horizontal ball at start position
             drawHorizontalBallAtStart();
-            // Get speed from URL parameter if available
-            const urlParams = new URLSearchParams(window.location.search);
-            const speedParam = urlParams.get('speed');
-            if (speedParam) {
-                const urlSpeed = parseFloat(speedParam);
-                emdrAppState.animationSpeed = urlSpeed;
-                const slider = document.getElementById('speed-test-slider');
-                const valueDisplay = document.getElementById('speed-test-value');
-                if (slider && valueDisplay) {
-                    // Set slider to match the URL speed parameter directly
-                    slider.value = urlSpeed.toFixed(1);
-                    valueDisplay.textContent = speedParam;
-                }
-            }
             
             setupEmdrAppSlider();
             setupSizeControls();
@@ -1037,9 +1032,10 @@
             
             if (slider && valueDisplay) {
                 slider.addEventListener('input', function() {
-                    // Set target speed for smooth transition
+                    // Set both target speed and animation speed
                     const sliderValue = parseFloat(this.value);
-                    emdrAppState.targetSpeed = sliderValue; // Set target speed
+                    emdrAppState.animationSpeed = sliderValue; // Update the main speed value
+                    emdrAppState.targetSpeed = sliderValue; // Set target speed for smooth transition
                     valueDisplay.textContent = sliderValue.toFixed(1);
                     saveSettings(); // Save speed setting
                     
