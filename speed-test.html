@@ -21,8 +21,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 20px;
-            padding-top: 15vh;
+            padding: 5px;
+            padding-top: 2vh;
         }
 
         .container {
@@ -46,16 +46,18 @@
 
         .speed-test-controls {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             margin-bottom: 200px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 40px; /* Fixed gap between speed slider and buttons */
         }
 
         .speed-test-slider-group {
-            flex: 1;
-            min-width: 250px;
+            flex: 0 0 300px; /* Fixed width, no grow/shrink */
         }
 
         .speed-test-slider-group label {
@@ -100,6 +102,8 @@
             display: flex;
             gap: 15px;
             justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
         .speed-test-btn {
@@ -183,7 +187,7 @@
         .bouncy-ball-container {
             position: relative;
             width: 100%;
-            height: 400px;
+            height: 500px;
             background: rgba(0, 0, 0, 0.4);
             border-radius: 16px;
             border: 2px solid rgba(255, 255, 255, 0.2);
@@ -202,11 +206,48 @@
         }
 
         .size-controls {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            gap: 20px;
+            margin-top: 0;
+            padding: 0;
+            background: none;
+            border: none;
+            height: auto;
+            box-sizing: border-box;
+        }
+        
+        .size-controls .speed-test-slider-group {
+            flex: 0 0 120px; /* Fixed width for each slider */
+        }
+        
+        .line-toggle-btn {
+            padding: 8px 12px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .line-toggle-btn:hover {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        .line-toggle-btn.active {
+            background: linear-gradient(145deg, rgba(78, 205, 196, 0.4), rgba(78, 205, 196, 0.2));
+            border-color: rgba(78, 205, 196, 0.6);
+            color: #4ecdc4;
         }
 
         .bouncy-ball {
@@ -358,8 +399,8 @@
 
 
         .close-btn {
-            position: absolute;
-            top: 20px;
+            position: fixed;
+            top: 30px;
             right: 20px;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -373,6 +414,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            z-index: 1000;
         }
 
         .close-btn:hover {
@@ -425,16 +467,17 @@
                     <button class="speed-test-btn" id="toggle-btn" onclick="toggleSpeedTest()">Start</button>
                     <button class="speed-test-btn" id="pattern-btn" onclick="togglePattern()">∞ Pattern</button>
                     <button class="speed-test-btn" id="audio-btn" onclick="toggleAudio()">🔔 Audio</button>
-                </div>
-                
-                <div class="size-controls" id="size-controls" style="display: none;">
-                    <div class="speed-test-slider-group">
-                        <label>Width: <span id="widthValue">300</span></label>
-                        <input type="range" id="widthSlider" min="300" max="800" value="300" class="slider">
-                    </div>
-                    <div class="speed-test-slider-group">
-                        <label>Height: <span id="heightValue">150</span></label>
-                        <input type="range" id="heightSlider" min="150" max="500" value="150" class="slider">
+                    
+                    <div class="size-controls" id="size-controls" style="display: none;">
+                        <div class="speed-test-slider-group">
+                            <label>Width: <span id="widthValue">650</span></label>
+                            <input type="range" id="widthSlider" min="300" max="800" value="650" class="slider">
+                        </div>
+                        <div class="speed-test-slider-group">
+                            <label>Height: <span id="heightValue">500</span></label>
+                            <input type="range" id="heightSlider" min="150" max="500" value="500" class="slider">
+                        </div>
+                        <button class="line-toggle-btn" id="line-toggle-btn" onclick="toggleInfinityLine()" title="Toggle Infinity Line">📏</button>
                     </div>
                 </div>
         </div>
@@ -450,10 +493,12 @@
         let speedTestState = {
             isRunning: false,
             animationSpeed: 2.0,
+            targetSpeed: 2.0, // Target speed for smooth transitions
             stopRequested: false,
             isInfinityPattern: false,
             audioEnabled: false,
-            audioVolume: 0.5
+            audioVolume: 0.5,
+            showInfinityLine: true // Show infinity line by default
         };
 
         // Animated Infinity Class
@@ -498,37 +543,44 @@
             
             getPointOnPath(t) {
                 const scaledT = t * Math.PI * 2;
-                const x = this.centerX + this.width * Math.cos(scaledT) / (1 + Math.sin(scaledT) * Math.sin(scaledT));
-                const y = this.centerY + this.height * Math.sin(scaledT) * Math.cos(scaledT) / (1 + Math.sin(scaledT) * Math.sin(scaledT));
+                
+                // Fixed parametric equations for continuous infinity symbol (no gaps)
+                const x = this.centerX + this.width * Math.sin(scaledT) / (1 + Math.cos(scaledT) * Math.cos(scaledT));
+                const y = this.centerY + this.height * Math.sin(scaledT) * Math.cos(scaledT) / (1 + Math.cos(scaledT) * Math.cos(scaledT));
+                
                 return { x, y };
             }
             
             draw() {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 
-                // Draw full infinity path
-                this.ctx.beginPath();
-                for (let t = 0; t <= 1; t += 0.01) {
-                    const point = this.getPointOnPath(t);
-                    if (t === 0) {
-                        this.ctx.moveTo(point.x, point.y);
-                    } else {
-                        this.ctx.lineTo(point.x, point.y);
+                // Draw full infinity path only if enabled
+                if (speedTestState.showInfinityLine) {
+                    this.ctx.beginPath();
+                    const segments = 300; // Increased segments for better continuity
+                    for (let i = 0; i <= segments; i++) {
+                        const t = i / segments;
+                        const point = this.getPointOnPath(t);
+                        if (i === 0) {
+                            this.ctx.moveTo(point.x, point.y);
+                        } else {
+                            this.ctx.lineTo(point.x, point.y);
+                        }
                     }
+                    this.ctx.strokeStyle = this.pathColor;
+                    this.ctx.lineWidth = 2;
+                    this.ctx.stroke();
                 }
-                this.ctx.strokeStyle = this.pathColor;
-                this.ctx.lineWidth = 2;
-                this.ctx.stroke();
                 
                 // Draw moving ball
                 const currentPoint = this.getPointOnPath(this.time);
                 this.ctx.beginPath();
-                this.ctx.arc(currentPoint.x, currentPoint.y, 18, 0, Math.PI * 2); // Larger ball
+                this.ctx.arc(currentPoint.x, currentPoint.y, 36, 0, Math.PI * 2); // Twice the size
                 
                 // Create gradient for 3D ball effect
                 const gradient = this.ctx.createRadialGradient(
-                    currentPoint.x - 6, currentPoint.y - 6, 0,
-                    currentPoint.x, currentPoint.y, 18
+                    currentPoint.x - 12, currentPoint.y - 12, 0,
+                    currentPoint.x, currentPoint.y, 36
                 );
                 gradient.addColorStop(0, '#ff9999');
                 gradient.addColorStop(0.6, this.ballColor);
@@ -537,13 +589,8 @@
                 this.ctx.fillStyle = gradient;
                 this.ctx.fill();
                 
-                // Add shadow
-                this.ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-                this.ctx.shadowBlur = 8;
-                this.ctx.shadowOffsetX = 2;
-                this.ctx.shadowOffsetY = 2;
+                // No shadow for crisp ball appearance
                 this.ctx.fill();
-                this.ctx.shadowColor = 'transparent';
             }
             
             start() {
@@ -555,6 +602,11 @@
             
             stop() {
                 this.stopRequested = true;
+            }
+            
+            stopImmediately() {
+                this.isRunning = false;
+                this.stopRequested = false;
             }
             
             setBallColor(color) {
@@ -598,21 +650,28 @@
                 const deltaTime = (currentTime - this.lastTime) / 1000; // Convert to seconds
                 this.lastTime = currentTime;
                 
+                // Smooth speed transition
+                const speedDifference = speedTestState.targetSpeed - speedTestState.animationSpeed;
+                const speedTransitionRate = 2.0; // How fast to transition (higher = faster transition)
+                speedTestState.animationSpeed += speedDifference * speedTransitionRate * deltaTime;
+                
+                // Update infinity animation speed smoothly
+                this.speed = 1.0 / speedTestState.animationSpeed; // cycles per second
+                
                 // Update time based on actual elapsed time, not frames
                 this.time += this.speed * deltaTime;
                 
                 // Audio triggers for infinity pattern - based on time phases
-                // Time 0.0: Ball starts on RIGHT
-                // Time 0.5: Ball is on LEFT
-                // Time 1.0: Ball returns to RIGHT
+                // Audio triggers for infinity pattern - trigger when ball is at left/right extremes
+                // With Math.sin(scaledT): t=0.0=center, t=0.25=left, t=0.5=center, t=0.75=right, t=1.0=center
                 
-                // Left trigger: when ball reaches left side (time crosses 0.5)
-                if (this.time >= 0.5 && this.lastXPosition < 0.5) {
-                    playLeftBell(); // Play left bell when ball is on left side
+                // Left trigger: when ball reaches left extreme (time crosses 0.25)
+                if (this.time >= 0.25 && this.lastXPosition < 0.25) {
+                    playLeftBell(); // Play left bell when ball is at left extreme
                 }
-                // Right trigger: when ball reaches right side (time crosses 1.0, which wraps to 0.0)
-                if (this.time >= 1.0 && this.lastXPosition < 1.0) {
-                    playRightBell(); // Play right bell when ball returns to right side
+                // Right trigger: when ball reaches right extreme (time crosses 0.75)
+                if (this.time >= 0.75 && this.lastXPosition < 0.75) {
+                    playRightBell(); // Play right bell when ball is at right extreme
                 }
                 
                 // Update tracking for next frame
@@ -635,6 +694,7 @@
                             toggleBtn.textContent = 'Start';
                             toggleBtn.classList.remove('running');
                             toggleBtn.disabled = false; // Re-enable button
+                            toggleBtn.style.pointerEvents = 'auto'; // Ensure button is clickable
                         }
                         
                         return;
@@ -715,8 +775,8 @@
             infinityAnimation = new AnimatedInfinity('infinity-canvas', {
                 speed: 1.0 / speedTestState.animationSpeed, // cycles per second
                 size: 60, // Match the size slider default
-                width: 300, // Match the width slider default
-                height: 150 // Match the height slider default
+                width: 650, // Updated default width
+                height: 500 // Updated default height
             });
             
             // Don't draw infinity pattern on startup since we start in horizontal mode
@@ -747,19 +807,12 @@
             
             if (slider && valueDisplay) {
                 slider.addEventListener('input', function() {
-                    // Direct calculation: slider value = actual seconds
+                    // Set target speed for smooth transition
                     const sliderValue = parseFloat(this.value);
-                    speedTestState.animationSpeed = sliderValue; // Direct mapping: 1.0=1 second, 2.0=2 seconds, 3.0=3 seconds
-                    valueDisplay.textContent = speedTestState.animationSpeed.toFixed(1);
+                    speedTestState.targetSpeed = sliderValue; // Set target speed
+                    valueDisplay.textContent = sliderValue.toFixed(1);
                     
-                    // Update animation speed if currently running
-                    if (speedTestState.isRunning) {
-                        if (speedTestState.isInfinityPattern && infinityAnimation) {
-                            // Convert slider to cycles per second: 1.0=1 second cycle, 2.0=2 second cycle, 3.0=3 second cycle
-                            infinityAnimation.speed = 1.0 / speedTestState.animationSpeed; // cycles per second
-                        }
-                        // For horizontal animation, speed is calculated dynamically in the animation loop
-                    }
+                    // Don't immediately change speed - let the smooth transition handle it
                 });
             }
         }
@@ -913,8 +966,31 @@
 
         function togglePattern() {
             const patternBtn = document.getElementById('pattern-btn');
+            const toggleBtn = document.getElementById('toggle-btn');
             
-            if (!patternBtn) return;
+            if (!patternBtn || !toggleBtn) return;
+            
+            // Stop any running animation and reset to fresh start state
+            if (speedTestState.isRunning) {
+                // Stop current animation
+                if (speedTestState.isInfinityPattern) {
+                    infinityAnimation.stopImmediately(); // Force immediate stop
+                    // Clear infinity canvas immediately
+                    const canvas = document.getElementById('infinity-canvas');
+                    const ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                } else {
+                    stopHorizontalAnimation();
+                }
+                
+                // Reset state to fresh start
+                speedTestState.isRunning = false;
+                speedTestState.stopRequested = false;
+                toggleBtn.textContent = 'Start';
+                toggleBtn.classList.remove('running');
+                toggleBtn.disabled = false;
+                toggleBtn.style.pointerEvents = 'auto'; // Ensure button is clickable
+            }
             
             // Toggle pattern
             speedTestState.isInfinityPattern = !speedTestState.isInfinityPattern;
@@ -924,37 +1000,19 @@
                 patternBtn.textContent = '↔ Pattern';
                 patternBtn.classList.add('running');
                 // Show size controls for infinity pattern
-                document.getElementById('size-controls').style.display = 'block';
+                document.getElementById('size-controls').style.display = 'flex';
+                // Show infinity pattern (static)
+                infinityAnimation.draw();
             } else {
                 patternBtn.textContent = '∞ Pattern';
                 patternBtn.classList.remove('running');
                 // Hide size controls for horizontal pattern
                 document.getElementById('size-controls').style.display = 'none';
-            }
-            
-            // If animation is running, restart it with new pattern
-            if (speedTestState.isRunning) {
-                if (speedTestState.isInfinityPattern) {
-                    // Switch to infinity pattern with current speed (actual seconds)
-                    stopHorizontalAnimation();
-                    infinityAnimation.speed = 1.0 / speedTestState.animationSpeed; // cycles per second
-                    infinityAnimation.start();
-                } else {
-                    // Switch to horizontal pattern
-                    infinityAnimation.stop();
-                    // Clear the infinity pattern from screen
-                    drawHorizontalBallAtStart();
-                    startHorizontalAnimation();
-                }
-            } else {
-                // If animation is not running, just update the display
-                if (speedTestState.isInfinityPattern) {
-                    // Show infinity pattern
-                    infinityAnimation.draw();
-                } else {
-                    // Show horizontal ball at start position
-                    drawHorizontalBallAtStart();
-                }
+                // Clear infinity canvas first, then show horizontal ball at start position
+                const canvas = document.getElementById('infinity-canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawHorizontalBallAtStart();
             }
         }
 
@@ -974,6 +1032,32 @@
             }
         }
 
+        function toggleInfinityLine() {
+            speedTestState.showInfinityLine = !speedTestState.showInfinityLine;
+            const lineBtn = document.getElementById('line-toggle-btn');
+            if (lineBtn) {
+                if (speedTestState.showInfinityLine) {
+                    lineBtn.classList.add('active');
+                    lineBtn.textContent = '📏';
+                    console.log('📏 Infinity line shown');
+                } else {
+                    lineBtn.classList.remove('active');
+                    lineBtn.textContent = '🚫';
+                    console.log('🚫 Infinity line hidden');
+                }
+            }
+            
+            // Redraw infinity pattern if currently visible
+            if (speedTestState.isInfinityPattern && infinityAnimation) {
+                infinityAnimation.draw();
+            }
+        }
+
+        function easeInOut(t) {
+            // Gentler ease-in-out for smoother, less aggressive acceleration/deceleration
+            return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        }
+
         function startHorizontalAnimation() {
             console.log('🚀 Starting horizontal animation function');
             // Create a simple horizontal animation using canvas
@@ -982,10 +1066,12 @@
             
             let position = 0;
             let direction = 1;
-            const ballRadius = 18; // Larger ball to match infinity pattern
+            const ballRadius = 36; // Twice the size to match infinity pattern
             // Initial speed will be calculated in the animate function based on slider value
             
             let lastTime = null;
+            let cycleStartTime = null;
+            let lastEasedProgress = 0;
             
             function animate(currentTime) {
                 if (!speedTestState.isRunning || speedTestState.isInfinityPattern) {
@@ -994,6 +1080,7 @@
                     return;
                 }
                 
+                
                 // Debug: Log position and stopRequested status every 60 frames (roughly once per second)
                 if (Math.floor(currentTime / 1000) !== Math.floor((currentTime - 16) / 1000)) {
                     console.log('Horizontal: Position:', position, 'stopRequested:', speedTestState.stopRequested, 'direction:', direction);
@@ -1001,45 +1088,66 @@
                 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 
-                // Time-based animation instead of frame-based
-                if (!lastTime) lastTime = currentTime;
+                // Time-based animation with ease-in-out
+                if (!lastTime) {
+                    lastTime = currentTime;
+                    cycleStartTime = currentTime;
+                }
                 const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
                 lastTime = currentTime;
                 
-                // Update speed from current state (convert seconds to pixels per second)
-                const slider = document.getElementById('speed-test-slider');
-                const sliderValue = parseFloat(slider.value);
-                // Convert slider to actual seconds: 1.0=1 second, 2.0=2 seconds, 3.0=3 seconds
-                // For a full cycle (there and back), we need to travel canvas width twice
+                // Smooth speed transition for horizontal animation
+                const speedDifference = speedTestState.targetSpeed - speedTestState.animationSpeed;
+                const speedTransitionRate = 2.0; // How fast to transition (higher = faster transition)
+                speedTestState.animationSpeed += speedDifference * speedTransitionRate * deltaTime;
+                
+                // Calculate cycle progress
+                const cycleDuration = speedTestState.animationSpeed; // seconds for full cycle
+                const cycleElapsed = (currentTime - cycleStartTime) / 1000; // seconds elapsed
+                const cycleProgress = (cycleElapsed % cycleDuration) / cycleDuration; // 0 to 1
+                
+                // Update position based on eased progress
                 const canvasWidth = canvas.width;
-                const totalDistance = canvasWidth * 2; // There and back
-                // Calculate pixels per second to complete cycle in specified seconds
-                const pixelsPerSecond = totalDistance / sliderValue; // Total distance / seconds
-                const pixelsPerFrame = pixelsPerSecond * deltaTime; // Convert to pixels per frame based on deltaTime
-                speed = pixelsPerFrame;
                 
-                // Update position
-                position += direction * speed;
-                
-                // Bounce off edges
-                if (position >= canvas.width - ballRadius) {
-                    position = canvas.width - ballRadius;
-                    if (direction === 1) {
-                        direction = -1;
-                        playRightBell(); // Play right bell when bouncing off right edge (moving left)
-                    }
-                } else if (position <= ballRadius) {
-                    position = ballRadius;
-                    if (direction === -1) {
-                        direction = 1;
-                        playLeftBell(); // Play left bell when bouncing off left edge (moving right)
-                    }
+                // Apply ease-in-out to each half of the movement separately
+                let easedProgress;
+                if (cycleProgress <= 0.5) {
+                    // First half: left to center to right (0.0 → 0.5)
+                    const halfProgress = cycleProgress * 2; // 0.0 → 1.0
+                    const easedHalfProgress = easeInOut(halfProgress); // Apply easing to this half
+                    easedProgress = easedHalfProgress; // For stopping logic
+                    position = ballRadius + (canvasWidth - ballRadius * 2) * easedHalfProgress;
+                } else {
+                    // Second half: right to center to left (0.5 → 1.0)
+                    const halfProgress = (cycleProgress - 0.5) * 2; // 0.0 → 1.0
+                    const easedHalfProgress = easeInOut(halfProgress); // Apply easing to this half
+                    easedProgress = 1.0 - easedHalfProgress; // For stopping logic (inverted for second half)
+                    position = canvasWidth - ballRadius - (canvasWidth - ballRadius * 2) * easedHalfProgress;
                 }
                 
+                // Audio triggers based on cycle progress
+                // When cycleProgress is 0.5, ball is at right edge; when 0.0 or 1.0, ball is at left edge
+                const wasAtRight = lastEasedProgress > 0.4 && lastEasedProgress < 0.6;
+                const isAtLeft = cycleProgress < 0.1 || cycleProgress > 0.9;
+                const wasAtLeft = lastEasedProgress < 0.1 || lastEasedProgress > 0.9;
+                const isAtRight = cycleProgress > 0.4 && cycleProgress < 0.6;
+                
+                // Left trigger: when ball reaches left edge
+                if (isAtLeft && !wasAtLeft) {
+                    playLeftBell();
+                }
+                // Right trigger: when ball reaches right edge
+                if (isAtRight && !wasAtRight) {
+                    playRightBell();
+                }
+                
+                // Store for next frame
+                lastEasedProgress = cycleProgress;
+                
                 // Check if we should stop (when stop is requested and ball is near left edge)
-                if (speedTestState.stopRequested && position <= ballRadius + 20 && direction === -1) {
-                    // Stop when moving left and near start position
-                    position = ballRadius; // Ensure we're exactly at start
+                // Use cycleProgress for reliable stopping detection
+                if (speedTestState.stopRequested && (cycleProgress < 0.02 || cycleProgress > 0.98)) {
+                    // Stop when ball reaches left edge - draw the ball at its final position first
                     horizontalIsStopping = false;
                     horizontalBallColor = '#ff6b6b'; // Reset to normal color
                     
@@ -1049,7 +1157,7 @@
                     
                     // Create gradient for 3D ball effect
                     const gradient = ctx.createRadialGradient(
-                        position - 6, canvas.height / 2 - 6, 0,
+                        position - 12, canvas.height / 2 - 12, 0,
                         position, canvas.height / 2, ballRadius
                     );
                     gradient.addColorStop(0, '#ff9999');
@@ -1058,22 +1166,6 @@
                     
                     ctx.fillStyle = gradient;
                     ctx.fill();
-                    
-                    // Add shadow
-                    ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-                    ctx.shadowBlur = 8;
-                    ctx.shadowOffsetX = 4;
-                    ctx.shadowOffsetY = 4;
-                    
-                    ctx.beginPath();
-                    ctx.arc(position, canvas.height / 2, ballRadius, 0, Math.PI * 2);
-                    ctx.fill();
-                    
-                    // Reset shadow
-                    ctx.shadowColor = 'transparent';
-                    ctx.shadowBlur = 0;
-                    ctx.shadowOffsetX = 0;
-                    ctx.shadowOffsetY = 0;
                     
                     // IMPORTANT: Reset global state
                     speedTestState.isRunning = false;
@@ -1085,6 +1177,7 @@
                         toggleBtn.textContent = 'Start';
                         toggleBtn.classList.remove('running');
                         toggleBtn.disabled = false; // Re-enable button
+                        toggleBtn.style.pointerEvents = 'auto'; // Ensure button is clickable
                     }
                     
                     return; // Stop the animation
@@ -1096,7 +1189,7 @@
                 
                 // Create gradient for 3D ball effect
                 const gradient = ctx.createRadialGradient(
-                    position - 6, canvas.height / 2 - 6, 0,
+                    position - 12, canvas.height / 2 - 12, 0,
                     position, canvas.height / 2, ballRadius
                 );
                 gradient.addColorStop(0, horizontalIsStopping ? '#ffaaaa' : '#ff9999');
@@ -1106,13 +1199,8 @@
                 ctx.fillStyle = gradient;
                 ctx.fill();
                 
-                // Add shadow
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-                ctx.shadowBlur = 8;
-                ctx.shadowOffsetX = 2;
-                ctx.shadowOffsetY = 2;
+                // No shadow for crisp ball appearance
                 ctx.fill();
-                ctx.shadowColor = 'transparent';
                 
                 horizontalAnimation = requestAnimationFrame(animate);
             }
@@ -1134,7 +1222,7 @@
             if (!canvas) return;
             
             const ctx = canvas.getContext('2d');
-            const ballRadius = 18; // Match the radius used in horizontal animation
+            const ballRadius = 36; // Twice the size to match updated horizontal animation
             const position = ballRadius; // Start position at left edge
             
             // Clear canvas
@@ -1146,7 +1234,7 @@
             
             // Create gradient for 3D ball effect (same as horizontal animation)
             const gradient = ctx.createRadialGradient(
-                position - 6, canvas.height / 2 - 6, 0,
+                position - 12, canvas.height / 2 - 12, 0,
                 position, canvas.height / 2, ballRadius
             );
             gradient.addColorStop(0, '#ff9999');
@@ -1156,21 +1244,10 @@
             ctx.fillStyle = gradient;
             ctx.fill();
             
-            // Add shadow
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-            ctx.shadowBlur = 8;
-            ctx.shadowOffsetX = 4;
-            ctx.shadowOffsetY = 4;
-            
+            // No shadow for crisp ball appearance
             ctx.beginPath();
             ctx.arc(position, canvas.height / 2, ballRadius, 0, Math.PI * 2);
             ctx.fill();
-            
-            // Reset shadow
-            ctx.shadowColor = 'transparent';
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
         }
 
         // Keyboard shortcuts
