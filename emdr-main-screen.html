@@ -13,70 +13,143 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            /*background: lightgreen !important;*/
-            background: linear-gradient(135deg, #000000 0%, #000000 100%) !important; 
+            background: #f5f5f5 !important;
             min-height: 100vh;
             color: #333;
             overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Fixed header */
+        /* Fixed header with navigation */
         .fixed-header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(30, 30, 30, 0.95);
-            backdrop-filter: blur(10px);
+            background: #ffffff;
+            border-bottom: 1px solid #d1d1d1;
             z-index: 1000;
-            padding: 10px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Simple Settings Button */
-        .simple-settings-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
+            padding: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 1001;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            height: 60px;
         }
         
-        .simple-settings-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        .app-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-right: 40px;
+        }
+        
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            gap: 0;
+            flex: 1;
+        }
+        
+        .nav-item {
+            position: relative;
+            padding: 20px 16px;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .nav-item:hover {
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .nav-item.active {
+            color: #4a90e2;
+            border-bottom-color: #4a90e2;
+        }
+        
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #ffffff;
+            border: 1px solid #d1d1d1;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            z-index: 1001;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 10px 16px;
+            color: #333;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+        
+        .dropdown-item.active {
+            background: #e6f2ff;
+            color: #4a90e2;
         }
 
         /* Main container */
         .container {
-            max-width: 100%;
-            margin: 0;
-            margin-top: 160px;
-            padding: 20px;
-            min-height: calc(100vh - 160px);
-            display: block !important;
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-top: 0;
+            padding: 30px;
+            padding-top: 120px;
+        }
+        
+        /* Content sections - hide all by default except main */
+        .content-section {
+            display: none;
+            position: relative;
+            top: 0;
+        }
+        
+        .content-section.active {
+            display: block;
         }
         
         /* Section styling */
         .emdr-section, .tapper-section, .lightbar-section, .random-controls-section {
-            background: rgba(155, 155, 155, 0.8);
+            background: #ffffff;
+            border: 1px solid #d1d1d1;
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         
         /* Two Column Layout for Tapper and Lightbar */
@@ -88,15 +161,7 @@
         
         .tapper-section, .lightbar-section {
             flex: 1;
-            border-radius: 20px;
             padding: 20px;
-        }
-        
-        /* Random Controls Section */
-        .random-controls-section {
-            border-radius: 20px;
-            padding: 20px;
-            margin-top: 30px;
         }
         
         .section-title {
@@ -104,8 +169,8 @@
             font-weight: bold;
             margin-bottom: 20px;
             text-align: center;
-            color: #4ecdc4;
-            border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+            color: #333;
+            border-bottom: 1px solid #d1d1d1;
             padding-bottom: 10px;
         }
         
@@ -124,12 +189,10 @@
         }
         
         .lightbar-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #d1d1d1;
             padding: 16px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
         }
         
         .lightbar-card.compact {
@@ -137,7 +200,7 @@
         }
         
         .lightbar-card h4 {
-            color: white;
+            color: #333;
             font-size: 14px;
             margin-bottom: 12px;
             font-weight: 500;
@@ -156,8 +219,8 @@
         
         /* Mode Toggle Switch for Flow/Flash */
         .lightbar-card.mode-switch {
-            background: rgba(78, 205, 196, 0.1);
-            border: 2px solid rgba(78, 205, 196, 0.3);
+            background: #e6f2ff;
+            border: 1px solid #4a90e2;
         }
         
         .mode-toggle {
@@ -281,7 +344,7 @@
         
 
         .header h1 {
-            color: white;
+            color: #333;
             font-size: 24px;
             font-weight: 600;
             margin: 0;
@@ -290,14 +353,14 @@
         /* Compact Header Main Controls Button */
         .header-main-controls-btn {
             padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            color: white;
+            background: #f0f0f0;
+            border: 1px solid #d1d1d1;
+            border-radius: 4px;
+            color: #333;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background-color 0.2s ease;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -306,20 +369,19 @@
         }
 
         .header-main-controls-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-1px);
+            background: #e0e0e0;
         }
 
         .header-main-controls-btn.off {
             border-color: #ff6b6b;
             color: #ff6b6b;
-            background: rgba(255, 107, 107, 0.1);
+            background: #ffe6e6;
         }
 
         .header-main-controls-btn.on {
-            border-color: #4ecdc4;
-            color: #4ecdc4;
-            background: rgba(78, 205, 196, 0.1);
+            border-color: #4a90e2;
+            color: #4a90e2;
+            background: #e6f2ff;
         }
         
         /* Compact version for status bar */
@@ -352,7 +414,7 @@
         }
 
         .status-item[onclick]:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: #f0f0f0;
         }
 
         /* Movement Arrow Animation */
@@ -394,15 +456,14 @@
         }
 
         .timer-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #d1d1d1;
             padding: 16px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .timer-card h3 {
-            color: white;
+            color: #333;
             font-size: 16px;
             margin-bottom: 8px;
         }
@@ -410,7 +471,7 @@
         .timer-display {
             font-size: 18px;
             font-weight: bold;
-            color: #4ecdc4;
+            color: #333;
             margin: 8px 0;
             text-align: center;
         }
@@ -424,7 +485,7 @@
 
         .toggle-label {
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
+            color: #333;
         }
 
         .timer-options {
@@ -440,23 +501,22 @@
         .option-btn {
             width: 24px;
             height: 24px;
-            border: none;
+            border: 1px solid #d1d1d1;
             border-radius: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
+            background: #f0f0f0;
+            color: #333;
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s ease;
         }
 
         .option-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            background: #e0e0e0;
         }
 
         .option-btn.active {
-            background: #4ecdc4;
+            background: #4a90e2;
             color: white;
         }
 
@@ -473,21 +533,21 @@
         .mode-btn {
             flex: 1;
             padding: 8px 12px;
-            border: none;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid #d1d1d1;
+            border-radius: 4px;
+            background: #f0f0f0;
+            color: #333;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s ease;
         }
         
         .mode-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: #e0e0e0;
         }
         
         .mode-btn.active {
-            background: #4ecdc4;
+            background: #4a90e2;
             color: white;
         }
 
@@ -499,22 +559,23 @@
 
         .timer-btn {
             padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            color: white;
+            background: #f0f0f0;
+            border: 1px solid #d1d1d1;
+            border-radius: 4px;
+            color: #333;
             cursor: pointer;
             font-size: 12px;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s ease;
         }
 
         .timer-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: #e0e0e0;
         }
 
         .timer-btn.active {
-            background: #4ecdc4;
-            border-color: #4ecdc4;
+            background: #4a90e2;
+            border-color: #4a90e2;
+            color: white;
         }
 
         /* Start/Stop Button */
@@ -525,36 +586,34 @@
 
         .start-stop-btn {
             width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
+            height: 40px;
+            border: 1px solid #d1d1d1;
+            background: #f0f0f0;
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background-color 0.2s ease;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
             margin: 0 auto 12px;
         }
 
         .start-stop-btn:hover {
-            transform: scale(1.05);
+            background: #e0e0e0;
         }
 
         .start-stop-btn.running {
             background: #ff6b6b;
             border-color: #ff6b6b;
-            animation: pulse 2s infinite;
+            color: white;
         }
 
         .start-stop-btn.stopped {
             background: #4a90e2;
             border-color: #4a90e2;
+            color: white;
         }
 
         @keyframes pulse {
@@ -573,7 +632,7 @@
         }
 
         .cycle-counter {
-            color: rgba(255, 255, 255, 0.8);
+            color: #666;
             font-size: 14px;
         }
 
@@ -590,7 +649,7 @@
         }
 
         .speed-label {
-            color: rgba(255, 255, 255, 0.8);
+            color: #333;
             font-size: 12px;
             font-weight: 500;
             margin-bottom: 8px;
@@ -605,11 +664,9 @@
         }
         
         .emdr-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid #d1d1d1;
             padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
         }
         
         .timer-countdown-card {
@@ -622,7 +679,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            color: white;
+            color: #333;
             font-size: 14px;
         }
         
@@ -649,92 +706,48 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            background: linear-gradient(145deg, rgba(64, 140, 226, 0.9), rgba(4, 92, 180, 0.8));
-            border: 3px solid rgba(255, 255, 255, 0.2);
+            background: #4a90e2;
+            border: 1px solid #d1d1d1;
             color: white;
             font-size: 24px;
             cursor: pointer;
             position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 
-                0 8px 25px rgba(74, 144, 226, 0.4),
-                inset 0 2px 4px rgba(255, 255, 255, 0.3),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.2s ease;
         }
 
-        .central-play-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s;
-            border-radius: 50%;
-        }
 
-        .central-play-btn:hover::before {
-            left: 100%;
-        }
-        
         .central-play-btn:hover {
-            transform: scale(1.08) translateY(-2px);
-            box-shadow: 
-                0 12px 35px rgba(74, 144, 226, 0.5),
-                inset 0 2px 4px rgba(255, 255, 255, 0.4),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+            background: #3a7bc8;
         }
         
         .central-play-btn:active {
-            transform: scale(0.95) translateY(1px);
-            box-shadow: 
-                0 4px 15px rgba(74, 144, 226, 0.4),
-                inset 0 2px 4px rgba(255, 255, 255, 0.2),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+            background: #2d5aa0;
         }
         
         .central-play-btn.running {
-            background: linear-gradient(145deg, rgba(255, 107, 107, 0.9), rgba(238, 90, 82, 0.8));
-            box-shadow: 
-                0 8px 25px rgba(255, 107, 107, 0.4),
-                inset 0 2px 4px rgba(255, 255, 255, 0.3),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
-            animation: pulse 2s infinite;
+            background: #ff6b6b;
         }
 
         .central-play-btn.running:hover {
-            box-shadow: 
-                0 12px 35px rgba(255, 107, 107, 0.5),
-                inset 0 2px 4px rgba(255, 255, 255, 0.4),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+            background: #e55a5a;
         }
         
         .central-play-btn.stopped {
-            background: linear-gradient(145deg, rgba(74, 144, 226, 0.9), rgba(53, 122, 189, 0.8));
-            box-shadow: 
-                0 8px 25px rgba(74, 144, 226, 0.4),
-                inset 0 2px 4px rgba(255, 255, 255, 0.3),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+            background: #4a90e2;
         }
 
         .central-play-btn.stopped:hover {
-            box-shadow: 
-                0 12px 35px rgba(74, 144, 226, 0.5),
-                inset 0 2px 4px rgba(255, 255, 255, 0.4),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+            background: #3a7bc8;
         }
         
         .unit-status {
-            color: rgba(255, 255, 255, 0.8);
+            color: #333;
             font-size: 12px;
             font-weight: 500;
         }
         
         .cycle-counter {
-            color: rgba(255, 255, 255, 0.6);
+            color: #666;
             font-size: 11px;
         }
         
@@ -764,7 +777,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            color: white;
+            color: #333;
             align-items: center;
             text-align: center;
         }
@@ -773,28 +786,28 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            color: white;
+            color: #333;
             align-items: center;
             text-align: center;
         }
 
         .audio-control-mobile label {
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
+            color: #333;
             font-weight: 500;
         }
 
         
         .speed-control-mobile label {
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
+            color: #333;
         }
         
         .speed-slider-mobile {
             width: 33.33%;
             height: 6px;
             border-radius: 3px;
-            background: rgba(255, 255, 255, 0.2);
+            background: #d1d1d1;
             outline: none;
             -webkit-appearance: none;
         }
@@ -805,19 +818,18 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: #4ecdc4;
+            background: #666;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(78, 205, 196, 0.3);
+            border: 1px solid #999;
         }
         
         .speed-slider-mobile::-moz-range-thumb {
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: #4ecdc4;
+            background: #666;
             cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 6px rgba(78, 205, 196, 0.3);
+            border: 1px solid #999;
         }
         
         /* Mobile Phone App Layout - Match exactly when viewed on mobile */
@@ -871,7 +883,7 @@
             align-items: center;
             gap: 8px;
             margin-bottom: 16px;
-            color: white;
+            color: #333;
             font-size: 18px;
             font-weight: 600;
         }
@@ -883,7 +895,7 @@
             margin-left: auto;
             font-size: 14px;
             font-weight: 600;
-            color: white;
+            color: #333;
         }
 
         .modalities-grid {
@@ -919,7 +931,7 @@
         .modality-title {
             font-size: 14px;
             font-weight: 600;
-            color: #ffffff;
+            color: #333;
             flex-grow: 1;
         }
 
@@ -938,7 +950,7 @@
         .control-group label {
             font-size: 12px;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.7);
+            color: #666;
             text-align: center;
         }
 
@@ -952,7 +964,7 @@
             flex-grow: 1;
             height: 6px;
             border-radius: 3px;
-            background: rgba(255, 255, 255, 0.2);
+            background: #d1d1d1;
             outline: none;
             -webkit-appearance: none;
             appearance: none;
@@ -964,26 +976,24 @@
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background: #4ecdc4;
+            background: #666;
             cursor: pointer;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border: 1px solid #999;
         }
 
         .intensity-slider::-moz-range-thumb {
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background: #4ecdc4;
+            background: #666;
             cursor: pointer;
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border: 1px solid #999;
         }
 
         .slider-value {
             font-size: 12px;
             font-weight: 600;
-            color: #4ecdc4;
+            color: #333;
             min-width: 30px;
             text-align: center;
         }
@@ -1088,7 +1098,7 @@
         .slider {
             flex: 1;
             height: 4px;
-            background: rgba(255, 255, 255, 0.3);
+            background: #d1d1d1;
             border-radius: 2px;
             outline: none;
             -webkit-appearance: none;
@@ -1100,13 +1110,14 @@
             appearance: none;
             width: 16px;
             height: 16px;
-            background: #4ecdc4;
+            background: #666;
             border-radius: 50%;
             cursor: pointer;
+            border: 1px solid #999;
         }
 
         .slider-value {
-            color: white;
+            color: #333;
             font-size: 12px;
             min-width: 30px;
             text-align: right;
@@ -1142,7 +1153,7 @@
         }
 
         .color-label {
-            color: white;
+            color: #333;
             font-size: 14px;
             font-weight: 600;
             text-align: center;
@@ -1204,12 +1215,12 @@
         
         /* Speed Test Section */
         .speed-test-section {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
+            background: #ffffff;
+            border: 1px solid #d1d1d1;
+            border-radius: 20px;
             padding: 20px;
-            margin-top: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         
         .speed-test-controls {
@@ -1227,7 +1238,7 @@
         }
         
         .speed-test-slider-group label {
-            color: rgba(255, 255, 255, 0.9);
+            color: #333;
             font-size: 14px;
             font-weight: 500;
             margin-bottom: 8px;
@@ -1335,38 +1346,43 @@
         }
 
         .random-item label {
-            color: white;
+            color: #333;
             font-size: 14px;
         }
 
         .toggle {
             position: relative;
-            width: 50px;
-            height: 24px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
+            width: 54px;
+            height: 28px;
+            border-radius: 14px;
+            background: #bdbdbd;
+            border: none;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .toggle.active {
-            background: #4ecdc4;
+            background: #34c759;
         }
 
         .toggle::after {
             content: '';
             position: absolute;
+            border-radius: 50%;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            border: none;
             top: 2px;
             left: 2px;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            transition: all 0.3s ease;
+            width: 24px;
+            height: 24px;
+            background: #f5f5f5;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .toggle.active::after {
             transform: translateX(26px);
+            background: #ffffff;
         }
 
         /* Floating Action Button */
@@ -1627,50 +1643,35 @@
             color: white;
         }
 
-        /* Debug Panel */
+        /* Debug Panel - now as a regular section */
         .debug-panel {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            width: 300px;
-            max-height: 400px;
-            background: rgba(0, 0, 0, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            z-index: 1000;
+            background: #1e1e1e;
+            border: 1px solid #d1d1d1;
+            padding: 0;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             font-family: 'Courier New', monospace;
             font-size: 12px;
             color: #00ff00;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-        }
-        
-        .debug-panel.collapsed {
-            max-height: 30px;
-            width: 200px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .debug-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 8px;
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.7);
+            padding: 12px 16px;
+            background: #2d2d2d;
+            border-bottom: 1px solid #3d3d3d;
+            color: #ffffff;
             font-weight: 500;
-            font-size: 12px;
+            font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background 0.2s ease;
         }
         
         .debug-header:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background: #3d3d3d;
         }
 
         .debug-toggle {
@@ -1729,57 +1730,83 @@
             color: #ffd93d;
         }
 
-        /* Connection Prompt Banner */
-        .connection-prompt-banner {
+        /* Connection Status Overlay */
+        .connection-status-overlay {
             position: fixed;
-            top: 0;
+            top: 60px;
             left: 0;
             right: 0;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-            color: white;
-            padding: 20px;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            animation: slideDown 0.5s ease-out;
-        }
-
-        .connection-prompt-content {
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 20px;
-            max-width: 800px;
-            margin: 0 auto;
+            animation: fadeIn 0.3s ease-out;
         }
 
-        .connection-prompt-icon {
-            font-size: 48px;
-            animation: pulse 2s infinite;
+        .connection-status-overlay.hidden {
+            display: none;
         }
 
-        .connection-prompt-text {
-            flex: 1;
+        .connection-status-content {
+            background: #ffffff;
+            border: 1px solid #d1d1d1;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             text-align: center;
         }
 
-        .connection-prompt-text h2 {
-            margin: 0 0 8px 0;
-            font-size: 24px;
+        .connection-status-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .connection-status-text h2 {
+            margin: 0 0 12px 0;
+            font-size: 28px;
             font-weight: bold;
+            color: #333;
         }
 
-        .connection-prompt-text p {
-            margin: 0;
+        .connection-status-text p {
+            margin: 0 0 24px 0;
             font-size: 16px;
-            opacity: 0.9;
+            color: #666;
         }
 
-        .connection-prompt-button {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+        .connection-status-details {
+            text-align: left;
+            margin: 24px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .status-item span {
+            font-size: 18px;
+        }
+
+        .connection-manual-button {
+            background: #4a90e2;
+            border: 1px solid #4a90e2;
             border-radius: 12px;
             color: white;
-            padding: 16px 24px;
+            padding: 16px 32px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
@@ -1790,68 +1817,67 @@
             backdrop-filter: blur(10px);
         }
 
-        .connection-prompt-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.8);
+        .connection-manual-button:hover {
+            background: #3a7bc8;
+            border-color: #3a7bc8;
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
         }
 
-        .connection-prompt-button:active {
+        .connection-manual-button:active {
             transform: translateY(0);
         }
 
-        .connection-prompt-button-icon {
+        .connection-manual-button-icon {
             font-size: 20px;
         }
 
-        .connection-prompt-button-text {
+        .connection-manual-button-text {
             font-size: 16px;
         }
 
-        @keyframes slideDown {
+        .connection-status-note {
+            margin-top: 20px;
+            padding: 16px;
+            background: #fff3cd;
+            border: 1px solid #ffecb5;
+            border-radius: 8px;
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .connection-status-note p {
+            margin: 0;
+        }
+
+        @keyframes fadeIn {
             from {
-                transform: translateY(-100%);
                 opacity: 0;
             }
             to {
-                transform: translateY(0);
                 opacity: 1;
             }
         }
 
-        /* Adjust main content when banner is shown */
-        body.connection-prompt-visible .container {
-            margin-top: 120px;
-        }
-
-        /* Responsive design for connection prompt */
+        /* Responsive design for connection status */
         @media (max-width: 768px) {
-            .connection-prompt-content {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
+            .connection-status-content {
+                padding: 30px 20px;
+                max-width: 90%;
             }
             
-            .connection-prompt-icon {
-                font-size: 36px;
+            .connection-status-icon {
+                font-size: 48px;
             }
             
-            .connection-prompt-text h2 {
+            .connection-status-text h2 {
                 font-size: 20px;
             }
             
-            .connection-prompt-text p {
-                font-size: 14px;
-            }
-            
-            .connection-prompt-button {
-                padding: 12px 20px;
+            .connection-manual-button {
+                padding: 12px 24px;
                 font-size: 16px;
-            }
-            
-            body.connection-prompt-visible .container {
-                margin-top: 140px;
             }
         }
 
@@ -1869,11 +1895,6 @@
                 grid-template-columns: 1fr;
             }
 
-            .debug-panel {
-                width: 250px;
-                left: 10px;
-                top: 10px;
-            }
         }
         
         /* Color Scheme Styles */
@@ -1916,56 +1937,91 @@
     </style>
 </head>
 <body>
-    <!-- Fixed Header across top -->
+    <!-- Fixed Header with Navigation -->
     <div class="fixed-header">
-        <!-- Simple Settings Button in Top Right -->
-        <button class="simple-settings-btn" onclick="toggleSettingsPanel()" title="Settings">⚙️</button>
-        
-        <div class="header">
-            <div class="header-top">
-                <h1>EMDR TLC</h1>
-            </div>
-            <div class="status-bar">
-                <div class="status-item">
-                    <span>🔋L</span>
-                    <span id="battery-left">0%</span>
+        <div class="header-content">
+            <div class="app-title">EMDR TLC</div>
+            
+            <nav class="nav-menu">
+                <div class="nav-item active" onclick="showSection('emdr-section')">EMDR Controls</div>
+                
+                <div class="nav-item" onclick="showSection('tapper-section')">Tapper</div>
+                
+                <div class="nav-item" onclick="showSection('lightbar-section')">Lightbar</div>
+                
+                <div class="nav-item" onclick="showSection('random-section')">Random</div>
+                
+                <div class="nav-item" onclick="showSection('speed-test-section')">Speed Test</div>
+                
+                <div class="nav-item" onclick="showSection('debug-section')">Debug</div>
+                
+                <div class="nav-item dropdown">
+                    <span>Device ▾</span>
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" onclick="toggleBLEConnection()">
+                            <span id="connection-status">🔴</span> Connection
+                        </div>
+                        <div class="dropdown-item" onclick="showDeviceStatus()">
+                            <span>🔋</span> Battery Status
+                        </div>
+                        <div class="dropdown-item" onclick="handleConnectionRightClick(event)">
+                            <span>🔓</span> Unpair Device
+                        </div>
+                    </div>
                 </div>
-                <div class="status-item">
-                    <span>🔋R</span>
-                    <span id="battery-right">0%</span>
+                
+                <div class="nav-item dropdown">
+                    <span>Settings ▾</span>
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" onclick="toggleMainControls()">
+                            <span id="main-controls-icon">⚡</span> <span id="main-controls-text">Main Controls OFF</span>
+                        </div>
+                        <div class="dropdown-item" onclick="toggleSettingsPanel()">
+                            <span>⚙️</span> Advanced Settings
+                        </div>
+                    </div>
                 </div>
-                <!-- Main Controls Button in Status Bar -->
-                <button class="header-main-controls-btn compact" id="main-controls-btn" onclick="toggleMainControls()">
-                    <span id="main-controls-icon">⚡</span>
-                    <span id="main-controls-text">Main Controls OFF</span>
-                </button>
-                <div class="status-item" onclick="toggleBLEConnection()" oncontextmenu="handleConnectionRightClick(event)" style="cursor: pointer;" title="Click to connect/disconnect. Right-click to unpair device.">
-                    <span id="connection-status">🔴</span>
-                    <span id="connection-text">Disconnected</span>
-                </div>
+            </nav>
+            
+            <!-- Battery Status (compact) -->
+            <div style="display: flex; gap: 12px; margin-left: auto; font-size: 13px; color: #666;">
+                <span>🔋L <span id="battery-left">0%</span></span>
+                <span>🔋R <span id="battery-right">0%</span></span>
             </div>
         </div>
     </div>
 
-    <!-- Connection Prompt Banner (shown when disconnected) -->
-    <div id="connection-prompt-banner" class="connection-prompt-banner" style="display: none;">
-        <div class="connection-prompt-content">
-            <div class="connection-prompt-icon">📱</div>
-            <div class="connection-prompt-text">
-                <h2>Connect to EMDR Device</h2>
-                <p>Click the button to connect to your ESP32 device</p>
+    <!-- Connection Status Overlay (shown during startup and connection) -->
+    <div id="connection-status-overlay" class="connection-status-overlay">
+        <div class="connection-status-content">
+            <div class="connection-status-icon">🔗</div>
+            <div class="connection-status-text">
+                <h2 id="connection-status-title">Initializing EMDR App</h2>
+                <p id="connection-status-message">Attempting automatic connection...</p>
+                <div class="connection-status-details" id="connection-status-details">
+                    <div class="status-item">
+                        <span id="status-check-bluetooth">⏳</span> Checking Bluetooth support
+                    </div>
+                    <div class="status-item">
+                        <span id="status-auto-connect">⏳</span> Trying automatic connection
+                    </div>
+                </div>
             </div>
-            <button id="connection-prompt-button" class="connection-prompt-button" onclick="connectToEMDRDevice()">
-                <span class="connection-prompt-button-icon">🔗</span>
-                <span class="connection-prompt-button-text">Connect Device</span>
+            <button id="connection-manual-button" class="connection-manual-button" onclick="connectToEMDRDevice()" style="display: none;">
+                <span class="connection-manual-button-icon">🔗</span>
+                <span class="connection-manual-button-text">Connect Device Manually</span>
             </button>
+            <div class="connection-status-note" id="connection-status-note" style="display: none;">
+                <p>⚠️ Automatic connection is not working in Chrome. Please click the button above to connect manually.</p>
+            </div>
         </div>
     </div>
 
     <!-- Simplified Main Container -->
     <div class="container">
         
-        <!-- EMDR Section - Full Width at Top -->
+        <!-- EMDR Controls Section (Main Landing Page) -->
+        <div id="emdr-section" class="content-section active">
         <div class="emdr-section">
             <div class="section-title">🎯 EMDR Controls</div>
             
@@ -2047,12 +2103,11 @@
 
             </div>
         </div> <!-- End of emdr-section -->
+        </div> <!-- End of emdr-section content-section -->
         
-        <!-- Two Column Container for Lightbar and Tapper -->
-        <div class="two-column-container">
-            
-            <!-- Lightbar Section -->
-            <div class="lightbar-section">
+        <!-- Lightbar Settings Section -->
+        <div id="lightbar-section" class="content-section">
+        <div class="lightbar-section">
                 <div class="section-title">💡 Lightbar Controls</div>
                 <div class="section-header">
                     <span>💡</span>
@@ -2126,8 +2181,11 @@
                     </div>
                 </div>
             </div>
+        </div> <!-- End of lightbar-section -->
+        </div> <!-- End of lightbar-section content-section -->
             
-            <!-- Tapper Section -->
+            <!-- Tapper Settings Section -->
+            <div id="tapper-section" class="content-section">
             <div class="tapper-section">
                 <div class="section-title">🎯 Tapper Modalities</div>
                 <!-- Tapper Modalities -->
@@ -2268,10 +2326,11 @@
                         </div>
                     </div>
                 </div>
-            </div> <!-- End of lightbar-section -->
-        </div> <!-- End of two-column-container -->
+            </div> <!-- End of tapper inner section -->
+        </div> <!-- End of tapper-section content-section -->
         
-        <!-- Section 4: Random Controls (Full Width at Bottom) -->
+        <!-- Random Controls Section -->
+        <div id="random-section" class="content-section">
         <div class="random-controls-section">
             <div class="section-title">🎲 Random Controls</div>
 
@@ -2315,8 +2374,10 @@
                 </div>
             </div>
         </div>
+        </div> <!-- End of random-section content-section -->
         
         <!-- Speed Test Section -->
+        <div id="speed-test-section" class="content-section">
         <div class="speed-test-section">
             <div class="section-title">⚡ Speed Test</div>
             <div class="speed-test-controls">
@@ -2334,7 +2395,7 @@
                 <div class="bouncy-ball" id="bouncy-ball">🔴</div>
             </div>
         </div>
-    </div>
+        </div> <!-- End of speed-test-section content-section -->
 
     <!-- Floating Action Button -->
     <button class="floating-btn" id="floating-btn" onclick="floatingButtonAction()">
@@ -2386,18 +2447,67 @@
         </div>
     </div>
 
-    <!-- Debug Panel -->
-    <div class="debug-panel" id="debug-panel">
-        <div class="debug-header">
-            <span>🔍 Debug Console</span>
-            <button class="debug-toggle" onclick="toggleDebugPanel()">−</button>
+        <!-- Debug Console Section -->
+        <div id="debug-section" class="content-section">
+            <div class="debug-panel" id="debug-panel">
+                <div class="debug-header">
+                    <span>🔍 Debug Console</span>
+                    <button class="debug-toggle" onclick="toggleDebugPanel()">−</button>
+                </div>
+                <div class="debug-content" id="debug-content">
+                    <div class="debug-message">Debug messages will appear here...</div>
+                </div>
+            </div>
         </div>
-        <div class="debug-content" id="debug-content">
-            <div class="debug-message">Debug messages will appear here...</div>
-        </div>
-    </div>
+        
+    </div> <!-- End of container -->
 
     <script>
+        // Navigation - Section Switching
+        function showSection(sectionId) {
+            // Hide all content sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show the selected section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                // Scroll to top of page immediately when switching sections
+                window.scrollTo({ top: 0, behavior: 'auto' });
+                // Also scroll the target section into view to be sure
+                setTimeout(() => {
+                    targetSection.scrollIntoView({ behavior: 'auto', block: 'start' });
+                }, 10);
+            }
+            
+            // Update navigation active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                // Check if this nav item should be active (match section ID to nav item text)
+                const itemText = item.textContent.toLowerCase().trim();
+                if (sectionId === 'emdr-section' && itemText === 'emdr controls') {
+                    item.classList.add('active');
+                } else if (sectionId === 'tapper-section' && itemText === 'tapper') {
+                    item.classList.add('active');
+                } else if (sectionId === 'lightbar-section' && itemText === 'lightbar') {
+                    item.classList.add('active');
+                } else if (sectionId === 'random-section' && itemText === 'random') {
+                    item.classList.add('active');
+                } else if (sectionId === 'speed-test-section' && itemText === 'speed test') {
+                    item.classList.add('active');
+                } else if (sectionId === 'debug-section' && itemText === 'debug') {
+                    item.classList.add('active');
+                }
+            });
+        }
+        
+        // Show device status modal
+        function showDeviceStatus() {
+            alert(`Battery Status:\nLeft: ${document.getElementById('battery-left').textContent}\nRight: ${document.getElementById('battery-right').textContent}`);
+        }
+        
         // BLE Configuration - Using actual EMDR device UUIDs from project
         const BLE_CONFIG = {
             deviceName: 'ESP32',
@@ -2613,6 +2723,9 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // Show connection status overlay
+            updateConnectionOverlay('init');
+            
             // Initialize button selections
             setTimerSeconds(state.selectedTimerSeconds);
             setCountdownCycles(state.selectedCountdownCycles);
@@ -2908,6 +3021,71 @@
             }
         }
 
+        // Connection Status Overlay Functions
+        function updateConnectionOverlay(status) {
+            const overlay = document.getElementById('connection-status-overlay');
+            const title = document.getElementById('connection-status-title');
+            const message = document.getElementById('connection-status-message');
+            const bluetoothCheck = document.getElementById('status-check-bluetooth');
+            const autoConnectCheck = document.getElementById('status-auto-connect');
+            const manualButton = document.getElementById('connection-manual-button');
+            const note = document.getElementById('connection-status-note');
+
+            if (!overlay) return;
+
+            switch(status) {
+                case 'init':
+                    title.textContent = 'Initializing EMDR App';
+                    message.textContent = 'Checking Bluetooth support...';
+                    bluetoothCheck.textContent = '⏳';
+                    autoConnectCheck.textContent = '⏳';
+                    manualButton.style.display = 'none';
+                    note.style.display = 'none';
+                    overlay.classList.remove('hidden');
+                    break;
+                    
+                case 'bluetooth-ok':
+                    bluetoothCheck.textContent = '✅';
+                    message.textContent = 'Bluetooth supported! Trying automatic connection...';
+                    break;
+                    
+                case 'auto-connecting':
+                    autoConnectCheck.textContent = '🔄';
+                    message.textContent = 'Attempting to connect to previously paired device...';
+                    break;
+                    
+                case 'auto-failed':
+                    autoConnectCheck.textContent = '❌';
+                    title.textContent = 'Manual Connection Required';
+                    message.textContent = 'Automatic connection did not work.';
+                    manualButton.style.display = 'flex';
+                    manualButton.style.margin = '0 auto';
+                    note.style.display = 'block';
+                    break;
+                    
+                case 'connected':
+                    autoConnectCheck.textContent = '✅';
+                    title.textContent = 'Connected Successfully!';
+                    message.textContent = 'Connection established. Starting app...';
+                    setTimeout(() => hideConnectionOverlay(), 1500);
+                    break;
+                    
+                case 'manual-connecting':
+                    title.textContent = 'Connecting...';
+                    message.textContent = 'Please select your EMDR device from the pairing dialog.';
+                    manualButton.style.display = 'none';
+                    note.style.display = 'none';
+                    break;
+            }
+        }
+
+        function hideConnectionOverlay() {
+            const overlay = document.getElementById('connection-status-overlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+            }
+        }
+
         // Check if Web Bluetooth is supported
         function checkBluetoothSupport() {
             if (!navigator.bluetooth) {
@@ -2916,6 +3094,7 @@
                 return false;
             }
             addDebugMessage('Web Bluetooth API supported', 'success');
+            updateConnectionOverlay('bluetooth-ok');
             return true;
         }
 
@@ -2956,6 +3135,8 @@
 
         async function attemptAutoConnection() {
             if (!checkBluetoothSupport()) return;
+            
+            updateConnectionOverlay('auto-connecting');
             
             const storedDevice = getStoredDeviceInfo();
             if (!storedDevice) {
@@ -3024,6 +3205,7 @@
                     setTimeout(tryConnection, delay);
                 } else if (!state.connected) {
                     addDebugMessage('❌ Auto-connection failed after all attempts. Manual pairing required.', 'error');
+                    updateConnectionOverlay('auto-failed');
                 }
             };
             
@@ -3098,6 +3280,7 @@
                 if (characteristicsFound > 0) {
                     state.connected = true;
                     addDebugMessage(`✅ AUTO-CONNECTION SUCCESSFUL (${characteristicsFound} characteristics)`, 'success');
+                    updateConnectionOverlay('connected');
                 } else {
                     state.connected = false;
                     addDebugMessage(`❌ AUTO-CONNECTION FAILED - No characteristics found`, 'error');
@@ -3124,6 +3307,8 @@
         // BLE Connection Functions
         async function connectToEMDRDevice() {
             if (!checkBluetoothSupport()) return;
+
+            updateConnectionOverlay('manual-connecting');
 
             try {
                 addDebugMessage('Requesting device connection...', 'ble');
@@ -3177,6 +3362,7 @@
                 if (characteristicsFound > 0) {
                     state.connected = true;
                     addDebugMessage(`✅ BLE CONNECTION ESTABLISHED (${characteristicsFound} characteristics)`, 'success');
+                    updateConnectionOverlay('connected');
                 } else {
                     state.connected = false;
                     addDebugMessage(`❌ BLE CONNECTION FAILED - No characteristics found`, 'error');
@@ -5699,7 +5885,7 @@
                         mainBtn.classList.remove('off');
                         mainBtn.classList.add('on');
                         mainIcon.textContent = '⚡';
-                        mainText.textContent = 'Main Controls ON v1.A.2';
+                        mainText.textContent = 'Main Controls ON v1.A.5';
                         mainIcon.classList.remove('spinner');
                     } else if (state.connected) {
                         mainBtn.classList.remove('on');
