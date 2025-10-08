@@ -13,47 +13,128 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f5f5;
             min-height: 100vh;
             color: #333;
             overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Fixed Header with Navigation */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border-bottom: 1px solid #d1d1d1;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 0;
+        }
+
+        .header-content {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            padding: 5px;
-            padding-top: 2vh;
+            justify-content: space-between;
+            padding: 12px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .app-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-item {
+            padding: 8px 16px;
+            color: #666;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .nav-item.active {
+            background: #e6f2ff;
+            color: #4a90e2;
+        }
+
+        .close-tab-btn {
+            background: #f0f0f0;
+            border: 1px solid #d1d1d1;
+            border-radius: 6px;
+            color: #333;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .close-tab-btn:hover {
+            background: #e0e0e0;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            padding-top: 80px;
         }
 
-        .title {
-            text-align: center;
-            color: white;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 30px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        /* Content sections */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-container {
+            background: #ffffff;
+            border: 1px solid #d1d1d1;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 1px solid #d1d1d1;
+            padding-bottom: 12px;
         }
 
         .speed-test-controls {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            margin-bottom: 200px;
+            margin-bottom: 30px;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
+            background: #f9f9f9;
             border-radius: 12px;
             flex-wrap: wrap;
-            gap: 40px; /* Fixed gap between speed slider and buttons */
+            gap: 40px;
+            border: 1px solid #e0e0e0;
         }
 
         .speed-test-slider-group {
@@ -61,7 +142,7 @@
         }
 
         .speed-test-slider-group label {
-            color: rgba(255, 255, 255, 0.9);
+            color: #333;
             font-size: 16px;
             font-weight: 500;
             margin-bottom: 12px;
@@ -72,7 +153,7 @@
             width: 100%;
             height: 8px;
             border-radius: 4px;
-            background: rgba(255, 255, 255, 0.2);
+            background: #d1d1d1;
             outline: none;
             -webkit-appearance: none;
         }
@@ -83,19 +164,18 @@
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: #4ecdc4;
+            background: #666;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid #999;
         }
 
         .slider::-moz-range-thumb {
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: #4ecdc4;
+            background: #666;
             cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid #999;
         }
 
         .speed-test-buttons {
@@ -107,80 +187,334 @@
         }
 
         .speed-test-btn {
-            padding: 14px 28px;
-            background: linear-gradient(145deg, rgba(78, 205, 196, 0.3), rgba(78, 205, 196, 0.1));
-            border: 2px solid rgba(78, 205, 196, 0.6);
-            border-radius: 16px;
-            color: #4ecdc4;
-            font-size: 16px;
-            font-weight: 600;
+            padding: 12px 24px;
+            background: #4a90e2;
+            border: 1px solid #4a90e2;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s ease;
-            width: 140px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 
-                0 6px 20px rgba(78, 205, 196, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-        }
-
-        .speed-test-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .speed-test-btn:hover::before {
-            left: 100%;
+            transition: all 0.2s ease;
+            width: 120px;
         }
 
         .speed-test-btn:hover {
-            background: linear-gradient(145deg, rgba(78, 205, 196, 0.4), rgba(78, 205, 196, 0.2));
-            border-color: #4ecdc4;
-            transform: translateY(-3px);
-            box-shadow: 
-                0 8px 25px rgba(78, 205, 196, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+            background: #3a7bc8;
+            border-color: #3a7bc8;
         }
 
         .speed-test-btn:active {
-            transform: translateY(-1px);
-            box-shadow: 
-                0 4px 15px rgba(78, 205, 196, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            background: #2d5aa0;
         }
 
         .speed-test-btn.running {
-            background: linear-gradient(145deg, rgba(255, 107, 107, 0.3), rgba(255, 107, 107, 0.1));
-            border-color: rgba(255, 107, 107, 0.6);
-            color: #ff6b6b;
-            box-shadow: 
-                0 6px 20px rgba(255, 107, 107, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+            background: #ff6b6b;
+            border-color: #ff6b6b;
         }
 
         .speed-test-btn.running:hover {
-            background: linear-gradient(145deg, rgba(255, 107, 107, 0.4), rgba(255, 107, 107, 0.2));
-            border-color: #ff6b6b;
-            box-shadow: 
-                0 8px 25px rgba(255, 107, 107, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4),
-                inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+            background: #e55a5a;
+            border-color: #e55a5a;
         }
 
         .speed-test-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none !important;
+        }
+
+        /* Google-style Toggle Switches */
+        .toggle-switch {
+            position: relative;
+            width: 54px;
+            height: 28px;
+            border-radius: 14px;
+            background: #bdbdbd;
+            border: none;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+            z-index: 100;
+            pointer-events: auto;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .toggle-switch.active {
+            background: #34c759 !important;
+            border: 2px solid #28a745 !important;
+        }
+
+
+        /* Real element slider instead of ::after pseudo-element */
+        .toggle-slider {
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            border: none;
+            top: 2px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background: #f5f5f5;
+            transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(26px) !important;
+            background: #ffffff;
+        }
+        
+        /* Keep ::after for backwards compatibility with toggles that don't have .toggle-slider */
+        .toggle-switch:not(:has(.toggle-slider))::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            border: none;
+            top: 2px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background: #f5f5f5;
+            transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
+        }
+
+        .toggle-switch:not(:has(.toggle-slider)).active::after {
+            transform: translateX(26px);
+            background: #ffffff;
+        }
+
+        /* iOS Style Toggle (for audio) */
+        .toggle-switch.ios-style {
+            width: 51px;
+            height: 31px;
+            border-radius: 16px;
+            background: #e9e9ea;
+            border: none;
+            box-shadow: none;
+        }
+
+        .toggle-switch.ios-style.active {
+            background: #34c759 !important;
+            border: none !important;
+        }
+
+        /* iOS style slider element */
+        .toggle-switch.ios-style .toggle-slider {
+            width: 27px;
+            height: 27px;
+            top: 2px;
+            left: 2px;
+            background: #ffffff;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 3px 1px rgba(0, 0, 0, 0.06);
+        }
+
+        .toggle-switch.ios-style.active .toggle-slider {
+            transform: translateX(20px) !important;
+            background: #ffffff;
+        }
+
+        /* Keep ::after for backwards compatibility with iOS toggles without slider */
+        .toggle-switch.ios-style:not(:has(.toggle-slider))::after {
+            width: 27px;
+            height: 27px;
+            top: 2px;
+            left: 2px;
+            background: #ffffff;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 3px 1px rgba(0, 0, 0, 0.06);
+        }
+
+        .toggle-switch.ios-style:not(:has(.toggle-slider)).active::after {
+            transform: translateX(20px);
+        }
+
+        /* Checkbox Style Toggle (for infinity line) - now uses standard toggle appearance */
+        .toggle-switch.checkbox-style {
+            width: 54px;
+            height: 28px;
+            border-radius: 14px;
+            background: #bdbdbd;
+            border: 2px solid #9e9e9e;
+            box-shadow: none;
+        }
+
+        .toggle-switch.checkbox-style.active {
+            background: #4a90e2 !important;
+            border: 2px solid #3a7bc8 !important;
+        }
+
+        /* Checkbox style uses the slider element like other toggles */
+        .toggle-switch.checkbox-style .toggle-slider {
+            background: #f5f5f5;
+        }
+
+        .toggle-switch.checkbox-style.active .toggle-slider {
+            transform: translateX(26px) !important;
+            background: #ffffff;
+        }
+
+        /* Keep old checkbox styles for backwards compatibility with toggles without slider */
+        .toggle-switch.checkbox-style:not(:has(.toggle-slider))::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: auto;
+            height: auto;
+            background: transparent;
+            box-shadow: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s ease;
+        }
+
+        .toggle-switch.checkbox-style:not(:has(.toggle-slider)).active::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* For checkbox style without slider, make it square */
+        .toggle-switch.checkbox-style:not(:has(.toggle-slider)) {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* Dropdown Menu Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-trigger {
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-trigger:hover {
+            background-color: rgba(74, 144, 226, 0.1);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 300px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid #d1d1d1;
+            border-radius: 8px;
+            z-index: 1000;
+            padding: 20px;
+            margin-top: 0px;
+        }
+
+        .dropdown:hover .dropdown-content,
+        .dropdown-content:hover {
+            display: block;
+        }
+
+        /* Bridge the gap between trigger and content */
+        .dropdown::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: transparent;
+            z-index: 999;
+        }
+
+        .dropdown-section {
+            margin-bottom: 20px;
+        }
+
+        .dropdown-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .dropdown-section h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+
+        .dropdown-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+
+        .dropdown-control:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Settings group for visually grouping related controls */
+        .settings-group {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid rgba(78, 205, 196, 0.5);
+            border-radius: 6px;
+            padding: 10px 12px;
+            margin: 8px 0;
+        }
+        
+        .settings-group .dropdown-control:first-child {
+            margin-top: 0;
+        }
+        
+        .settings-group .dropdown-control:last-child {
+            margin-bottom: 0;
+        }
+
+        .dropdown-control label {
+            color: #333;
+            font-size: 13px;
+            font-weight: 500;
+            margin-right: 10px;
+            min-width: 120px;
+        }
+
+        .dropdown-control .slider {
+            width: 100px;
+            margin-left: 10px;
+        }
+
+        .dropdown-control .toggle-switch {
+            margin-left: 10px;
+        }
+
+        .infinity-only {
+            display: none;
+        }
+
+        .infinity-only.show {
+            display: flex;
         }
 
         /* Bouncy Ball Animation */
@@ -562,8 +896,8 @@
 
         @media (max-width: 600px) {
             .container {
-                padding: 20px;
-                margin: 10px;
+                padding: 10px;
+                margin: 0;
             }
             
             .title {
@@ -591,10 +925,93 @@
     </style>
 </head>
 <body>
-    <button class="close-btn" onclick="window.close()" title="Close Tab">✕</button>
+    <!-- Fixed Header with Navigation -->
+    <div class="fixed-header">
+        <div class="header-content">
+            <div class="app-title">⚡ EMDR v1.Web.7</div>
+            
+            <nav class="nav-menu">
+                <!-- Settings Dropdown -->
+                <div class="nav-item dropdown">
+                    <span class="dropdown-trigger">⚙️ Quick Settings</span>
+                    <div class="dropdown-content">
+                        <div class="dropdown-section">
+                            <h4>🔔 Audio</h4>
+                            <div class="dropdown-control">
+                                <label>Audio</label>
+                                <div class="toggle-switch ios-style" id="audio-toggle-main" onclick="toggleAudio()">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                            <div class="dropdown-control">
+                                <label>L Sound: <span id="leftFreqValue-main">600</span> Hz</label>
+                                <input type="range" id="leftFreqSlider-main" min="300" max="1000" step="10" value="600" class="slider">
+                            </div>
+                            <div class="dropdown-control">
+                                <label>R Sound: <span id="rightFreqValue-main">800</span> Hz</label>
+                                <input type="range" id="rightFreqSlider-main" min="300" max="1000" step="10" value="800" class="slider">
+                            </div>
+                            
+                            <div class="settings-group">
+                                <div class="dropdown-control">
+                                    <label>Random Audio</label>
+                                    <div class="toggle-switch ios-style" id="random-audio-toggle-main" onclick="toggleRandomAudio()">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-control">
+                                    <label>Audio Change Interval: <span id="randomIntervalValue-main">10</span>s</label>
+                                    <input type="range" id="randomIntervalSlider-main" min="5" max="30" value="10" class="slider">
+                                </div>
+                                <div class="dropdown-control">
+                                    <label>Variation: <span id="randomVariationValue-main">100</span>Hz</label>
+                                    <input type="range" id="randomVariationSlider-main" min="50" max="200" value="100" class="slider">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="dropdown-section">
+                            <h4>👁️ Infinity Settings</h4>
+                            <div class="dropdown-control">
+                                <label>Infinity Line</label>
+                                <div class="toggle-switch ios-style" id="infinity-line-toggle-main" onclick="toggleInfinityLine()">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                            </div>
+                            <div class="dropdown-control">
+                                <label>Width: <span id="widthValue-main">650</span>px</label>
+                                <input type="range" id="widthSlider-main" min="300" max="800" value="650" class="slider">
+                            </div>
+                            <div class="dropdown-control">
+                                <label>Height: <span id="heightValue-main">500</span>px</label>
+                                <input type="range" id="heightSlider-main" min="150" max="500" value="500" class="slider">
+                            </div>
+                            
+                            <div class="settings-group">
+                                <div class="dropdown-control">
+                                    <label>Random Height</label>
+                                    <div class="toggle-switch ios-style" id="random-height-toggle-main" onclick="toggleRandomHeight()">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-control">
+                                    <label>Random Change Interval: <span id="randomIntervalInfinityValue-main">10</span>s</label>
+                                    <input type="range" id="randomIntervalInfinitySlider-main" min="5" max="30" value="10" class="slider">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
     
     <div class="container">
-        <h1 class="title">⚡ EMDR v1.Web.1</h1>
+        
+        <!-- Horizontal Mode Section -->
+        <div id="horizontal-section" class="content-section active">
+            <div class="section-container">
+                <div class="section-title" id="horizontal-section-title">Horizontal Animation</div>
         
         <div class="speed-test-controls">
             <div class="speed-test-slider-group">
@@ -604,57 +1021,325 @@
                 <div class="speed-test-buttons">
                     <button class="speed-test-btn" id="toggle-btn" onclick="toggleEmdrApp()">Start</button>
                     <button class="speed-test-btn" id="pattern-btn" onclick="togglePattern()">∞ Pattern</button>
-                    <button class="speed-test-btn" id="audio-btn" onclick="toggleAudio()">🔔 Audio</button>
-                    
-                <div class="size-controls" id="size-controls" style="display: none;">
-                    <div class="speed-test-slider-group">
-                        <label>Width: <span id="widthValue">650</span></label>
-                        <input type="range" id="widthSlider" min="300" max="800" value="650" class="slider">
-                    </div>
-                    <div class="speed-test-slider-group">
-                        <label>Height: <span id="heightValue">500</span></label>
-                        <input type="range" id="heightSlider" min="150" max="500" value="500" class="slider">
-                    </div>
-                    <button class="line-toggle-btn" id="line-toggle-btn" onclick="toggleInfinityLine()" title="Toggle Infinity Line Visibility">📏</button>
-                    <button class="random-height-btn" id="random-height-btn" onclick="toggleRandomHeight()" title="Enable Random Height Variation">📊</button>
-                </div>
-                
-                <button class="size-toggle-btn" id="size-toggle-btn" onclick="toggleSizeControls()" title="Adjust Infinity Loop Size">📐</button>
-                    
-                <div class="audio-freq-controls" id="audio-freq-controls" style="display: none;">
-                    <div class="speed-test-slider-group">
-                        <label>L Sound: <span id="leftFreqValue">600</span> Hz</label>
-                        <input type="range" id="leftFreqSlider" min="300" max="1000" value="600" class="slider">
-                    </div>
-                    <div class="speed-test-slider-group">
-                        <label>R Sound: <span id="rightFreqValue">800</span> Hz</label>
-                        <input type="range" id="rightFreqSlider" min="300" max="1000" value="800" class="slider">
-                    </div>
-                </div>
-                
-                <button class="audio-freq-btn" id="audio-freq-btn" onclick="toggleAudioFrequency()" title="Adjust Left/Right Sound Frequencies">🎵</button>
-                <button class="random-audio-btn" id="random-audio-btn" onclick="toggleRandomAudio()" title="Enable Random Audio Frequency Variation">🎲</button>
-                
-                <div class="random-audio-controls" id="random-audio-controls" style="display: none;">
-                    <div class="speed-test-slider-group">
-                        <label>Change Interval: <span id="randomIntervalValue">10</span>s</label>
-                        <input type="range" id="randomIntervalSlider" min="5" max="30" value="10" class="slider">
-                    </div>
-                    <div class="speed-test-slider-group">
-                        <label>Variation: <span id="randomVariationValue">100</span>Hz</label>
-                        <input type="range" id="randomVariationSlider" min="50" max="200" value="100" class="slider">
-                    </div>
-                </div>
+                    <button class="speed-test-btn" id="audio-btn" onclick="toggleAudio()">Audio</button>
                 </div>
         </div>
         
         <div class="bouncy-ball-container">
             <canvas id="infinity-canvas"></canvas>
+                </div>
+            </div>
         </div>
         
+        <!-- Infinity Mode Section -->
+        <div id="infinity-section" class="content-section">
+            <div class="section-container">
+                <div class="section-title">Infinity Pattern</div>
+                
+                <div class="speed-test-controls">
+                    <div class="speed-test-slider-group">
+                        <label>Animation Speed: <span id="speed-test-value-infinity">2.0</span>s</label>
+                        <input type="range" id="speed-test-slider-infinity" min="1.0" max="3.0" step="0.1" value="2.0" class="slider">
+                    </div>
+                    <div class="speed-test-buttons">
+                        <button class="speed-test-btn" id="toggle-btn-infinity" onclick="toggleEmdrApp()">Start</button>
+                        <button class="speed-test-btn" id="pattern-btn-infinity" onclick="togglePattern()">← Horizontal</button>
+                        <button class="speed-test-btn" id="audio-btn-infinity" onclick="toggleAudio()">Audio</button>
+                    </div>
+                </div>
+                
+                <div class="bouncy-ball-container">
+                    <canvas id="infinity-canvas-infinity"></canvas>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
+        // Navigation function
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update navigation active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        }
+
+        // Toggle switch functions for settings
+        function toggleAudio() {
+            console.log('toggleAudio called, current state:', emdrAppState.audioEnabled);
+            emdrAppState.audioEnabled = !emdrAppState.audioEnabled;
+            console.log('toggleAudio new state:', emdrAppState.audioEnabled);
+            updateAllAudioToggles();
+            saveSettings();
+            console.log('Audio toggled to:', emdrAppState.audioEnabled);
+        }
+
+        function toggleInfinityLine() {
+            emdrAppState.showInfinityLine = !emdrAppState.showInfinityLine;
+            console.log('About to call updateAllInfinityLineToggles, state:', emdrAppState.showInfinityLine);
+            updateAllInfinityLineToggles();
+            saveSettings();
+            console.log('Infinity line toggled to:', emdrAppState.showInfinityLine);
+        }
+
+        function toggleRandomAudio() {
+            emdrAppState.randomAudioEnabled = !emdrAppState.randomAudioEnabled;
+            updateAllRandomAudioToggles();
+            if (emdrAppState.randomAudioEnabled) {
+                // Store base frequencies when enabling random audio
+                emdrAppState.baseLeftFrequency = emdrAppState.leftFrequency;
+                emdrAppState.baseRightFrequency = emdrAppState.rightFrequency;
+                startRandomFrequencyChanges();
+            } else {
+                stopRandomFrequencyChanges();
+                // Restore base frequencies when disabling
+                emdrAppState.leftFrequency = emdrAppState.baseLeftFrequency;
+                emdrAppState.rightFrequency = emdrAppState.baseRightFrequency;
+                updateAllFrequencyDisplays();
+            }
+            saveSettings();
+            console.log('Random audio toggled to:', emdrAppState.randomAudioEnabled);
+        }
+
+        function toggleRandomHeight() {
+            emdrAppState.randomHeightEnabled = !emdrAppState.randomHeightEnabled;
+            updateAllRandomHeightToggles();
+            if (emdrAppState.randomHeightEnabled) {
+                // Store base height when enabling random height
+                emdrAppState.baseInfinityHeight = emdrAppState.infinityHeight;
+                startRandomHeightChanges();
+            } else {
+                stopRandomHeightChanges();
+                // Restore base height when disabling
+                emdrAppState.infinityHeight = emdrAppState.baseInfinityHeight;
+                updateAllHeightDisplays();
+                updateInfinityAnimation();
+            }
+            saveSettings();
+            console.log('Random height toggled to:', emdrAppState.randomHeightEnabled);
+        }
+
+        // Update section title based on current pattern
+        function updateSectionTitle() {
+            const titleElement = document.getElementById('horizontal-section-title');
+            if (titleElement) {
+                titleElement.textContent = emdrAppState.isInfinityPattern ? 'Infinity Animation' : 'Horizontal Animation';
+            }
+        }
+
+        // Setup dropdown controls
+        function setupDropdownControls() {
+            console.log('Setting up dropdown controls');
+            
+            // Setup dropdown sliders
+            setupSliderWithSync('leftFreqSlider-main', 'leftFreqValue-main', (value) => {
+                emdrAppState.leftFrequency = value;
+                updateAllFrequencyDisplays();
+                saveSettings();
+            });
+            
+            setupSliderWithSync('rightFreqSlider-main', 'rightFreqValue-main', (value) => {
+                emdrAppState.rightFrequency = value;
+                updateAllFrequencyDisplays();
+                saveSettings();
+            });
+            
+            setupSliderWithSync('widthSlider-main', 'widthValue-main', (value) => {
+                console.log('Width slider changed to:', value);
+                emdrAppState.infinityWidth = value;
+                updateAllWidthDisplays();
+                updateInfinityAnimation();
+                saveSettings();
+            });
+            
+            setupSliderWithSync('heightSlider-main', 'heightValue-main', (value) => {
+                emdrAppState.infinityHeight = value;
+                updateAllHeightDisplays();
+                updateInfinityAnimation();
+                saveSettings();
+            });
+            
+            // Setup random audio sliders in dropdown
+            setupSliderWithSync('randomIntervalSlider-main', 'randomIntervalValue-main', (value) => {
+                emdrAppState.randomInterval = value;
+                updateAllRandomIntervalDisplays();
+                saveSettings();
+            });
+            
+            setupSliderWithSync('randomVariationSlider-main', 'randomVariationValue-main', (value) => {
+                emdrAppState.randomVariation = value;
+                updateAllRandomVariationDisplays();
+                saveSettings();
+            });
+            
+            // Setup random height infinity interval slider in dropdown
+            setupSliderWithSync('randomIntervalInfinitySlider-main', 'randomIntervalInfinityValue-main', (value) => {
+                emdrAppState.randomIntervalInfinity = value;
+                updateAllRandomIntervalInfinityDisplays();
+                saveSettings();
+            });
+            
+            // Update dropdown visibility based on current pattern
+            updateDropdownVisibility();
+        }
+
+        // Update dropdown visibility based on current pattern
+        function updateDropdownVisibility() {
+            const infinityOnlyControls = document.querySelectorAll('.infinity-only');
+            infinityOnlyControls.forEach(control => {
+                if (emdrAppState.isInfinityPattern) {
+                    control.classList.add('show');
+                } else {
+                    control.classList.remove('show');
+                }
+            });
+        }
+
+        // Update all toggle switches to match state
+        function updateAllAudioToggles() {
+            console.log('updateAllAudioToggles called, audioEnabled:', emdrAppState.audioEnabled);
+            
+            // Update all audio toggles including dropdown
+            const toggles = ['audio-toggle-main', 'audio-btn', 'audio-btn-infinity'];
+            toggles.forEach(id => {
+                const toggle = document.getElementById(id);
+                if (toggle) {
+                    // Check if it's a toggle switch or a button
+                    if (toggle.classList.contains('toggle-switch')) {
+                        // It's a toggle switch - just add/remove active class
+                        if (emdrAppState.audioEnabled) {
+                            toggle.classList.add('active');
+                        } else {
+                            toggle.classList.remove('active');
+                        }
+                    } else {
+                        // It's a button - update its text content
+                        if (emdrAppState.audioEnabled) {
+                            toggle.classList.add('running');
+                            if (toggle.textContent && !toggle.textContent.includes('ON')) {
+                                toggle.textContent = toggle.textContent + ' ON';
+                            }
+                        } else {
+                            toggle.classList.remove('running');
+                            if (toggle.textContent && toggle.textContent.includes(' ON')) {
+                                toggle.textContent = toggle.textContent.replace(' ON', '');
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateAllInfinityLineToggles() {
+            console.log('updateAllInfinityLineToggles called, showInfinityLine:', emdrAppState.showInfinityLine);
+            
+            // Update all infinity line toggles including dropdown
+            const toggles = ['infinity-line-toggle-main', 'line-toggle-btn', 'line-toggle-btn-infinity'];
+            toggles.forEach(id => {
+                const toggle = document.getElementById(id);
+                if (toggle) {
+                    // Check if it's a toggle switch or a button
+                    if (toggle.classList.contains('toggle-switch')) {
+                        // It's a toggle switch - just add/remove active class
+                        if (emdrAppState.showInfinityLine) {
+                            toggle.classList.add('active');
+                        } else {
+                            toggle.classList.remove('active');
+                        }
+                    } else {
+                        // It's a button - update its text content
+                        if (emdrAppState.showInfinityLine) {
+                            toggle.classList.add('active');
+                            if (toggle.textContent && !toggle.textContent.includes('ON')) {
+                                toggle.textContent = toggle.textContent + ' ON';
+                            }
+                        } else {
+                            toggle.classList.remove('active');
+                            if (toggle.textContent && toggle.textContent.includes(' ON')) {
+                                toggle.textContent = toggle.textContent.replace(' ON', '');
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateAllRandomAudioToggles() {
+            const toggles = ['random-audio-toggle-main', 'random-audio-btn', 'random-audio-btn-infinity'];
+            toggles.forEach(id => {
+                const toggle = document.getElementById(id);
+                if (toggle) {
+                    // Check if it's a toggle switch or a button
+                    if (toggle.classList.contains('toggle-switch')) {
+                        // It's a toggle switch - just add/remove active class
+                        if (emdrAppState.randomAudioEnabled) {
+                            toggle.classList.add('active');
+                        } else {
+                            toggle.classList.remove('active');
+                        }
+                    } else {
+                        // It's a button - update its text content
+                        if (emdrAppState.randomAudioEnabled) {
+                            toggle.classList.add('active');
+                            if (toggle.textContent && !toggle.textContent.includes('ON')) {
+                                toggle.textContent = '🎲 Random ON';
+                            }
+                        } else {
+                            toggle.classList.remove('active');
+                            if (toggle.textContent) {
+                                toggle.textContent = '🎲 Random';
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateAllRandomHeightToggles() {
+            console.log('updateAllRandomHeightToggles called, randomHeightEnabled:', emdrAppState.randomHeightEnabled);
+            const toggles = ['random-height-toggle-main', 'random-height-btn', 'random-height-btn-infinity'];
+            toggles.forEach(id => {
+                const toggle = document.getElementById(id);
+                if (toggle) {
+                    // Check if it's a toggle switch or a button
+                    if (toggle.classList.contains('toggle-switch')) {
+                        // It's a toggle switch - just add/remove active class
+                        if (emdrAppState.randomHeightEnabled) {
+                            toggle.classList.add('active');
+                        } else {
+                            toggle.classList.remove('active');
+                        }
+                    } else {
+                        // It's a button - update its text content
+                        if (emdrAppState.randomHeightEnabled) {
+                            toggle.classList.add('active');
+                            if (toggle.textContent && !toggle.textContent.includes('ON')) {
+                                toggle.textContent = '📊 Height ON';
+                            }
+                        } else {
+                            toggle.classList.remove('active');
+                            if (toggle.textContent) {
+                                toggle.textContent = '📊 Height';
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         // EMDR App State
         let emdrAppState = {
             isRunning: false,
@@ -670,7 +1355,8 @@
             infinityWidth: 650,
             infinityHeight: 500,
             randomAudioEnabled: false,
-            randomInterval: 10, // seconds between changes
+            randomInterval: 10, // seconds between changes for horizontal
+            randomIntervalInfinity: 10, // seconds between changes for infinity
             randomVariation: 100, // Hz variation range
             baseLeftFrequency: 600, // Original left frequency
             baseRightFrequency: 800, // Original right frequency
@@ -694,6 +1380,7 @@
                     emdrAppState.infinityHeight = settings.infinityHeight || 500;
                     emdrAppState.randomAudioEnabled = settings.randomAudioEnabled || false;
                     emdrAppState.randomInterval = settings.randomInterval || 10;
+                    emdrAppState.randomIntervalInfinity = settings.randomIntervalInfinity || 10;
                     emdrAppState.randomVariation = settings.randomVariation || 100;
                     emdrAppState.baseLeftFrequency = settings.baseLeftFrequency || 600;
                     emdrAppState.baseRightFrequency = settings.baseRightFrequency || 800;
@@ -717,6 +1404,7 @@
                 infinityHeight: emdrAppState.infinityHeight,
                 randomAudioEnabled: emdrAppState.randomAudioEnabled,
                 randomInterval: emdrAppState.randomInterval,
+                randomIntervalInfinity: emdrAppState.randomIntervalInfinity,
                 randomVariation: emdrAppState.randomVariation,
                 baseLeftFrequency: emdrAppState.baseLeftFrequency,
                 baseRightFrequency: emdrAppState.baseRightFrequency,
@@ -741,10 +1429,10 @@
             if (audioBtn) {
                 if (emdrAppState.audioEnabled) {
                     audioBtn.classList.add('running');
-                    audioBtn.textContent = '🔔 Audio';
+                    audioBtn.textContent = 'Audio ON';
                 } else {
                     audioBtn.classList.remove('running');
-                    audioBtn.textContent = '🔔 Audio';
+                    audioBtn.textContent = 'Audio';
                 }
             }
 
@@ -776,24 +1464,6 @@
                 rightFreqValue.textContent = emdrAppState.rightFrequency;
             }
 
-            // Update random audio button and controls
-            const randomAudioBtn = document.getElementById('random-audio-btn');
-            const randomAudioControls = document.getElementById('random-audio-controls');
-            if (randomAudioBtn) {
-                if (emdrAppState.randomAudioEnabled) {
-                    randomAudioBtn.classList.add('active');
-                    randomAudioBtn.title = 'Disable Random Audio Frequency Variation';
-                    if (randomAudioControls) {
-                        randomAudioControls.style.display = 'flex';
-                    }
-                } else {
-                    randomAudioBtn.classList.remove('active');
-                    randomAudioBtn.title = 'Enable Random Audio Frequency Variation';
-                    if (randomAudioControls) {
-                        randomAudioControls.style.display = 'none';
-                    }
-                }
-            }
 
             // Update random audio sliders
             const intervalSlider = document.getElementById('randomIntervalSlider');
@@ -811,17 +1481,6 @@
                 variationValue.textContent = emdrAppState.randomVariation;
             }
 
-            // Update random height button
-            const randomHeightBtn = document.getElementById('random-height-btn');
-            if (randomHeightBtn) {
-                if (emdrAppState.randomHeightEnabled) {
-                    randomHeightBtn.classList.add('active');
-                    randomHeightBtn.title = 'Disable Random Height Variation';
-                } else {
-                    randomHeightBtn.classList.remove('active');
-                    randomHeightBtn.title = 'Enable Random Height Variation';
-                }
-            }
 
             // Update width and height sliders and values
             const widthSlider = document.getElementById('widthSlider');
@@ -839,15 +1498,40 @@
                 heightValue.textContent = emdrAppState.infinityHeight;
             }
             
-            // Set initial visibility of size button based on current pattern
-            const sizeToggleBtn = document.getElementById('size-toggle-btn');
-            if (sizeToggleBtn) {
-                if (emdrAppState.isInfinityPattern) {
-                    sizeToggleBtn.style.display = 'flex'; // Show in infinity mode
-                } else {
-                    sizeToggleBtn.style.display = 'none'; // Hide in horizontal mode
-                }
-            }
+            
+            // Update Quick Settings dropdown sliders
+            const leftFreqSliderMain = document.getElementById('leftFreqSlider-main');
+            const rightFreqSliderMain = document.getElementById('rightFreqSlider-main');
+            const randomIntervalSliderMain = document.getElementById('randomIntervalSlider-main');
+            const randomVariationSliderMain = document.getElementById('randomVariationSlider-main');
+            const widthSliderMain = document.getElementById('widthSlider-main');
+            const heightSliderMain = document.getElementById('heightSlider-main');
+            const randomIntervalInfinitySliderMain = document.getElementById('randomIntervalInfinitySlider-main');
+            
+            if (leftFreqSliderMain) leftFreqSliderMain.value = emdrAppState.leftFrequency;
+            if (rightFreqSliderMain) rightFreqSliderMain.value = emdrAppState.rightFrequency;
+            if (randomIntervalSliderMain) randomIntervalSliderMain.value = emdrAppState.randomInterval;
+            if (randomVariationSliderMain) randomVariationSliderMain.value = emdrAppState.randomVariation;
+            if (widthSliderMain) widthSliderMain.value = emdrAppState.infinityWidth;
+            if (heightSliderMain) heightSliderMain.value = emdrAppState.infinityHeight;
+            if (randomIntervalInfinitySliderMain) randomIntervalInfinitySliderMain.value = emdrAppState.randomIntervalInfinity;
+            
+            // Update Infinity section sliders
+            const speedSliderInfinity = document.getElementById('speed-test-slider-infinity');
+            const leftFreqSliderInfinity = document.getElementById('leftFreqSlider-infinity');
+            const rightFreqSliderInfinity = document.getElementById('rightFreqSlider-infinity');
+            const randomIntervalSliderInfinity = document.getElementById('randomIntervalSlider-infinity');
+            const randomVariationSliderInfinity = document.getElementById('randomVariationSlider-infinity');
+            const widthSliderInfinity = document.getElementById('widthSlider-infinity');
+            const heightSliderInfinity = document.getElementById('heightSlider-infinity');
+            
+            if (speedSliderInfinity) speedSliderInfinity.value = emdrAppState.animationSpeed.toFixed(1);
+            if (leftFreqSliderInfinity) leftFreqSliderInfinity.value = emdrAppState.leftFrequency;
+            if (rightFreqSliderInfinity) rightFreqSliderInfinity.value = emdrAppState.rightFrequency;
+            if (randomIntervalSliderInfinity) randomIntervalSliderInfinity.value = emdrAppState.randomInterval;
+            if (randomVariationSliderInfinity) randomVariationSliderInfinity.value = emdrAppState.randomVariation;
+            if (widthSliderInfinity) widthSliderInfinity.value = emdrAppState.infinityWidth;
+            if (heightSliderInfinity) heightSliderInfinity.value = emdrAppState.infinityHeight;
         }
 
         // Animated Infinity Class
@@ -905,20 +1589,20 @@
                 
                 // Draw full infinity path only if enabled
                 if (emdrAppState.showInfinityLine) {
-                    this.ctx.beginPath();
+                this.ctx.beginPath();
                     const segments = 300; // Increased segments for better continuity
                     for (let i = 0; i <= segments; i++) {
                         const t = i / segments;
-                        const point = this.getPointOnPath(t);
+                    const point = this.getPointOnPath(t);
                         if (i === 0) {
-                            this.ctx.moveTo(point.x, point.y);
-                        } else {
-                            this.ctx.lineTo(point.x, point.y);
-                        }
+                        this.ctx.moveTo(point.x, point.y);
+                    } else {
+                        this.ctx.lineTo(point.x, point.y);
                     }
-                    this.ctx.strokeStyle = this.pathColor;
-                    this.ctx.lineWidth = 2;
-                    this.ctx.stroke();
+                }
+                this.ctx.strokeStyle = this.pathColor;
+                this.ctx.lineWidth = 2;
+                this.ctx.stroke();
                 }
                 
                 // Draw moving ball
@@ -1170,23 +1854,37 @@
             drawHorizontalBallAtStart();
             
             setupEmdrAppSlider();
-            setupSizeControls();
-            
-            // Setup audio frequency controls
-            setupAudioFrequencyControls();
-            
-            // Setup random audio controls
-            setupRandomAudioControls();
             
             // Update UI with loaded settings
             updateUIWithLoadedSettings();
+            
+            // Update all toggle states
+            updateAllAudioToggles();
+            updateAllInfinityLineToggles();
+            updateAllRandomAudioToggles();
+            updateAllRandomHeightToggles();
+            
+            // Update section title
+            updateSectionTitle();
+            
+            // Setup dropdown controls
+            setupDropdownControls();
+            
+            // Update all display values
+            updateAllFrequencyDisplays();
+            updateAllRandomIntervalDisplays();
+            updateAllRandomIntervalInfinityDisplays();
+            updateAllRandomVariationDisplays();
+            updateAllWidthDisplays();
+            updateAllHeightDisplays();
+            
         });
 
         function setupEmdrAppSlider() {
-            const slider = document.getElementById('speed-test-slider');
-            const valueDisplay = document.getElementById('speed-test-value');
+                const slider = document.getElementById('speed-test-slider');
+                const valueDisplay = document.getElementById('speed-test-value');
             
-            if (slider && valueDisplay) {
+                if (slider && valueDisplay) {
                 slider.addEventListener('input', function() {
                     // Set both target speed and animation speed
                     const sliderValue = parseFloat(this.value);
@@ -1200,96 +1898,117 @@
             }
         }
 
-        function setupSizeControls() {
-            const widthSlider = document.getElementById('widthSlider');
-            const heightSlider = document.getElementById('heightSlider');
-            const widthValue = document.getElementById('widthValue');
-            const heightValue = document.getElementById('heightValue');
+
+        // Helper function to setup sliders with sync
+        function setupSliderWithSync(sliderId, valueId, callback) {
+            console.log(`Setting up slider: ${sliderId} with value display: ${valueId}`);
+            const slider = document.getElementById(sliderId);
+            const valueDisplay = document.getElementById(valueId);
             
-            // Width controls
-            if (widthSlider && widthValue) {
-                widthSlider.addEventListener('input', (e) => {
-                    const newWidth = parseInt(e.target.value);
-                    emdrAppState.infinityWidth = newWidth;
-                    if (infinityAnimation) {
-                        infinityAnimation.setWidth(newWidth);
-                    }
-                    widthValue.textContent = newWidth;
-                    saveSettings(); // Save width setting
+            console.log(`Slider ${sliderId}:`, slider ? 'Found' : 'NOT FOUND');
+            console.log(`Value display ${valueId}:`, valueDisplay ? 'Found' : 'NOT FOUND');
+            
+            if (slider && valueDisplay) {
+                console.log(`Successfully setting up event listener for ${sliderId}`);
+                slider.addEventListener('input', function() {
+                    const value = parseFloat(this.value);
+                    console.log(`Slider ${sliderId} input event: value = ${value}`);
+                    valueDisplay.textContent = value;
+                    callback(value);
                 });
-            }
-
-            // Height controls
-            if (heightSlider && heightValue) {
-                heightSlider.addEventListener('input', (e) => {
-                    const newHeight = parseInt(e.target.value);
-                    emdrAppState.infinityHeight = newHeight;
-                    emdrAppState.baseInfinityHeight = newHeight;
-                    if (infinityAnimation) {
-                        infinityAnimation.setHeight(newHeight);
-                    }
-                    heightValue.textContent = newHeight;
-                    saveSettings(); // Save height setting
-                });
+            } else {
+                console.log(`Failed to setup ${sliderId} - missing elements`);
             }
         }
 
-        function setupAudioFrequencyControls() {
-            const leftFreqSlider = document.getElementById('leftFreqSlider');
-            const rightFreqSlider = document.getElementById('rightFreqSlider');
-            const leftFreqValue = document.getElementById('leftFreqValue');
-            const rightFreqValue = document.getElementById('rightFreqValue');
-
-            if (leftFreqSlider && leftFreqValue) {
-                leftFreqSlider.addEventListener('input', (e) => {
-                    const newFreq = parseInt(e.target.value);
-                    emdrAppState.leftFrequency = newFreq;
-                    emdrAppState.baseLeftFrequency = newFreq;
-                    leftFreqValue.textContent = newFreq;
-                    saveSettings(); // Save left frequency setting
-                });
-            }
-
-            if (rightFreqSlider && rightFreqValue) {
-                rightFreqSlider.addEventListener('input', (e) => {
-                    const newFreq = parseInt(e.target.value);
-                    emdrAppState.rightFrequency = newFreq;
-                    emdrAppState.baseRightFrequency = newFreq;
-                    rightFreqValue.textContent = newFreq;
-                    saveSettings(); // Save right frequency setting
-                });
-            }
+        // Update all frequency displays
+        function updateAllFrequencyDisplays() {
+            const leftDisplays = ['leftFreqValue', 'leftFreqValue-infinity', 'leftFreqValue-main'];
+            const rightDisplays = ['rightFreqValue', 'rightFreqValue-infinity', 'rightFreqValue-main'];
+            const leftSliders = ['leftFreqSlider-main', 'leftFreqSlider-infinity'];
+            const rightSliders = ['rightFreqSlider-main', 'rightFreqSlider-infinity'];
+            
+            leftDisplays.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = emdrAppState.leftFrequency;
+            });
+            
+            rightDisplays.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = emdrAppState.rightFrequency;
+            });
+            
+            // Also update slider positions
+            leftSliders.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.value = emdrAppState.leftFrequency;
+            });
+            
+            rightSliders.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.value = emdrAppState.rightFrequency;
+            });
         }
 
-        function setupRandomAudioControls() {
-            const intervalSlider = document.getElementById('randomIntervalSlider');
-            const intervalValue = document.getElementById('randomIntervalValue');
-            const variationSlider = document.getElementById('randomVariationSlider');
-            const variationValue = document.getElementById('randomVariationValue');
-
-            if (intervalSlider && intervalValue) {
-                intervalSlider.addEventListener('input', (e) => {
-                    const newInterval = parseInt(e.target.value);
-                    emdrAppState.randomInterval = newInterval;
-                    intervalValue.textContent = newInterval;
-                    saveSettings(); // Save random interval setting
-                    
-                    // Restart random changes with new interval if enabled
-                    if (emdrAppState.randomAudioEnabled) {
-                        startRandomFrequencyChanges();
-                    }
-                });
-            }
-
-            if (variationSlider && variationValue) {
-                variationSlider.addEventListener('input', (e) => {
-                    const newVariation = parseInt(e.target.value);
-                    emdrAppState.randomVariation = newVariation;
-                    variationValue.textContent = newVariation;
-                    saveSettings(); // Save random variation setting
-                });
-            }
+        // Update all random interval displays
+        function updateAllRandomIntervalDisplays() {
+            const displays = ['randomIntervalValue', 'randomIntervalValue-infinity', 'randomIntervalValue-settings', 'randomIntervalValue-main'];
+            displays.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = emdrAppState.randomInterval;
+            });
         }
+
+        // Update all random interval infinity displays
+        function updateAllRandomIntervalInfinityDisplays() {
+            const displays = ['randomIntervalInfinityValue-main'];
+            displays.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = emdrAppState.randomIntervalInfinity;
+            });
+        }
+
+        // Update all random variation displays
+        function updateAllRandomVariationDisplays() {
+            const displays = ['randomVariationValue', 'randomVariationValue-infinity', 'randomVariationValue-main'];
+            displays.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = emdrAppState.randomVariation;
+            });
+        }
+
+        // Update all width displays
+        function updateAllWidthDisplays() {
+            const displays = ['widthValue', 'widthValue-infinity', 'widthValue-main'];
+            const sliders = ['widthSlider-main', 'widthSlider-infinity'];
+            
+            displays.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = emdrAppState.infinityWidth;
+            });
+            
+            sliders.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.value = emdrAppState.infinityWidth;
+            });
+        }
+
+        // Update all height displays
+        function updateAllHeightDisplays() {
+            const displays = ['heightValue', 'heightValue-infinity', 'heightValue-main'];
+            const sliders = ['heightSlider-main', 'heightSlider-infinity'];
+            
+            displays.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = emdrAppState.infinityHeight;
+            });
+            
+            sliders.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.value = emdrAppState.infinityHeight;
+            });
+        }
+
 
         function toggleEmdrApp() {
             const toggleBtn = document.getElementById('toggle-btn');
@@ -1440,18 +2159,23 @@
             // Toggle pattern
             emdrAppState.isInfinityPattern = !emdrAppState.isInfinityPattern;
             
+            // Restart random frequency changes with correct interval for new pattern
+            if (emdrAppState.randomAudioEnabled) {
+                startRandomFrequencyChanges();
+            }
+            
+            // Update section title
+            updateSectionTitle();
+            
+            // Update dropdown visibility
+            updateDropdownVisibility();
+            
             // Update button text and style
             if (emdrAppState.isInfinityPattern) {
                 patternBtn.textContent = '↔ Pattern';
                 patternBtn.classList.add('running');
                 // Show infinity pattern (static)
                 infinityAnimation.draw();
-                
-                // Show size button when switching to infinity mode
-                const sizeToggleBtn = document.getElementById('size-toggle-btn');
-                if (sizeToggleBtn) {
-                    sizeToggleBtn.style.display = 'flex'; // Show the size button in infinity mode
-                }
                 
                 // Start random height changes if enabled
                 if (emdrAppState.randomHeightEnabled) {
@@ -1464,168 +2188,14 @@
                 const canvas = document.getElementById('infinity-canvas');
                 const ctx = canvas.getContext('2d');
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                drawHorizontalBallAtStart();
-                
-                // Hide size controls and size button when switching to horizontal mode
-                const sizeControls = document.getElementById('size-controls');
-                const sizeToggleBtn = document.getElementById('size-toggle-btn');
-                if (sizeControls) {
-                    sizeControls.style.display = 'none';
-                }
-                if (sizeToggleBtn) {
-                    sizeToggleBtn.classList.remove('active');
-                    sizeToggleBtn.title = 'Adjust Infinity Loop Size';
-                    sizeToggleBtn.style.display = 'none'; // Hide the size button in horizontal mode
-                }
+                    drawHorizontalBallAtStart();
                 
                 // Stop random height changes when switching to horizontal mode
                 stopRandomHeightChanges();
             }
         }
 
-        function toggleAudio() {
-            emdrAppState.audioEnabled = !emdrAppState.audioEnabled;
-            saveSettings(); // Save audio setting
-            
-            const audioBtn = document.getElementById('audio-btn');
-            if (audioBtn) {
-                if (emdrAppState.audioEnabled) {
-                    audioBtn.classList.add('running');
-                    audioBtn.textContent = '🔔 Audio';
-                    console.log('🔊 Audio enabled - Tibetan bells will play for left/right movement');
-                } else {
-                    audioBtn.classList.remove('running');
-                    audioBtn.textContent = '🔔 Audio';
-                    console.log('🔇 Audio disabled');
-                }
-            }
-        }
 
-        function toggleInfinityLine() {
-            emdrAppState.showInfinityLine = !emdrAppState.showInfinityLine;
-            saveSettings(); // Save line visibility setting
-            
-            const lineBtn = document.getElementById('line-toggle-btn');
-            if (lineBtn) {
-                if (emdrAppState.showInfinityLine) {
-                    lineBtn.classList.add('active');
-                    lineBtn.textContent = '📏';
-                    lineBtn.title = 'Hide Infinity Line Visibility';
-                    console.log('📏 Infinity line shown');
-                } else {
-                    lineBtn.classList.remove('active');
-                    lineBtn.textContent = '🚫';
-                    lineBtn.title = 'Show Infinity Line Visibility';
-                    console.log('🚫 Infinity line hidden');
-                }
-            }
-            
-            // Redraw infinity pattern if currently visible
-            if (emdrAppState.isInfinityPattern && infinityAnimation) {
-                infinityAnimation.draw();
-            }
-        }
-
-        function toggleAudioFrequency() {
-            const controls = document.getElementById('audio-freq-controls');
-            const btn = document.getElementById('audio-freq-btn');
-            
-            if (controls.style.display === 'none' || controls.style.display === '') {
-                controls.style.display = 'flex';
-                btn.classList.add('active');
-                btn.title = 'Hide Left/Right Sound Frequency Settings';
-            } else {
-                controls.style.display = 'none';
-                btn.classList.remove('active');
-                btn.title = 'Adjust Left/Right Sound Frequencies';
-            }
-        }
-
-        function toggleRandomAudio() {
-            emdrAppState.randomAudioEnabled = !emdrAppState.randomAudioEnabled;
-            saveSettings(); // Save random audio setting
-            
-            const controls = document.getElementById('random-audio-controls');
-            const btn = document.getElementById('random-audio-btn');
-            
-            if (emdrAppState.randomAudioEnabled) {
-                controls.style.display = 'flex';
-                btn.classList.add('active');
-                btn.title = 'Disable Random Audio Frequency Variation';
-                
-                // Store base frequencies when enabling random audio
-                emdrAppState.baseLeftFrequency = emdrAppState.leftFrequency;
-                emdrAppState.baseRightFrequency = emdrAppState.rightFrequency;
-                
-                // Start random frequency changes
-                startRandomFrequencyChanges();
-                console.log('🎲 Random audio enabled');
-            } else {
-                controls.style.display = 'none';
-                btn.classList.remove('active');
-                btn.title = 'Enable Random Audio Frequency Variation';
-                
-                // Stop random frequency changes and restore base frequencies
-                stopRandomFrequencyChanges();
-                emdrAppState.leftFrequency = emdrAppState.baseLeftFrequency;
-                emdrAppState.rightFrequency = emdrAppState.baseRightFrequency;
-                
-                // Update UI to show base frequencies
-                updateFrequencyDisplay();
-                console.log('🎲 Random audio disabled');
-            }
-        }
-
-        function toggleRandomHeight() {
-            emdrAppState.randomHeightEnabled = !emdrAppState.randomHeightEnabled;
-            saveSettings(); // Save random height setting
-            
-            const btn = document.getElementById('random-height-btn');
-            
-            if (emdrAppState.randomHeightEnabled) {
-                btn.classList.add('active');
-                btn.title = 'Disable Random Height Variation';
-                
-                // Store base height when enabling random height
-                emdrAppState.baseInfinityHeight = emdrAppState.infinityHeight;
-                
-                // Start random height changes
-                startRandomHeightChanges();
-                console.log('📊 Random height enabled');
-            } else {
-                btn.classList.remove('active');
-                btn.title = 'Enable Random Height Variation';
-                
-                // Stop random height changes and restore base height
-                stopRandomHeightChanges();
-                emdrAppState.infinityHeight = emdrAppState.baseInfinityHeight;
-                
-                // Update UI to show base height
-                updateHeightDisplay();
-                updateInfinityAnimation();
-                console.log('📊 Random height disabled');
-            }
-        }
-
-        function toggleSizeControls() {
-            // Only allow size controls in infinity mode
-            if (!emdrAppState.isInfinityPattern) {
-                return;
-            }
-            
-            const controls = document.getElementById('size-controls');
-            const btn = document.getElementById('size-toggle-btn');
-            
-            if (controls.style.display === 'none' || controls.style.display === '') {
-                controls.style.display = 'flex';
-                btn.classList.add('active');
-                btn.title = 'Hide Infinity Size Controls';
-            } else {
-                controls.style.display = 'none';
-                btn.classList.remove('active');
-                btn.title = 'Adjust Infinity Loop Size';
-            }
-        }
 
         // Random frequency change functionality
         let randomFrequencyInterval = null;
@@ -1636,11 +2206,15 @@
                 clearInterval(randomFrequencyInterval);
             }
             
+            // Use different intervals for horizontal vs infinity patterns
+            const currentInterval = emdrAppState.isInfinityPattern ? 
+                emdrAppState.randomIntervalInfinity : emdrAppState.randomInterval;
+            
             randomFrequencyInterval = setInterval(() => {
                 if (emdrAppState.randomAudioEnabled && emdrAppState.audioEnabled) {
                     changeRandomFrequencies();
                 }
-            }, emdrAppState.randomInterval * 1000);
+            }, currentInterval * 1000);
         }
 
         function stopRandomFrequencyChanges() {
@@ -1674,15 +2248,8 @@
         }
 
         function updateFrequencyDisplay() {
-            const leftFreqValue = document.getElementById('leftFreqValue');
-            const rightFreqValue = document.getElementById('rightFreqValue');
-            const leftFreqSlider = document.getElementById('leftFreqSlider');
-            const rightFreqSlider = document.getElementById('rightFreqSlider');
-            
-            if (leftFreqValue) leftFreqValue.textContent = emdrAppState.leftFrequency;
-            if (rightFreqValue) rightFreqValue.textContent = emdrAppState.rightFrequency;
-            if (leftFreqSlider) leftFreqSlider.value = emdrAppState.leftFrequency;
-            if (rightFreqSlider) rightFreqSlider.value = emdrAppState.rightFrequency;
+            // Call the comprehensive update function that updates all frequency displays
+            updateAllFrequencyDisplays();
         }
 
         function startRandomHeightChanges() {
@@ -1699,7 +2266,7 @@
                     const timeSinceLastChange = (now - lastHeightChangeTime) / 1000; // seconds
                     
                     // Only check for center passage if enough time has passed since last change
-                    if (timeSinceLastChange >= emdrAppState.randomInterval) {
+                    if (timeSinceLastChange >= emdrAppState.randomIntervalInfinity) {
                         // Only change height when ball is near center (time close to 0.0)
                         const time = infinityAnimation.time;
                         const timeFromCenter = Math.min(time, 1.0 - time); // Distance from 0.0 or 1.0 (both are center)
@@ -1723,12 +2290,9 @@
         }
 
         function changeRandomHeight() {
-            // Get the height slider range
-            const heightSlider = document.getElementById('heightSlider');
-            if (!heightSlider) return;
-            
-            const minHeight = parseInt(heightSlider.min);
-            const maxHeight = parseInt(heightSlider.max);
+            // Use the standard height range from sliders (150-500)
+            const minHeight = 150;
+            const maxHeight = 500;
             
             // Generate random height within the slider range
             const randomHeight = Math.floor(Math.random() * (maxHeight - minHeight + 1)) + minHeight;
@@ -1737,7 +2301,7 @@
             emdrAppState.infinityHeight = randomHeight;
             
             // Update UI display
-            updateHeightDisplay();
+            updateAllHeightDisplays();
             
             // Update infinity animation with new height
             updateInfinityAnimation();
@@ -1746,17 +2310,15 @@
         }
 
         function updateHeightDisplay() {
-            const heightValue = document.getElementById('heightValue');
-            const heightSlider = document.getElementById('heightSlider');
-            
-            if (heightValue) heightValue.textContent = emdrAppState.infinityHeight;
-            if (heightSlider) heightSlider.value = emdrAppState.infinityHeight;
+            // Call the comprehensive update function that updates all height displays
+            updateAllHeightDisplays();
         }
 
         function updateInfinityAnimation() {
             if (infinityAnimation && emdrAppState.isInfinityPattern) {
+                infinityAnimation.setWidth(emdrAppState.infinityWidth);
                 infinityAnimation.setHeight(emdrAppState.infinityHeight);
-                infinityAnimation.draw();
+                // No need to call draw() since setWidth and setHeight already call it
             }
         }
 
