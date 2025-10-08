@@ -928,7 +928,7 @@
     <!-- Fixed Header with Navigation -->
     <div class="fixed-header">
         <div class="header-content">
-            <div class="app-title">⚡ EMDR v1.Web.7</div>
+            <div class="app-title">⚡ EMDR v1.Web.8</div>
             
             <nav class="nav-menu">
                 <!-- Settings Dropdown -->
@@ -1395,7 +1395,7 @@
         // Save settings to localStorage
         function saveSettings() {
             const settings = {
-                animationSpeed: emdrAppState.animationSpeed,
+                animationSpeed: emdrAppState.targetSpeed, // Save target speed (the user's desired speed)
                 audioEnabled: emdrAppState.audioEnabled,
                 showInfinityLine: emdrAppState.showInfinityLine,
                 leftFrequency: emdrAppState.leftFrequency,
@@ -1886,14 +1886,14 @@
             
                 if (slider && valueDisplay) {
                 slider.addEventListener('input', function() {
-                    // Set both target speed and animation speed
+                    // Set target speed - the animation will apply it at the next left/right extreme
                     const sliderValue = parseFloat(this.value);
-                    emdrAppState.animationSpeed = sliderValue; // Update the main speed value
-                    emdrAppState.targetSpeed = sliderValue; // Set target speed for smooth transition
+                    emdrAppState.targetSpeed = sliderValue; // Queue speed change for next extreme
                     valueDisplay.textContent = sliderValue.toFixed(1);
                     saveSettings(); // Save speed setting
                     
-                    // Don't immediately change speed - let the smooth transition handle it
+                    // Horizontal mode: Speed changes at left/right extremes to maintain cycle integrity
+                    // Infinity mode: Speed changes smoothly via gradual transition
                 });
             }
         }
@@ -2365,10 +2365,8 @@
                 const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
                 lastTime = currentTime;
                 
-                // Smooth speed transition for horizontal animation
-                const speedDifference = emdrAppState.targetSpeed - emdrAppState.animationSpeed;
-                const speedTransitionRate = 2.0; // How fast to transition (higher = faster transition)
-                emdrAppState.animationSpeed += speedDifference * speedTransitionRate * deltaTime;
+                // Speed changes are now applied only at left/right extremes (see audio trigger section below)
+                // This ensures each cycle completes with consistent timing
                 
                 // Calculate cycle progress
                 const cycleDuration = emdrAppState.animationSpeed; // seconds for full cycle
@@ -2404,10 +2402,20 @@
                 // Left trigger: when ball reaches left edge
                 if (isAtLeft && !wasAtLeft) {
                     playLeftBell();
+                    // Apply pending speed change at left extreme
+                    if (Math.abs(emdrAppState.targetSpeed - emdrAppState.animationSpeed) > 0.01) {
+                        emdrAppState.animationSpeed = emdrAppState.targetSpeed;
+                        cycleStartTime = currentTime; // Reset cycle timing for new speed
+                    }
                 }
                 // Right trigger: when ball reaches right edge
                 if (isAtRight && !wasAtRight) {
                     playRightBell();
+                    // Apply pending speed change at right extreme
+                    if (Math.abs(emdrAppState.targetSpeed - emdrAppState.animationSpeed) > 0.01) {
+                        emdrAppState.animationSpeed = emdrAppState.targetSpeed;
+                        cycleStartTime = currentTime - (cycleDuration * 1000 / 2); // Adjust for mid-cycle position
+                    }
                 }
                 
                 // Store for next frame
