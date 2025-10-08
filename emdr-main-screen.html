@@ -2388,7 +2388,7 @@
                 <div class="speed-test-buttons">
                     <button class="speed-test-btn" onclick="startSpeedTest()">Start</button>
                     <button class="speed-test-btn" onclick="stopSpeedTest()">Stop</button>
-                    <button class="speed-test-btn" onclick="openSpeedTestInNewTab()" style="background: rgba(255, 193, 7, 0.2); border-color: rgba(255, 193, 7, 0.5); color: #ffc107;">🔗 Open in New Tab</button>
+                    <button class="speed-test-btn" onclick="openSpeedTestInNewTab()" style="display: none; background: rgba(255, 193, 7, 0.2); border-color: rgba(255, 193, 7, 0.5); color: #ffc107;">🔗 Open in New Tab</button>
                 </div>
             </div>
             <div class="bouncy-ball-container">
@@ -5885,7 +5885,7 @@
                         mainBtn.classList.remove('off');
                         mainBtn.classList.add('on');
                         mainIcon.textContent = '⚡';
-                        mainText.textContent = 'Main Controls ON v1.A.5';
+                        mainText.textContent = 'Main Controls ON v1.A.7';
                         mainIcon.classList.remove('spinner');
                     } else if (state.connected) {
                         mainBtn.classList.remove('on');
